@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="vi" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Voraprime — Authentication</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: 'Outfit', sans-serif; background-color: #0a0a0a; color: white; overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh; background-image: linear-gradient(to right, rgba(255,255,255,.02) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,.02) 1px, transparent 1px); background-size: 40px 40px; }
+    .glow { position: absolute; width: 500px; height: 500px; border-radius: 50%; pointer-events: none; z-index: -3; opacity: 0.12; filter: blur(60px); }
+    .glow-orange { top: -150px; left: -150px; background: radial-gradient(circle, #f97316 0%, transparent 70%); }
+    .glass-form { background: #111111; border: 1px solid #27272a; box-shadow: 0 20px 40px rgba(0,0,0,.8), 0 0 40px rgba(249,115,22,.03); }
+    input:-webkit-autofill { -webkit-box-shadow: 0 0 0 30px #18181b inset !important; -webkit-text-fill-color: white !important; }
+    .primary-btn { background: linear-gradient(to right, #ea580c, #f97316); transition: .2s ease; box-shadow: 0 4px 15px rgba(249,115,22,.2); }
+    .primary-btn:active { transform: scale(.98); }
+  </style>
+</head>
+<body>
+  <div class="glow glow-orange"></div>
+  <a href="index.html" class="absolute top-5 left-5 text-zinc-500 hover:text-orange-500 transition flex items-center gap-2 text-sm font-medium z-10 p-2"><i class="fa-solid fa-arrow-left"></i> Quay lại</a>
+  <main class="flex-1 flex items-center justify-center p-5 z-10 w-full relative">
+    <div class="w-full max-w-md glass-form rounded-3xl p-6 sm:p-8">
+      <div class="flex flex-col items-center justify-center mb-6">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-gradient-to-br from-orange-500 to-red-600 mb-3"><i class="fa-solid fa-bolt text-white text-lg"></i></div>
+        <h2 class="text-xl font-black tracking-[.1em] uppercase text-white">Voraprime</h2>
+      </div>
+
+      <div class="flex border-b border-zinc-800 mb-5">
+        <button id="tab-login" onclick="switchTab('login')" class="flex-1 py-3 text-center text-[13px] font-bold border-b-2 border-orange-500 text-orange-500">ĐĂNG NHẬP</button>
+        <button id="tab-register" onclick="switchTab('register')" class="flex-1 py-3 text-center text-[13px] font-bold border-b-2 border-transparent text-zinc-500">ĐĂNG KÝ</button>
+      </div>
+
+      <div id="msg-box" class="hidden mb-4 rounded-lg p-3 flex items-start gap-2 border"><p id="msg-text" class="text-xs font-medium"></p></div>
+
+      <form id="login-form" onsubmit="handleAuth(event, 'login')" class="space-y-4">
+        <div><label class="block text-[10px] font-bold text-zinc-500 uppercase mb-1.5 ml-1">Tài khoản</label><input type="text" id="login-username" required class="w-full bg-[#18181b] border border-zinc-800 rounded-xl px-4 py-3 text-sm text-zinc-200"></div>
+        <div><label class="block text-[10px] font-bold text-zinc-500 uppercase mb-1.5 ml-1">Mật khẩu</label><input type="password" id="login-password" required class="w-full bg-[#18181b] border border-zinc-800 rounded-xl px-4 py-3 text-sm text-zinc-200"></div>
+        <button type="submit" id="btn-login-submit" class="w-full py-3.5 primary-btn text-white font-bold rounded-xl text-[14px] mt-2">Đăng Nhập</button>
+      </form>
+
+      <form id="register-form" onsubmit="handleAuth(event, 'register')" class="hidden space-y-4">
+        <div><label class="block text-[10px] font-bold text-zinc-500 uppercase mb-1.5 ml-1">Tài khoản (5 - 8 kí tự)</label><input type="text" id="reg-username" required minlength="5" maxlength="8" class="w-full bg-[#18181b] border border-zinc-800 rounded-xl px-4 py-2.5 text-sm text-zinc-200"></div>
+        <div class="grid grid-cols-2 gap-3">
+          <div><label class="block text-[10px] font-bold text-zinc-500 uppercase mb-1.5 ml-1">Email</label><input type="email" id="reg-email" required class="w-full bg-[#18181b] border border-zinc-800 rounded-xl px-3 py-2.5 text-sm text-zinc-200"></div>
+          <div><label class="block text-[10px] font-bold text-zinc-500 uppercase mb-1.5 ml-1">Xác nhận Mail</label><input type="email" id="reg-email-confirm" required class="w-full bg-[#18181b] border border-zinc-800 rounded-xl px-3 py-2.5 text-sm text-zinc-200"></div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div><label class="block text-[10px] font-bold text-zinc-500 uppercase mb-1.5 ml-1">Mật khẩu</label><input type="password" id="reg-password" required class="w-full bg-[#18181b] border border-zinc-800 rounded-xl px-3 py-2.5 text-sm text-zinc-200"></div>
+          <div><label class="block text-[10px] font-bold text-zinc-500 uppercase mb-1.5 ml-1">Nhập lại MK</label><input type="password" id="reg-password-confirm" required class="w-full bg-[#18181b] border border-zinc-800 rounded-xl px-3 py-2.5 text-sm text-zinc-200"></div>
+        </div>
+        <div><label class="block text-[10px] font-bold text-orange-500 uppercase mb-1.5 ml-1">Mã xác nhận</label><div class="flex gap-2"><input type="text" id="reg-otp" required class="flex-1 bg-[#18181b] border border-zinc-800 rounded-xl px-4 py-2.5 text-sm text-zinc-200"><button type="button" id="btn-send-otp" onclick="sendOTP()" class="px-4 bg-zinc-800 text-orange-400 font-bold text-xs rounded-xl">Nhận Mã</button></div></div>
+        <button type="submit" id="btn-reg-submit" class="w-full py-3.5 primary-btn text-white font-bold rounded-xl text-[14px] mt-2">Tạo Tài Khoản</button>
+      </form>
+    </div>
+  </main>
+
+  <script>
+    // ✅ ĐÃ ĐIỀN SẴN LINK HOST SPACEIFY CỦA BẠN VÀO ĐÂY:
+    const API_URL = "http://de26.spaceify.eu:26355"; 
+    
+    function switchTab(tab) {
+      document.getElementById('msg-box').classList.add('hidden');
+      if (tab === 'login') {
+        document.getElementById('tab-login').className = 'flex-1 py-3 text-center text-[13px] font-bold border-b-2 border-orange-500 text-orange-500'; document.getElementById('tab-register').className = 'flex-1 py-3 text-center text-[13px] font-bold border-b-2 border-transparent text-zinc-500';
+        document.getElementById('login-form').classList.remove('hidden'); document.getElementById('register-form').classList.add('hidden');
+      } else {
+        document.getElementById('tab-register').className = 'flex-1 py-3 text-center text-[13px] font-bold border-b-2 border-orange-500 text-orange-500'; document.getElementById('tab-login').className = 'flex-1 py-3 text-center text-[13px] font-bold border-b-2 border-transparent text-zinc-500';
+        document.getElementById('register-form').classList.remove('hidden'); document.getElementById('login-form').classList.add('hidden');
+      }
+    }
+    function showMessage(text, type = 'error') {
+      const box = document.getElementById('msg-box'); const msgText = document.getElementById('msg-text');
+      box.className = 'mb-4 rounded-lg p-3 flex items-start gap-2 border ' + (type === 'error' ? 'bg-rose-500/10 border-rose-500/20' : 'bg-emerald-500/10 border-emerald-500/20');
+      msgText.className = 'text-xs font-medium ' + (type === 'error' ? 'text-rose-400' : 'text-emerald-400');
+      msgText.innerText = text; box.classList.remove('hidden');
+    }
+    async function sendOTP() {
+      const email = document.getElementById('reg-email').value; const emailConfirm = document.getElementById('reg-email-confirm').value;
+      if (!email || email !== emailConfirm) return showMessage('Email không hợp lệ hoặc không khớp!', 'error');
+      const btn = document.getElementById('btn-send-otp'); btn.innerHTML = '...'; btn.disabled = true;
+      try {
+        const res = await fetch(`${API_URL}/api/auth/send-otp`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) });
+        if (!res.ok) throw new Error('Lỗi gửi mã'); showMessage(`Đã gửi OTP.`, 'success');
+        let count = 60; const iv = setInterval(() => { btn.innerText = `Thử lại (${count}s)`; count--; if (count < 0) { clearInterval(iv); btn.innerText = 'Nhận Mã'; btn.disabled = false; } }, 1000);
+      } catch (err) { showMessage('Hệ thống bận!', 'error'); btn.innerText = 'Nhận Mã'; btn.disabled = false; }
+    }
+    async function handleAuth(e, type) {
+      e.preventDefault(); document.getElementById('msg-box').classList.add('hidden');
+      const btn = type === 'login' ? document.getElementById('btn-login-submit') : document.getElementById('btn-reg-submit');
+      const originalHtml = btn.innerHTML; btn.innerHTML = 'Đang xử lý...'; btn.disabled = true;
+      try {
+        let payload = {};
+        if (type === 'register') {
+          payload = { username: document.getElementById('reg-username').value, email: document.getElementById('reg-email').value, password: document.getElementById('reg-password').value, otp: document.getElementById('reg-otp').value };
+          if (payload.password !== document.getElementById('reg-password-confirm').value) throw new Error('Mật khẩu không khớp!');
+        } else { payload = { username: document.getElementById('login-username').value, password: document.getElementById('login-password').value }; }
+        
+        const res = await fetch(`${API_URL}/api/auth/${type}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+        const data = await res.json(); if (!res.ok) throw new Error(data.error || 'Lỗi!');
+        if (type === 'login') { localStorage.setItem('hub_token', data.token); localStorage.setItem('hub_user', data.username); window.location.href = 'lobby.html'; } 
+        else { alert('Đăng ký thành công!'); document.getElementById('register-form').reset(); switchTab('login'); }
+      } catch (err) { showMessage(err.message, 'error'); } finally { btn.innerHTML = originalHtml; btn.disabled = false; }
+    }
+  </script>
+</body>
+</html>

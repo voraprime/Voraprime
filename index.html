@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="vi" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Voraprime — Automation</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+    body { margin: 0; font-family: 'Outfit', sans-serif; background-color: #0a0a0a; color: white; overflow-x: hidden; background-image: linear-gradient(to right, rgba(255,255,255,.015) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,.015) 1px, transparent 1px); background-size: 40px 40px; }
+    .glow { position: absolute; width: 600px; height: 600px; border-radius: 50%; pointer-events: none; z-index: -1; opacity: 0.15; filter: blur(80px); }
+    .glow-orange { top: -200px; left: 50%; transform: translateX(-50%); background: radial-gradient(circle, #f97316 0%, transparent 70%); }
+    .btn-orange { background: linear-gradient(to right, #ea580c, #f97316); box-shadow: 0 4px 20px rgba(249, 115, 22, 0.3); transition: all 0.2s ease; }
+    .btn-orange:active { transform: scale(0.96); box-shadow: 0 2px 10px rgba(249, 115, 22, 0.2); }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col relative">
+  <div class="glow glow-orange"></div>
+  <header class="w-full px-5 py-4 flex items-center justify-between border-b border-white/[.05] bg-[#0a0a0a]/80 backdrop-blur-md sticky top-0 z-50">
+    <div class="flex items-center gap-6">
+      <div class="text-white font-black text-lg tracking-wide flex items-center gap-2">
+        <i class="fa-solid fa-bolt text-orange-500"></i> VORAPRIME
+      </div>
+    </div>
+    <a href="login.html" class="btn-orange text-white text-sm font-bold px-5 py-2.5 rounded-lg flex items-center gap-2">
+      <i class="fa-solid fa-arrow-right-to-bracket"></i> Đăng nhập
+    </a>
+  </header>
+  <main class="flex-1 flex flex-col items-center justify-center text-center px-5 mt-16 mb-20">
+    <div class="mb-8 inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-orange-500/30 bg-orange-500/10 text-orange-400 text-xs font-bold tracking-wide">
+      <div class="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></div>
+      Mã nguồn mở • Miễn phí • Online 24/7
+    </div>
+    <h1 class="text-[40px] sm:text-6xl font-black leading-[1.1] tracking-tight mb-6">
+      Tự động hoá,<br/>ra đời <span class="text-orange-500">Voraprime</span>
+    </h1>
+    <p class="text-zinc-400 text-[15px] sm:text-lg max-w-xl mx-auto leading-relaxed mb-10">
+      Voraprime biến sự phức tạp thành tự động. Treo Voice, Activity, Custom Status — account của bạn chạy ngay 24/7, không cần cắm máy tính.
+    </p>
+    <div class="flex flex-col w-full sm:w-auto sm:flex-row gap-3 max-w-xs mx-auto">
+      <a href="login.html" class="btn-orange w-full py-3.5 rounded-xl text-white font-bold text-[15px] flex items-center justify-center gap-2">
+        Bắt đầu ngay <i class="fa-solid fa-arrow-right"></i>
+      </a>
+    </div>
+  </main>
+</body>
+</html>
