@@ -2,15 +2,17 @@
 <html lang="vi">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="theme-color" content="#071226" />
-  <title>Thuê Bot — Chợ thuê bot Việt Nam</title>
-  <meta name="description" content="Chợ thuê bot Messenger, Telegram, Discord, Zalo — nhanh, rõ ràng, dễ tìm bot phù hợp." />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
+  <meta name="theme-color" content="#050b18" />
+  <title>Voraprime — Chợ mua bán số Việt Nam</title>
+  <meta name="description" content="Voraprime — Chợ mua bán bot, account, source code, dịch vụ số. Nhanh, rõ ràng, uy tín." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     :root{
       --bg:#050b18;
       --panel:#0a1224;
-      --panel2:#0d1930;
       --line:rgba(132,168,255,.16);
       --text:#f5f7ff;
       --muted:#aeb9d6;
@@ -22,7 +24,8 @@
       --shadow:0 18px 70px rgba(0,0,0,.38);
     }
     *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
+    html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+    html,body{max-width:100%;overflow-x:hidden;overscroll-behavior-x:none}
     body{
       margin:0;color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
       background:
@@ -30,30 +33,30 @@
         radial-gradient(circle at 88% 20%,rgba(0,214,255,.10),transparent 28%),
         radial-gradient(circle at 65% 90%,rgba(118,76,255,.08),transparent 25%),
         var(--bg);
-      min-height:100vh;
-      overflow-x:hidden;
+      min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;
     }
     a{color:inherit;text-decoration:none}
-    button,input{font:inherit}
+    button,input,select{font:inherit}
+    input,select,textarea,button{font-size:16px;touch-action:manipulation}
+    a,button,[role="button"],label{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+    img,video,iframe,svg{max-width:100%;height:auto}
     .wrap{width:min(1240px,calc(100% - 34px));margin:auto}
-    .grid-bg{position:fixed;inset:0;pointer-events:none;opacity:.13;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:48px 48px;mask-image:linear-gradient(to bottom,black,transparent 85%)}
+    .grid-bg{position:fixed;inset:0;pointer-events:none;opacity:.13;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:48px 48px;mask-image:linear-gradient(to bottom,black,transparent 85%);-webkit-mask-image:linear-gradient(to bottom,black,transparent 85%);z-index:0}
 
-    /* Header */
-    header{position:sticky;top:0;z-index:20;background:rgba(5,11,24,.76);backdrop-filter:blur(16px);border-bottom:1px solid rgba(151,179,255,.11)}
+    header{position:sticky;top:0;z-index:20;background:rgba(5,11,24,.76);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(151,179,255,.11)}
     .nav{height:86px;display:flex;align-items:center;justify-content:space-between;gap:20px}
     .brand{display:flex;align-items:center;gap:12px;min-width:0}
-    .brand-logo{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(145deg,#2d6eff,#26cfff);box-shadow:0 0 26px rgba(58,130,255,.42);font-size:23px;flex:none}
-    .brand-title{font-size:18px;font-weight:800;line-height:1.1}.brand-sub{font-size:12px;color:#7784a4;margin-top:3px}
+    .brand-logo{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(145deg,#2d6eff,#26cfff);box-shadow:0 0 26px rgba(58,130,255,.42);font-size:22px;flex:none}
+    .brand-title{font-size:18px;font-weight:800;line-height:1.1}
+    .brand-sub{font-size:12px;color:#7784a4;margin-top:3px}
     .nav-actions{display:flex;align-items:center;gap:12px}
-    .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;border:1px solid rgba(133,171,255,.22);border-radius:16px;padding:13px 20px;font-weight:750;cursor:pointer;transition:.22s ease;background:rgba(11,18,38,.65);color:white}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;border:1px solid rgba(133,171,255,.22);border-radius:16px;padding:13px 20px;font-weight:750;cursor:pointer;transition:.22s ease;background:rgba(11,18,38,.65);color:white;text-decoration:none;white-space:nowrap;touch-action:manipulation}
     .btn:hover{transform:translateY(-1px);border-color:rgba(124,171,255,.45)}
     .btn-primary{background:linear-gradient(135deg,#6da5ff,#4b80ff);box-shadow:0 9px 28px rgba(69,120,255,.26);border-color:rgba(154,189,255,.6)}
     .btn-primary:hover{box-shadow:0 12px 34px rgba(69,120,255,.34)}
-    .menu-btn{display:none}
 
-    /* Main */
-    main{padding:38px 0 70px}
-    .notice{border:1px solid rgba(255,196,61,.35);background:linear-gradient(90deg,rgba(65,54,25,.48),rgba(26,48,39,.34));border-radius:16px;padding:17px 22px;color:#e9dda8;box-shadow:inset 0 1px 0 rgba(255,255,255,.03)}
+    main{padding:38px 0 70px;position:relative;z-index:1}
+    .notice{border:1px solid rgba(255,196,61,.35);background:linear-gradient(90deg,rgba(65,54,25,.48),rgba(26,48,39,.34));border-radius:16px;padding:17px 22px;color:#e9dda8;box-shadow:inset 0 1px 0 rgba(255,255,255,.03);font-size:14px;line-height:1.6}
     .notice strong{color:#ffd75c}.notice a{color:#7eafff;font-weight:800}
 
     .hero{position:relative;margin-top:22px;padding:42px 34px 34px;border:1px solid rgba(101,150,255,.36);border-radius:28px;overflow:hidden;background:
@@ -63,40 +66,118 @@
     .hero::after{content:"";position:absolute;inset:auto -15% -52% -15%;height:75%;background:radial-gradient(circle,rgba(32,211,255,.14),transparent 58%);pointer-events:none}
     .hero-grid{display:grid;grid-template-columns:1.45fr .8fr;gap:34px;align-items:center;position:relative;z-index:1}
     .eyebrow{display:inline-flex;align-items:center;gap:9px;padding:9px 14px;border-radius:999px;border:1px solid rgba(46,214,255,.4);background:rgba(28,124,255,.09);color:#8cecff;font-size:13px;font-weight:850;letter-spacing:.03em}
-    .pulse{width:8px;height:8px;border-radius:50%;background:#2de1ff;box-shadow:0 0 15px #2de1ff}
-    h1{font-size:clamp(44px,6vw,74px);line-height:.99;letter-spacing:-.055em;margin:26px 0 18px;max-width:860px}
+    .pulse{width:8px;height:8px;border-radius:50%;background:#2de1ff;box-shadow:0 0 15px #2de1ff;animation:pulseDot 2s ease-in-out infinite}
+    @keyframes pulseDot{0%,100%{opacity:1}50%{opacity:.35}}
+    h1{font-size:clamp(42px,5.8vw,70px);line-height:.99;letter-spacing:-.05em;margin:26px 0 18px;max-width:860px}
     .grad{background:linear-gradient(90deg,#8eb8ff 5%,#39d7ff 47%,#7585ff 95%);-webkit-background-clip:text;background-clip:text;color:transparent}
-    .hero-copy{max-width:760px;color:#cbd4eb;font-size:18px;line-height:1.8}
-    .hero-copy strong{color:white}.hero-ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+    .hero-copy{max-width:760px;color:#cbd4eb;font-size:17.5px;line-height:1.8}
+    .hero-copy strong{color:white}
+    .hero-ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
     .stats{background:linear-gradient(180deg,rgba(41,71,142,.82),rgba(14,27,56,.92));border:1px solid rgba(103,152,255,.38);border-radius:22px;box-shadow:0 20px 55px rgba(0,0,0,.25),inset 0 1px 0 rgba(255,255,255,.05);overflow:hidden}
-    .stat{padding:28px 30px;border-bottom:1px solid rgba(190,208,255,.12)}.stat:last-child{border-bottom:none}
-    .stat-number{font-size:40px;font-weight:900;letter-spacing:-.04em}.stat-label{color:#afbad5;margin-top:7px;font-size:15px}
+    .stat{padding:26px 28px;border-bottom:1px solid rgba(190,208,255,.12)}.stat:last-child{border-bottom:none}
+    .stat-number{font-size:38px;font-weight:900;letter-spacing:-.04em;background:linear-gradient(135deg,#8eb8ff,#39d7ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .stat-label{color:#afbad5;margin-top:6px;font-size:14px}
 
-    /* sections */
-    section{margin-top:50px}.section-head{display:flex;justify-content:space-between;gap:18px;align-items:end;margin-bottom:20px}.section-title{font-size:31px;letter-spacing:-.035em;margin:0}.section-desc{margin:8px 0 0;color:var(--muted);line-height:1.6}
+    section{margin-top:50px}
+    .section-head{display:flex;justify-content:space-between;gap:18px;align-items:end;margin-bottom:20px;flex-wrap:wrap}
+    .section-title{font-size:31px;letter-spacing:-.035em;margin:0}
+    .section-desc{margin:8px 0 0;color:var(--muted);line-height:1.6}
+
+    .cats{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:18px}
+    .cat{padding:9px 15px;border-radius:999px;border:1px solid rgba(133,171,255,.2);background:rgba(11,18,38,.65);color:#c7d1ea;font-size:13px;font-weight:700;cursor:pointer;transition:.22s}
+    .cat.active{background:linear-gradient(135deg,#6da5ff,#4b80ff);border-color:rgba(154,189,255,.6);color:#fff;box-shadow:0 6px 20px rgba(69,120,255,.3)}
+    .cat:hover:not(.active){border-color:rgba(124,171,255,.5);color:#fff}
+
     .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-    .card{padding:22px;border-radius:22px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(12,23,46,.92),rgba(8,15,31,.94));box-shadow:0 14px 45px rgba(0,0,0,.2);transition:.24s}.card:hover{transform:translateY(-3px);border-color:rgba(105,158,255,.32)}
-    .card-top{display:flex;justify-content:space-between;gap:15px;align-items:flex-start}.tag{padding:7px 10px;border-radius:999px;font-size:11px;font-weight:850;border:1px solid rgba(69,219,201,.26);background:rgba(40,208,180,.08);color:#6ff4ca;white-space:nowrap}
-    .bot-icon{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;background:linear-gradient(145deg,rgba(69,117,255,.35),rgba(16,207,255,.14));border:1px solid rgba(111,154,255,.32);font-size:24px}
-    .bot-name{font-size:21px;margin:14px 0 6px}.muted{color:var(--muted);font-size:14px;line-height:1.6}
-    .price-row{display:flex;align-items:end;justify-content:space-between;gap:12px;margin-top:20px}.price{font-size:30px;font-weight:900;letter-spacing:-.04em}.period{color:#93a1c1;font-size:13px}
-    .features{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}.chip{font-size:12px;color:#ced7f0;padding:7px 9px;border-radius:999px;border:1px solid rgba(138,163,219,.17);background:rgba(139,167,220,.05)}
-    .card .btn{width:100%;margin-top:18px}
+    .card{padding:22px;border-radius:22px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(12,23,46,.92),rgba(8,15,31,.94));box-shadow:0 14px 45px rgba(0,0,0,.2);transition:.24s cubic-bezier(.22,1,.36,1);display:flex;flex-direction:column}
+    .card:hover{transform:translateY(-3px);border-color:rgba(105,158,255,.32)}
+    .card-top{display:flex;justify-content:space-between;gap:15px;align-items:flex-start}
+    .tag{padding:7px 11px;border-radius:999px;font-size:11px;font-weight:850;border:1px solid rgba(69,219,201,.26);background:rgba(40,208,180,.08);color:#6ff4ca;white-space:nowrap}
+    .tag.blue{border-color:rgba(94,156,255,.35);background:rgba(58,111,255,.1);color:#8eb8ff}
+    .tag.violet{border-color:rgba(139,121,255,.35);background:rgba(118,76,255,.1);color:#b4a8ff}
+    .tag.yellow{border-color:rgba(255,211,90,.35);background:rgba(255,211,90,.1);color:#ffd35a}
+    .prod-icon{width:54px;height:54px;border-radius:16px;display:grid;place-items:center;background:linear-gradient(145deg,rgba(69,117,255,.35),rgba(16,207,255,.14));border:1px solid rgba(111,154,255,.32);font-size:25px;flex-shrink:0}
+    .prod-name{font-size:18.5px;margin:14px 0 6px;line-height:1.25;font-weight:800}
+    .muted{color:var(--muted);font-size:13.5px;line-height:1.6}
+    .price-row{display:flex;align-items:end;justify-content:space-between;gap:12px;margin-top:18px}
+    .price{font-size:26px;font-weight:900;letter-spacing:-.04em}
+    .price-old{font-size:13px;color:#6f7c9a;text-decoration:line-through;margin-left:8px;font-weight:500}
+    .period{color:#93a1c1;font-size:12.5px}
+    .seller{display:flex;align-items:center;gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid rgba(138,163,219,.1);font-size:12.5px;color:#8b98bb}
+    .seller-avatar{width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,#5e9cff,#8b79ff);display:grid;place-items:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0}
+    .seller strong{color:#c3ccec;font-weight:700}
+    .features{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+    .chip{font-size:11.5px;color:#ced7f0;padding:6px 9px;border-radius:999px;border:1px solid rgba(138,163,219,.17);background:rgba(139,167,220,.05)}
+    .card .btn{width:100%;margin-top:16px}
+    .card .btn-primary{margin-top:auto}
 
-    .features-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.feature{padding:20px;border:1px solid var(--line);background:rgba(10,20,40,.74);border-radius:18px}.feature-icon{font-size:28px}.feature h3{font-size:15px;margin:11px 0 7px}.feature p{margin:0;color:#91a0bf;font-size:13px;line-height:1.55}
-    .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.step{padding:24px;border-radius:20px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(14,25,49,.84),rgba(7,15,30,.9))}.step-no{width:34px;height:34px;display:grid;place-items:center;border-radius:11px;background:linear-gradient(135deg,#407eff,#2fcfff);font-weight:900}.step h3{margin:16px 0 8px}.step p{color:#9aa9c9;line-height:1.6;margin:0}
+    .features-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+    .feature{padding:20px;border:1px solid var(--line);background:rgba(10,20,40,.74);border-radius:18px;transition:.24s}
+    .feature:hover{transform:translateY(-2px);border-color:rgba(105,158,255,.3)}
+    .feature-icon{font-size:28px}
+    .feature h3{font-size:15px;margin:11px 0 7px}
+    .feature p{margin:0;color:#91a0bf;font-size:13px;line-height:1.55}
 
-    footer{padding:38px 0 55px;color:#7f8baa;text-align:center;font-size:13px}.footer-brand{color:#a4c0ff;font-weight:850}
+    .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+    .step{padding:24px;border-radius:20px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(14,25,49,.84),rgba(7,15,30,.9))}
+    .step-no{width:34px;height:34px;display:grid;place-items:center;border-radius:11px;background:linear-gradient(135deg,#407eff,#2fcfff);font-weight:900}
+    .step h3{margin:16px 0 8px}
+    .step p{color:#9aa9c9;line-height:1.6;margin:0}
 
-    /* Modal */
-    .modal{display:none;position:fixed;inset:0;z-index:40;background:rgba(0,0,0,.65);backdrop-filter:blur(9px);padding:20px}.modal.show{display:grid;place-items:center}.dialog{width:min(480px,100%);padding:25px;border-radius:24px;background:linear-gradient(145deg,#0c1935,#081122);border:1px solid rgba(106,155,255,.35);box-shadow:0 25px 90px rgba(0,0,0,.5)}
-    .dialog-head{display:flex;justify-content:space-between;align-items:center;gap:15px}.dialog h2{margin:0;font-size:25px}.close{width:38px;height:38px;border-radius:11px;border:1px solid rgba(143,164,212,.18);background:rgba(255,255,255,.04);color:#ccd5ec;cursor:pointer}
-    .field{margin-top:14px}.field label{display:block;font-size:13px;color:#aebad4;margin-bottom:7px}.field input,.field select{width:100%;padding:13px 14px;border-radius:12px;border:1px solid rgba(137,165,219,.19);background:#081329;color:white;outline:none}.field input:focus,.field select:focus{border-color:#5797ff;box-shadow:0 0 0 3px rgba(87,151,255,.12)}
-    .dialog .btn{width:100%;margin-top:17px}.small{font-size:12px;color:#7381a1;line-height:1.5;margin:12px 0 0}
+    .cta-banner{
+      padding:36px 30px;border-radius:24px;text-align:center;
+      background:radial-gradient(circle at 50% 0%,rgba(94,156,255,.2),transparent 60%),linear-gradient(145deg,rgba(17,31,70,.92),rgba(6,13,28,.94));
+      border:1px solid rgba(103,152,255,.35);box-shadow:var(--shadow);
+    }
+    .cta-banner h2{font-size:clamp(26px,3.5vw,38px);letter-spacing:-.03em;margin:0 0 12px}
+    .cta-banner p{color:var(--muted);margin:0 auto 24px;max-width:520px;font-size:15px;line-height:1.7}
+    .cta-banner .hero-ctas{justify-content:center}
 
-    @media(max-width:1000px){.hero-grid{grid-template-columns:1fr}.cards{grid-template-columns:1fr 1fr}.features-grid{grid-template-columns:1fr 1fr}}
-    @media(max-width:720px){.nav{height:74px}.nav-actions .signup{display:none}.menu-btn{display:inline-flex}.desktop-menu{display:none}.notice{font-size:13px;line-height:1.5}.hero{padding:26px 20px}.hero-grid{gap:24px}h1{font-size:clamp(39px,12vw,58px)}.hero-copy{font-size:16px;line-height:1.65}.cards,.steps{grid-template-columns:1fr}.features-grid{grid-template-columns:1fr 1fr}.stats{display:grid;grid-template-columns:repeat(3,1fr)}.stat{padding:17px;border-bottom:0;border-right:1px solid rgba(190,208,255,.12)}.stat:last-child{border-right:0}.stat-number{font-size:28px}.stat-label{font-size:12px}.section-title{font-size:26px}.wrap{width:min(100% - 22px,1240px)}}
-    @media(max-width:470px){.features-grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr}.stat{border-right:0;border-bottom:1px solid rgba(190,208,255,.12)}.stat:last-child{border-bottom:0}.hero-ctas .btn{width:100%}.brand-title{font-size:16px}}
+    footer{padding:38px 0 55px;color:#7f8baa;text-align:center;font-size:13px;position:relative;z-index:1}
+    .footer-brand{color:#a4c0ff;font-weight:850}
+
+    @media(max-width:1000px){
+      .hero-grid{grid-template-columns:1fr}
+      .cards{grid-template-columns:1fr 1fr}
+      .features-grid{grid-template-columns:1fr 1fr}
+    }
+    @media(max-width:720px){
+      .nav{height:74px}
+      .nav-actions .btn:first-child{display:none}
+      .notice{font-size:13px;padding:14px 16px}
+      .hero{padding:26px 20px;border-radius:22px}
+      .hero-grid{gap:24px}
+      h1{font-size:clamp(36px,10vw,52px);letter-spacing:-.04em}
+      .hero-copy{font-size:15.5px;line-height:1.7}
+      .hero-ctas .btn{flex:1;min-width:140px;padding:13px 16px;font-size:14px}
+      .cards,.steps{grid-template-columns:1fr}
+      .features-grid{grid-template-columns:1fr 1fr}
+      .stats{display:grid;grid-template-columns:repeat(3,1fr)}
+      .stat{padding:16px 12px;border-bottom:0;border-right:1px solid rgba(190,208,255,.12);text-align:center}
+      .stat:last-child{border-right:0}
+      .stat-number{font-size:24px}
+      .stat-label{font-size:11.5px;margin-top:5px}
+      .section-title{font-size:25px}
+      .wrap{width:min(100% - 22px,1240px)}
+      main{padding:24px 0 50px}
+      section{margin-top:36px}
+      .card{padding:20px}
+      .cta-banner{padding:28px 20px}
+    }
+    @media(max-width:470px){
+      .features-grid{grid-template-columns:1fr}
+      .hero-ctas{flex-direction:column}
+      .hero-ctas .btn{width:100%}
+      .brand-title{font-size:16px}
+      .brand-sub{font-size:11px}
+      .btn{padding:12px 16px;font-size:14px;border-radius:14px}
+      .stats{grid-template-columns:1fr}
+      .stat{border-right:0;border-bottom:1px solid rgba(190,208,255,.12)}
+      .stat:last-child{border-bottom:0}
+    }
+    @media (prefers-reduced-motion: reduce){
+      *,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important}
+    }
   </style>
 </head>
 <body>
@@ -105,15 +186,15 @@
   <header>
     <div class="wrap nav">
       <a class="brand" href="#top">
-        <div class="brand-logo">💬</div>
+        <div class="brand-logo">⚡</div>
         <div>
-          <div class="brand-title">Thuê Bot</div>
-          <div class="brand-sub">thuebot.site</div>
+          <div class="brand-title">Voraprime</div>
+          <div class="brand-sub">voraprime.site</div>
         </div>
       </a>
       <div class="nav-actions">
-        <a href="#register" class="btn btn-primary signup" data-open-modal>Đăng ký</a>
-        <button class="btn menu-btn" id="menuToggle">☰ <span>Menu</span></button>
+        <a href="login.html?tab=login" class="btn">Đăng nhập</a>
+        <a href="login.html?tab=register" class="btn btn-primary">Đăng ký bán</a>
       </div>
     </div>
   </header>
@@ -121,150 +202,271 @@
   <main id="top">
     <div class="wrap">
       <div class="notice">
-        <strong>Lưu ý pháp lý:</strong> Website là nền tảng trung gian — không bảo lãnh bot, không giữ tiền giao dịch. Người dùng tự chịu trách nhiệm khi thuê / dùng bot. <a href="#policy">Đọc miễn trừ trách nhiệm →</a>
+        <strong>Lưu ý:</strong> Voraprime là chợ trung gian — không bảo lãnh giao dịch, không giữ tiền. Người mua &amp; người bán tự chịu trách nhiệm. <a href="#policy">Đọc miễn trừ trách nhiệm →</a>
       </div>
 
       <section class="hero">
         <div class="hero-grid">
           <div>
-            <div class="eyebrow"><span class="pulse"></span> THUEBOT.SITE • CHỢ THUÊ BOT VIỆT NAM</div>
-            <h1>Thuê bot <span class="grad">Messenger · Telegram · Discord · Zalo</span> nhanh & rõ ràng</h1>
-            <p class="hero-copy"><strong>thuebot.site</strong> — chợ thuê bot đa nền tảng: so sánh giá, xem đánh giá thật, tìm bot theo nhu cầu. Chủ bot có thể đăng tin, người dùng dễ dàng tìm bot anti spam, welcome, game nhóm, moderation...</p>
+            <div class="eyebrow"><span class="pulse"></span> VORAPRIME · CHỢ MUA BÁN SỐ VIỆT NAM</div>
+            <h1>Mua bán <span class="grad">Bot · Account · Source · Dịch vụ số</span> nhanh &amp; minh bạch</h1>
+            <p class="hero-copy"><strong>Voraprime</strong> — chợ mua bán số đa danh mục: đăng tin miễn phí, so sánh giá, xem đánh giá thật từ người mua trước. Tìm bot, account premium, source code, hoặc dịch vụ thiết kế chỉ trong vài cú nhấp.</p>
             <div class="hero-ctas">
-              <a class="btn btn-primary" href="#bots">🚀 Xem bot đang cho thuê</a>
-              <a class="btn" href="#register" data-open-modal>Tạo tài khoản</a>
-              <a class="btn" href="#register" data-open-modal>Đăng tin miễn phí</a>
+              <a class="btn btn-primary" href="#products">🛒 Xem sản phẩm</a>
+              <a class="btn" href="login.html?tab=register">Đăng bán miễn phí</a>
+              <a class="btn" href="#how">Cách hoạt động</a>
             </div>
           </div>
           <div class="stats">
-            <div class="stat"><div class="stat-number" id="statBots">12</div><div class="stat-label">Bot đang mở</div></div>
-            <div class="stat"><div class="stat-number" id="statOwners">8</div><div class="stat-label">Chủ bot</div></div>
-            <div class="stat"><div class="stat-number" id="statReviews">36</div><div class="stat-label">Đánh giá</div></div>
+            <div class="stat"><div class="stat-number">1.2K+</div><div class="stat-label">Sản phẩm đang bán</div></div>
+            <div class="stat"><div class="stat-number">480+</div><div class="stat-label">Người bán uy tín</div></div>
+            <div class="stat"><div class="stat-number">4.9★</div><div class="stat-label">Đánh giá trung bình</div></div>
           </div>
         </div>
       </section>
 
-      <section id="bots">
+      <section id="products">
         <div class="section-head">
           <div>
-            <h2 class="section-title">Bot đang cho thuê</h2>
-            <p class="section-desc">Một số mẫu để bạn có thể thay bằng dữ liệu bot thật sau này.</p>
+            <h2 class="section-title">Sản phẩm nổi bật</h2>
+            <p class="section-desc">Một số mẫu — bạn có thể thay bằng dữ liệu thật sau khi nối backend.</p>
           </div>
-          <a class="btn" href="#register" data-open-modal>Đăng bot của bạn →</a>
+          <a class="btn" href="login.html?tab=register">Đăng bán →</a>
+        </div>
+
+        <div class="cats">
+          <button class="cat active">Tất cả</button>
+          <button class="cat">🤖 Bot</button>
+          <button class="cat">👤 Account</button>
+          <button class="cat">💻 Source code</button>
+          <button class="cat">🎨 Dịch vụ</button>
         </div>
 
         <div class="cards">
           <article class="card">
-            <div class="card-top"><div class="bot-icon">🤖</div><div class="tag">Messenger</div></div>
-            <h3 class="bot-name">Miko Auto Reply</h3>
-            <p class="muted">Tự động trả lời, welcome, anti-spam và quản lý nhóm.</p>
-            <div class="price-row"><div><div class="price">50.000đ</div><div class="period">/ tháng</div></div><span class="tag">★★★★★ 4.9</span></div>
-            <div class="features"><span class="chip">24/7</span><span class="chip">Anti spam</span><span class="chip">Welcome</span></div>
-            <button class="btn btn-primary" data-bot="Miko Auto Reply" data-open-modal>Thuê bot</button>
+            <div class="card-top">
+              <div class="prod-icon">🤖</div>
+              <div class="tag blue">Bot</div>
+            </div>
+            <h3 class="prod-name">Bot Discord đa năng</h3>
+            <p class="muted">Moderation, welcome, ticket, economy, music. Đã test 500+ server.</p>
+            <div class="price-row">
+              <div>
+                <div class="price">199.000đ <span class="price-old">399.000đ</span></div>
+                <div class="period">bản quyền vĩnh viễn</div>
+              </div>
+            </div>
+            <div class="seller">
+              <div class="seller-avatar">M</div>
+              <span><strong>MinhDev</strong> · 4.9★ · 128 đơn</span>
+            </div>
+            <div class="features">
+              <span class="chip">Full source</span>
+              <span class="chip">Hỗ trợ cài</span>
+              <span class="chip">Update free</span>
+            </div>
+            <a href="login.html?tab=login" class="btn btn-primary">Mua ngay</a>
           </article>
 
           <article class="card">
-            <div class="card-top"><div class="bot-icon">✈️</div><div class="tag">Telegram</div></div>
-            <h3 class="bot-name">TeleGuard Pro</h3>
-            <p class="muted">Moderation, lọc từ khóa, auto reply và quản lý thành viên.</p>
-            <div class="price-row"><div><div class="price">79.000đ</div><div class="period">/ tháng</div></div><span class="tag">★★★★★ 4.8</span></div>
-            <div class="features"><span class="chip">Moderation</span><span class="chip">Auto reply</span><span class="chip">Logs</span></div>
-            <button class="btn btn-primary" data-bot="TeleGuard Pro" data-open-modal>Thuê bot</button>
+            <div class="card-top">
+              <div class="prod-icon">👤</div>
+              <div class="tag violet">Account</div>
+            </div>
+            <h3 class="prod-name">Account Premium 1 năm</h3>
+            <p class="muted">Tài khoản chính chủ, bảo hành full thời gian, đổi info được.</p>
+            <div class="price-row">
+              <div>
+                <div class="price">350.000đ</div>
+                <div class="period">bảo hành 12 tháng</div>
+              </div>
+            </div>
+            <div class="seller">
+              <div class="seller-avatar">H</div>
+              <span><strong>HoangStore</strong> · 5.0★ · 342 đơn</span>
+            </div>
+            <div class="features">
+              <span class="chip">Chính chủ</span>
+              <span class="chip">Bảo hành</span>
+              <span class="chip">Đổi info</span>
+            </div>
+            <a href="login.html?tab=login" class="btn btn-primary">Mua ngay</a>
           </article>
 
           <article class="card">
-            <div class="card-top"><div class="bot-icon">🎮</div><div class="tag">Discord</div></div>
-            <h3 class="bot-name">GameHub Manager</h3>
-            <p class="muted">Bot game nhóm, economy, rank, ticket và moderation.</p>
-            <div class="price-row"><div><div class="price">99.000đ</div><div class="period">/ tháng</div></div><span class="tag">★★★★★ 5.0</span></div>
-            <div class="features"><span class="chip">Game</span><span class="chip">Economy</span><span class="chip">Ticket</span></div>
-            <button class="btn btn-primary" data-bot="GameHub Manager" data-open-modal>Thuê bot</button>
+            <div class="card-top">
+              <div class="prod-icon">💻</div>
+              <div class="tag yellow">Source</div>
+            </div>
+            <h3 class="prod-name">Web bán hàng full source</h3>
+            <p class="muted">Code sạch, có admin panel, thanh toán tự động, deploy 1 lệnh.</p>
+            <div class="price-row">
+              <div>
+                <div class="price">899.000đ <span class="price-old">1.500.000đ</span></div>
+                <div class="period">mua 1 lần dùng mãi</div>
+              </div>
+            </div>
+            <div class="seller">
+              <div class="seller-avatar">T</div>
+              <span><strong>TuanFullstack</strong> · 4.8★ · 76 đơn</span>
+            </div>
+            <div class="features">
+              <span class="chip">NodeJS</span>
+              <span class="chip">MySQL</span>
+              <span class="chip">Docs đầy đủ</span>
+            </div>
+            <a href="login.html?tab=login" class="btn btn-primary">Mua ngay</a>
+          </article>
+
+          <article class="card">
+            <div class="card-top">
+              <div class="prod-icon">🎨</div>
+              <div class="tag">Dịch vụ</div>
+            </div>
+            <h3 class="prod-name">Thiết kế website trọn gói</h3>
+            <p class="muted">Landing page, web bán hàng, web giới thiệu. Giao trong 3–5 ngày.</p>
+            <div class="price-row">
+              <div>
+                <div class="price">Từ 1.200.000đ</div>
+                <div class="period">gói tiêu chuẩn</div>
+              </div>
+            </div>
+            <div class="seller">
+              <div class="seller-avatar">L</div>
+              <span><strong>LinhDesign</strong> · 5.0★ · 210 đơn</span>
+            </div>
+            <div class="features">
+              <span class="chip">Responsive</span>
+              <span class="chip">SEO cơ bản</span>
+              <span class="chip">Bàn giao source</span>
+            </div>
+            <a href="login.html?tab=login" class="btn btn-primary">Liên hệ</a>
+          </article>
+
+          <article class="card">
+            <div class="card-top">
+              <div class="prod-icon">🤖</div>
+              <div class="tag blue">Bot</div>
+            </div>
+            <h3 class="prod-name">Bot Telegram Quản lý nhóm</h3>
+            <p class="muted">Anti-spam, welcome, log, auto-reply, broadcast tin nhắn.</p>
+            <div class="price-row">
+              <div>
+                <div class="price">149.000đ</div>
+                <div class="period">trọn gói</div>
+              </div>
+            </div>
+            <div class="seller">
+              <div class="seller-avatar">N</div>
+              <span><strong>NamDev</strong> · 4.7★ · 54 đơn</span>
+            </div>
+            <div class="features">
+              <span class="chip">Anti-spam</span>
+              <span class="chip">Auto-reply</span>
+              <span class="chip">Log đầy đủ</span>
+            </div>
+            <a href="login.html?tab=login" class="btn btn-primary">Mua ngay</a>
+          </article>
+
+          <article class="card">
+            <div class="card-top">
+              <div class="prod-icon">🎮</div>
+              <div class="tag violet">Account</div>
+            </div>
+            <h3 class="prod-name">Account Game VIP</h3>
+            <p class="muted">Nhiều tựa game phổ biến, có refund, đổi mật khẩu ngay sau khi mua.</p>
+            <div class="price-row">
+              <div>
+                <div class="price">Từ 89.000đ</div>
+                <div class="period">theo loại</div>
+              </div>
+            </div>
+            <div class="seller">
+              <div class="seller-avatar">G</div>
+              <span><strong>GameStore24h</strong> · 4.9★ · 890 đơn</span>
+            </div>
+            <div class="features">
+              <span class="chip">Refund</span>
+              <span class="chip">Đổi MK</span>
+              <span class="chip">Hỗ trợ 24/7</span>
+            </div>
+            <a href="login.html?tab=login" class="btn btn-primary">Mua ngay</a>
           </article>
         </div>
       </section>
 
       <section>
-        <div class="section-head"><div><h2 class="section-title">Vì sao chọn Thuê Bot?</h2><p class="section-desc">Thiết kế theo kiểu chợ bot: đơn giản, rõ giá, tập trung vào việc tìm và thuê bot.</p></div></div>
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">Vì sao chọn Voraprime?</h2>
+            <p class="section-desc">Chợ mua bán đơn giản, rõ giá, tập trung vào việc kết nối người mua và người bán.</p>
+          </div>
+        </div>
         <div class="features-grid">
-          <div class="feature"><div class="feature-icon">🔎</div><h3>Dễ tìm bot</h3><p>Lọc theo nền tảng, tính năng, giá và đánh giá.</p></div>
-          <div class="feature"><div class="feature-icon">💸</div><h3>Minh bạch giá</h3><p>Hiển thị giá thuê rõ ràng, tránh phải hỏi nhiều lần.</p></div>
-          <div class="feature"><div class="feature-icon">⭐</div><h3>Đánh giá thật</h3><p>Cho phép khách thuê xem phản hồi trước khi lựa chọn.</p></div>
-          <div class="feature"><div class="feature-icon">🛡️</div><h3>Thông tin rõ ràng</h3><p>Mỗi bot có hồ sơ riêng, mô tả tính năng và điều khoản.</p></div>
+          <div class="feature"><div class="feature-icon">🔎</div><h3>Dễ tìm</h3><p>Lọc theo danh mục, giá, đánh giá và người bán.</p></div>
+          <div class="feature"><div class="feature-icon">💸</div><h3>Minh bạch giá</h3><p>Giá niêm yết rõ ràng, không phí ẩn, không hỏi giá.</p></div>
+          <div class="feature"><div class="feature-icon">⭐</div><h3>Đánh giá thật</h3><p>Xem phản hồi người mua trước khi quyết định.</p></div>
+          <div class="feature"><div class="feature-icon">🛡️</div><h3>Thông tin rõ</h3><p>Mỗi sản phẩm có hồ sơ riêng, mô tả và điều khoản.</p></div>
         </div>
       </section>
 
       <section id="how">
-        <div class="section-head"><div><h2 class="section-title">Cách hoạt động</h2><p class="section-desc">Sau khi có backend, các bước này có thể tự động hoá hoàn toàn.</p></div></div>
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">Cách hoạt động</h2>
+            <p class="section-desc">Ba bước để bắt đầu mua hoặc bán trên Voraprime.</p>
+          </div>
+        </div>
         <div class="steps">
-          <div class="step"><div class="step-no">1</div><h3>Tìm bot</h3><p>Chọn nền tảng, nhu cầu và mức giá phù hợp rồi mở trang chi tiết bot.</p></div>
-          <div class="step"><div class="step-no">2</div><h3>Đặt thuê</h3><p>Tạo tài khoản, chọn thời gian thuê và gửi yêu cầu đến chủ bot.</p></div>
-          <div class="step"><div class="step-no">3</div><h3>Kích hoạt</h3><p>Sau thanh toán, hệ thống cập nhật đơn hàng và kích hoạt bot theo gói thuê.</p></div>
+          <div class="step">
+            <div class="step-no">1</div>
+            <h3>Tạo tài khoản</h3>
+            <p>Đăng ký miễn phí chỉ với username, email và mật khẩu. Xác thực OTP qua email.</p>
+          </div>
+          <div class="step">
+            <div class="step-no">2</div>
+            <h3>Chọn mua hoặc đăng bán</h3>
+            <p>Người mua: duyệt sản phẩm, so sánh giá. Người bán: đăng tin, mô tả, niêm yết giá.</p>
+          </div>
+          <div class="step">
+            <div class="step-no">3</div>
+            <h3>Kết nối &amp; giao dịch</h3>
+            <p>Hai bên liên hệ trực tiếp qua kênh đã đăng ký. Voraprime không giữ tiền trung gian.</p>
+          </div>
         </div>
       </section>
 
       <section id="policy">
         <div class="card" style="padding:26px">
           <h2 class="section-title" style="font-size:24px">Miễn trừ trách nhiệm</h2>
-          <p class="muted" style="margin:10px 0 0">Nội dung này chỉ là mẫu giao diện. Khi triển khai thật, bạn nên thay bằng điều khoản do bạn tự xây dựng, nêu rõ vai trò của website, trách nhiệm của chủ bot, người thuê và các quy định thanh toán/hoàn tiền.</p>
+          <p class="muted" style="margin:10px 0 0">Voraprime là nền tảng trung gian kết nối người mua và người bán. Chúng tôi <strong style="color:#ffd35c">không bảo lãnh</strong> cho bất kỳ sản phẩm nào, <strong style="color:#ffd35c">không giữ tiền giao dịch</strong>, và <strong style="color:#ffd35c">không chịu trách nhiệm</strong> cho tranh chấp giữa hai bên. Người mua tự kiểm tra kỹ sản phẩm, người bán tự chịu trách nhiệm về sản phẩm của mình. Vui lòng đọc kỹ mô tả và đánh giá trước khi giao dịch.</p>
+        </div>
+      </section>
+
+      <section>
+        <div class="cta-banner">
+          <h2>Sẵn sàng tham gia chợ?</h2>
+          <p>Đăng ký miễn phí, đăng bán trong 2 phút, không mất phí niêm yết.</p>
+          <div class="hero-ctas">
+            <a href="login.html?tab=register" class="btn btn-primary">Đăng ký ngay</a>
+            <a href="login.html?tab=login" class="btn">Đăng nhập</a>
+          </div>
         </div>
       </section>
 
       <footer>
-        <div class="footer-brand">⚡ Thuê Bot</div>
-        <div style="margin-top:7px">Chợ thuê bot đa nền tảng • © 2026</div>
+        <div class="footer-brand">⚡ Voraprime</div>
+        <div style="margin-top:7px">Chợ mua bán số Việt Nam · © 2026</div>
       </footer>
     </div>
   </main>
 
-  <div class="modal" id="modal">
-    <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="dialogTitle">
-      <div class="dialog-head"><h2 id="dialogTitle">Đăng ký / thuê bot</h2><button class="close" id="closeModal" aria-label="Đóng">✕</button></div>
-      <p class="muted" style="margin:10px 0 0">Đây là popup mẫu cho giao diện. Phần lưu tài khoản, đơn thuê và thanh toán cần backend.</p>
-      <div class="field"><label>Bot / nhu cầu</label><input id="botField" placeholder="Ví dụ: Miko Auto Reply" /></div>
-      <div class="field"><label>Họ tên</label><input id="nameField" placeholder="Nguyễn Văn A" /></div>
-      <div class="field"><label>Email / Facebook / Telegram</label><input id="contactField" placeholder="Thông tin liên hệ" /></div>
-      <div class="field"><label>Gói thuê</label><select id="planField"><option>1 tháng</option><option>3 tháng</option><option>6 tháng</option><option>1 năm</option></select></div>
-      <button class="btn btn-primary" id="submitBtn">📩 Gửi yêu cầu</button>
-      <p class="small">Bạn có thể đổi nút này thành API PHP để lưu đơn vào MySQL hoặc chuyển thẳng sang Telegram.</p>
-    </div>
-  </div>
-
   <script>
-    const modal = document.getElementById('modal');
-    const botField = document.getElementById('botField');
-    const menuToggle = document.getElementById('menuToggle');
-
-    function openModal(bot=''){
-      botField.value = bot;
-      modal.classList.add('show');
-      document.body.style.overflow='hidden';
-    }
-    function closeModal(){
-      modal.classList.remove('show');
-      document.body.style.overflow='';
-    }
-
-    document.querySelectorAll('[data-open-modal]').forEach(el=>{
-      el.addEventListener('click',e=>{
-        e.preventDefault();
-        openModal(el.dataset.bot || '');
+    document.querySelectorAll('.cat').forEach(cat => {
+      cat.addEventListener('click', () => {
+        document.querySelectorAll('.cat').forEach(c => c.classList.remove('active'));
+        cat.classList.add('active');
       });
-    });
-    document.getElementById('closeModal').addEventListener('click',closeModal);
-    modal.addEventListener('click',e=>{ if(e.target===modal) closeModal(); });
-    document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
-
-    document.getElementById('submitBtn').addEventListener('click',()=>{
-      const name=document.getElementById('nameField').value.trim();
-      const contact=document.getElementById('contactField').value.trim();
-      if(!name || !contact){ alert('Vui lòng nhập họ tên và thông tin liên hệ.'); return; }
-      alert('Đã nhận yêu cầu mẫu. Hãy nối nút này với PHP/MySQL hoặc Telegram để dùng thật.');
-      closeModal();
-    });
-
-    menuToggle.addEventListener('click',()=>{
-      const show = confirm('Menu mẫu: Bạn có thể thay bằng menu mobile thật khi nối backend.');
-      if(show) location.hash='#bots';
     });
   </script>
 </body>
