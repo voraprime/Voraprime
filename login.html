@@ -1,570 +1,183 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#0b0605">
-<title>Voraprime · Xác thực</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Be+Vietnam+Pro:wght@200;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
-
-<style>
-  :root {
-    color-scheme: dark;
-    --lacquer: #0b0605;
-    --gold: #c9a961;
-    --gold-bright: #e8c88a;
-    --gold-dim: #8a7540;
-    --vermillion: #c8391f;
-    --turmeric: #e89b2c;
-    --paper: #f2e4c4;
-    --mono: 'JetBrains Mono', ui-monospace, monospace;
-    --serif: 'Playfair Display', Georgia, serif;
-    --sans: 'Be Vietnam Pro', -apple-system, system-ui, sans-serif;
-  }
-
-  /* ===== FIX ZOOM MOBILE ===== */
-  html {
-    -webkit-text-size-adjust: 100%;
-    text-size-adjust: 100%;
-    -webkit-tap-highlight-color: transparent;
-    max-width: 100%;
-    overflow-x: hidden;
-  }
-  html, body {
-    max-width: 100%;
-    overflow-x: hidden;
-    overscroll-behavior-x: none;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  input, select, textarea, button {
-    font-size: 16px;
-    touch-action: manipulation;
-    font-family: inherit;
-  }
-  a, button, [role="button"], label {
-    touch-action: manipulation;
-    -webkit-tap-highlight-color: transparent;
-  }
-  /* ===== END FIX ZOOM ===== */
-
-  body {
-    font-family: var(--sans);
-    background: var(--lacquer);
-    color: var(--paper);
-    min-height: 100vh;
-    min-height: 100dvh;
-    overflow-x: hidden;
-    display: flex;
-    flex-direction: column;
-    -webkit-font-smoothing: antialiased;
-    position: relative;
-  }
-
-  /* Nền sơn mài */
-  .bg-lacquer {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    background:
-      radial-gradient(ellipse 80% 60% at 50% 40%, #1a0e0a 0%, var(--lacquer) 65%),
-      radial-gradient(ellipse 40% 30% at 85% 15%, rgba(200,57,31,.18) 0%, transparent 60%),
-      radial-gradient(ellipse 50% 40% at 10% 85%, rgba(232,155,44,.12) 0%, transparent 60%);
-    pointer-events: none;
-  }
-  .bg-grain {
-    position: fixed;
-    inset: 0;
-    z-index: 1;
-    pointer-events: none;
-    opacity: .08;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' seed='3'/%3E%3CfeColorMatrix values='0 0 0 0 0.79 0 0 0 0 0.66 0 0 0 0 0.38 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    mix-blend-mode: overlay;
-  }
-  .bg-vignette {
-    position: fixed;
-    inset: 0;
-    z-index: 2;
-    pointer-events: none;
-    background: radial-gradient(ellipse at center, transparent 25%, rgba(11,6,5,.9) 100%);
-  }
-
-  /* Trống đồng nửa bên trái */
-  .drum-side {
-    position: fixed;
-    top: 50%;
-    left: -18vw;
-    width: 70vw;
-    height: 70vw;
-    max-width: 900px;
-    max-height: 900px;
-    transform: translateY(-50%);
-    z-index: 3;
-    pointer-events: none;
-    color: var(--gold);
-    opacity: .28;
-    animation: spin 200s linear infinite;
-  }
-  @keyframes spin {
-    from { transform: translateY(-50%) rotate(0deg); }
-    to   { transform: translateY(-50%) rotate(360deg); }
-  }
-  .drum-side svg { width: 100%; height: 100%; display: block; }
-
-  /* Topbar */
-  .topbar {
-    position: relative;
-    z-index: 40;
-    padding: 22px 28px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: .28em;
-    text-transform: uppercase;
-  }
-  .topbar-item {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    color: rgba(201,169,97,.55);
-  }
-  .topbar-item.dot::before {
-    content: '';
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: var(--turmeric);
-    box-shadow: 0 0 8px var(--turmeric);
-    animation: pulseDot 2.4s ease-in-out infinite;
-  }
-  @keyframes pulseDot {
-    0%,100% { opacity: 1; }
-    50%     { opacity: .35; }
-  }
-  .back {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    font-family: var(--serif);
-    font-weight: 900;
-    font-size: 14px;
-    letter-spacing: .3em;
-    color: var(--paper);
-    text-decoration: none;
-    transition: color .2s;
-  }
-  .back:hover { color: var(--gold-bright); }
-  .back i { font-style: normal; font-family: var(--mono); color: var(--vermillion); font-weight: 400; }
-
-  /* Main */
-  .auth-main {
-    position: relative;
-    z-index: 10;
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px 28px 40px;
-  }
-
-  .glass-form {
-    width: 100%;
-    max-width: 440px;
-    background: linear-gradient(180deg, rgba(18,9,10,.85) 0%, rgba(11,6,5,.75) 100%);
-    border: 1px solid rgba(201,169,97,.18);
-    padding: 44px 38px;
-    backdrop-filter: blur(24px) saturate(130%);
-    -webkit-backdrop-filter: blur(24px) saturate(130%);
-    position: relative;
-    box-shadow:
-      0 40px 80px -30px rgba(0,0,0,.9),
-      inset 0 1px 0 rgba(201,169,97,.08);
-    animation: cardIn .9s cubic-bezier(.22,1,.36,1) both;
-  }
-  .glass-form::before {
-    content: '';
-    position: absolute;
-    inset: 7px;
-    border: 1px solid rgba(201,169,97,.1);
-    pointer-events: none;
-  }
-  /* Góc vàng */
-  .glass-form::after {
-    content: '';
-    position: absolute;
-    top: -1px; left: -1px;
-    width: 28px; height: 28px;
-    border-top: 2px solid var(--vermillion);
-    border-left: 2px solid var(--vermillion);
-    pointer-events: none;
-  }
-  .glass-form .corner-tr {
-    position: absolute;
-    top: -1px; right: -1px;
-    width: 28px; height: 28px;
-    border-top: 2px solid var(--vermillion);
-    border-right: 2px solid var(--vermillion);
-    pointer-events: none;
-  }
-  .glass-form .corner-bl {
-    position: absolute;
-    bottom: -1px; left: -1px;
-    width: 28px; height: 28px;
-    border-bottom: 2px solid var(--vermillion);
-    border-left: 2px solid var(--vermillion);
-    pointer-events: none;
-  }
-  .glass-form .corner-br {
-    position: absolute;
-    bottom: -1px; right: -1px;
-    width: 28px; height: 28px;
-    border-bottom: 2px solid var(--vermillion);
-    border-right: 2px solid var(--vermillion);
-    pointer-events: none;
-  }
-
-  @keyframes cardIn {
-    from { opacity: 0; transform: translateY(24px) scale(.98); }
-    to   { opacity: 1; transform: none; }
-  }
-
-  /* Brand */
-  .brand {
-    text-align: center;
-    margin-bottom: 34px;
-    position: relative;
-  }
-  .brand-mark {
-    width: 52px;
-    height: 52px;
-    margin: 0 auto 16px;
-    display: grid;
-    place-items: center;
-    background: linear-gradient(135deg, #8a2416 0%, #c8391f 100%);
-    color: var(--paper);
-    font-family: var(--serif);
-    font-weight: 900;
-    font-size: 22px;
-    position: relative;
-    box-shadow: 0 12px 28px -10px rgba(200,57,31,.7);
-  }
-  .brand-mark::before {
-    content: '';
-    position: absolute;
-    inset: 4px;
-    border: 1px solid rgba(242,228,196,.3);
-    pointer-events: none;
-  }
-  .brand-name {
-    font-family: var(--serif);
-    font-weight: 900;
-    font-size: 16px;
-    letter-spacing: .38em;
-    color: var(--paper);
-    padding-left: .38em;
-  }
-  .brand-sub {
-    font-family: var(--mono);
-    font-size: 9px;
-    letter-spacing: .35em;
-    color: rgba(201,169,97,.5);
-    text-transform: uppercase;
-    margin-top: 8px;
-    padding-left: .35em;
-  }
-
-  /* Tabs */
-  .tabs {
-    display: flex;
-    border-bottom: 1px solid rgba(201,169,97,.12);
-    margin-bottom: 26px;
-    position: relative;
-  }
-  .tab {
-    flex: 1;
-    background: transparent;
-    border: none;
-    padding: 14px 0 16px;
-    font-family: var(--mono);
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: .3em;
-    text-transform: uppercase;
-    color: rgba(242,228,196,.3);
-    cursor: pointer;
-    position: relative;
-    transition: color .3s;
-    padding-left: .3em;
-  }
-  .tab.active { color: var(--gold-bright); }
-  .tab.active::after {
-    content: '';
-    position: absolute;
-    bottom: -1px;
-    left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--vermillion), transparent);
-  }
-  .tab:not(.active):hover { color: rgba(242,228,196,.6); }
-
-  /* Message */
-  .msg {
-    display: none;
-    padding: 12px 14px;
-    font-size: 12.5px;
-    font-weight: 500;
-    margin-bottom: 18px;
-    border: 1px solid;
-    line-height: 1.5;
-    position: relative;
-  }
-  .msg.show { display: block; }
-  .msg.error   { background: rgba(200,57,31,.12);  border-color: rgba(200,57,31,.4);  color: #f5a89a; }
-  .msg.success { background: rgba(201,169,97,.1); border-color: rgba(201,169,97,.35); color: var(--gold-bright); }
-
-  /* Fields */
-  .field { margin-bottom: 18px; }
-  .field label {
-    display: block;
-    font-family: var(--mono);
-    font-size: 9px;
-    font-weight: 700;
-    letter-spacing: .3em;
-    text-transform: uppercase;
-    color: rgba(201,169,97,.6);
-    margin-bottom: 10px;
-    padding-left: .2em;
-  }
-  .field label.otp-label { color: var(--turmeric); }
-  .field input {
-    width: 100%;
-    padding: 14px 16px;
-    background: rgba(11,6,5,.6);
-    border: 1px solid rgba(201,169,97,.18);
-    color: var(--paper);
-    font-size: 14px;
-    font-weight: 400;
-    transition: all .25s;
-    outline: none;
-    font-family: var(--sans);
-  }
-  .field input:focus {
-    border-color: rgba(200,57,31,.7);
-    background: rgba(11,6,5,.85);
-    box-shadow: 0 0 0 3px rgba(200,57,31,.12);
-  }
-  .field input::placeholder { color: rgba(242,228,196,.2); }
-  .field input:-webkit-autofill {
-    -webkit-box-shadow: 0 0 0 40px #1a0e0a inset !important;
-    -webkit-text-fill-color: var(--paper) !important;
-  }
-
-  .grid-2 {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
-
-  /* Submit */
-  .submit {
-    width: 100%;
-    padding: 17px 20px;
-    margin-top: 10px;
-    border: none;
-    background: linear-gradient(135deg, #8a2416 0%, #c8391f 100%);
-    color: var(--paper);
-    font-family: var(--mono);
-    font-size: 11.5px;
-    font-weight: 700;
-    letter-spacing: .32em;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all .3s cubic-bezier(.22,1,.36,1);
-    box-shadow:
-      0 14px 32px -10px rgba(200,57,31,.65),
-      inset 0 1px 0 rgba(255,255,255,.1);
-    position: relative;
-    padding-left: calc(20px + .32em);
-  }
-  .submit::before {
-    content: '';
-    position: absolute;
-    inset: 5px;
-    border: 1px solid rgba(242,228,196,.25);
-    pointer-events: none;
-    transition: border-color .3s;
-  }
-  .submit:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow:
-      0 20px 44px -10px rgba(200,57,31,.85),
-      inset 0 1px 0 rgba(255,255,255,.15);
-  }
-  .submit:hover:not(:disabled)::before { border-color: rgba(242,228,196,.5); }
-  .submit:active:not(:disabled) { transform: translateY(0) scale(.99); }
-  .submit:disabled { opacity: .55; cursor: not-allowed; }
-
-  /* OTP */
-  .otp-row { display: flex; gap: 10px; }
-  .otp-row input { flex: 1; }
-  .btn-otp {
-    padding: 14px 20px;
-    background: rgba(200,57,31,.08);
-    border: 1px solid rgba(200,57,31,.4);
-    color: #f5a89a;
-    font-family: var(--mono);
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: .22em;
-    text-transform: uppercase;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: all .25s;
-    padding-left: calc(20px + .22em);
-  }
-  .btn-otp:hover:not(:disabled) {
-    background: rgba(200,57,31,.18);
-    border-color: var(--vermillion);
-    color: var(--paper);
-  }
-  .btn-otp:disabled { opacity: .5; cursor: not-allowed; }
-
-  /* Footer */
-  .footer {
-    position: relative;
-    z-index: 10;
-    padding: 22px 28px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    font-family: var(--mono);
-    font-size: 9.5px;
-    letter-spacing: .3em;
-    text-transform: uppercase;
-    color: rgba(201,169,97,.4);
-  }
-  .footer .made-in {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    color: rgba(232,155,44,.65);
-  }
-  .footer .made-in::before {
-    content: '';
-    width: 6px;
-    height: 6px;
-    background: var(--vermillion);
-    transform: rotate(45deg);
-    box-shadow: 0 0 10px var(--vermillion);
-  }
-
-  /* Responsive */
-  @media (max-width: 900px) {
-    .drum-side { left: -30vw; width: 90vw; height: 90vw; opacity: .18; }
-  }
-
-  @media (max-width: 640px) {
-    .topbar { padding: 16px 18px; font-size: 9px; letter-spacing: .22em; }
-    .topbar-item:first-child { display: none; }
-    .back { font-size: 12px; letter-spacing: .24em; }
-
-    .auth-main { padding: 12px 18px 24px; }
-    .glass-form {
-      padding: 32px 24px;
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
+  <meta name="theme-color" content="#050b18" />
+  <title>Voraprime — Xác thực</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#050b18;
+      --panel:#0a1224;
+      --line:rgba(132,168,255,.16);
+      --text:#f5f7ff;
+      --muted:#aeb9d6;
+      --blue:#5e9cff;
+      --cyan:#29d8ff;
+      --violet:#8b79ff;
+      --green:#52f2ba;
+      --yellow:#ffd35a;
+      --shadow:0 18px 70px rgba(0,0,0,.38);
     }
-    .glass-form::before { inset: 5px; }
-    .glass-form::after,
-    .glass-form .corner-tr,
-    .glass-form .corner-bl,
-    .glass-form .corner-br { width: 20px; height: 20px; }
-
-    .brand { margin-bottom: 26px; }
-    .brand-mark { width: 46px; height: 46px; font-size: 20px; }
-    .brand-name { font-size: 14px; letter-spacing: .32em; padding-left: .32em; }
-    .brand-sub { font-size: 8px; letter-spacing: .28em; }
-
-    .tab { font-size: 9.5px; letter-spacing: .24em; padding: 12px 0 14px; padding-left: .24em; }
-    .field label { font-size: 8.5px; letter-spacing: .24em; }
-    .field input { padding: 13px 14px; font-size: 14px; }
-    .grid-2 { gap: 10px; }
-    .submit { padding: 15px 18px; font-size: 10.5px; letter-spacing: .28em; padding-left: calc(18px + .28em); }
-    .btn-otp { padding: 13px 14px; font-size: 9px; letter-spacing: .18em; padding-left: calc(14px + .18em); }
-
-    .footer { padding: 16px 18px; font-size: 8.5px; letter-spacing: .22em; flex-direction: column; gap: 8px; text-align: center; }
-    .footer > div:first-child { display: none; }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-      animation-duration: .01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: .01ms !important;
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+    html,body{max-width:100%;overflow-x:hidden;overscroll-behavior-x:none}
+    body{
+      margin:0;color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:
+        radial-gradient(circle at 18% 6%,rgba(58,111,255,.16),transparent 28%),
+        radial-gradient(circle at 88% 20%,rgba(0,214,255,.10),transparent 28%),
+        radial-gradient(circle at 65% 90%,rgba(118,76,255,.08),transparent 25%),
+        var(--bg);
+      min-height:100vh;
+      min-height:100dvh;
+      display:flex;
+      flex-direction:column;
+      overflow-x:hidden;
+      -webkit-font-smoothing:antialiased;
     }
-    .drum-side { animation: none !important; }
-  }
-</style>
+    a{color:inherit;text-decoration:none}
+    button,input,select{font:inherit}
+    input,select,textarea,button{font-size:16px;touch-action:manipulation}
+    a,button,[role="button"],label{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+    .wrap{width:min(1240px,calc(100% - 34px));margin:auto}
+    .grid-bg{position:fixed;inset:0;pointer-events:none;opacity:.13;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:48px 48px;mask-image:linear-gradient(to bottom,black,transparent 85%);-webkit-mask-image:linear-gradient(to bottom,black,transparent 85%);z-index:0}
+
+    header{position:relative;z-index:20;background:rgba(5,11,24,.4);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(151,179,255,.09)}
+    .nav{height:86px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+    .brand{display:flex;align-items:center;gap:12px;min-width:0}
+    .brand-logo{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(145deg,#2d6eff,#26cfff);box-shadow:0 0 26px rgba(58,130,255,.42);font-size:23px;flex:none}
+    .brand-title{font-size:18px;font-weight:800;line-height:1.1}
+    .brand-sub{font-size:12px;color:#7784a4;margin-top:3px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;border:1px solid rgba(133,171,255,.22);border-radius:16px;padding:13px 20px;font-weight:750;cursor:pointer;transition:.22s ease;background:rgba(11,18,38,.65);color:white;text-decoration:none;white-space:nowrap;touch-action:manipulation}
+    .btn:hover{transform:translateY(-1px);border-color:rgba(124,171,255,.45)}
+
+    main{flex:1;display:flex;align-items:center;justify-content:center;padding:32px 22px 48px;position:relative;z-index:1}
+    .auth-card{
+      width:100%;max-width:440px;padding:38px 34px;border-radius:26px;
+      background:linear-gradient(145deg,rgba(17,31,70,.92),rgba(6,13,28,.94));
+      border:1px solid rgba(103,152,255,.35);
+      box-shadow:0 25px 80px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.05);
+      position:relative;overflow:hidden;
+      animation:cardIn .7s cubic-bezier(.22,1,.36,1) both;
+    }
+    .auth-card::before{
+      content:"";position:absolute;inset:auto -30% -60% -30%;height:80%;
+      background:radial-gradient(circle,rgba(32,211,255,.12),transparent 58%);
+      pointer-events:none;
+    }
+    @keyframes cardIn{from{opacity:0;transform:translateY(18px) scale(.98)}to{opacity:1;transform:none}}
+
+    .auth-brand{text-align:center;margin-bottom:28px;position:relative;z-index:1}
+    .auth-logo{width:56px;height:56px;border-radius:18px;margin:0 auto 14px;display:grid;place-items:center;background:linear-gradient(145deg,#2d6eff,#26cfff);box-shadow:0 0 32px rgba(58,130,255,.55);font-size:26px}
+    .auth-title{font-size:19px;font-weight:900;letter-spacing:.05em;line-height:1}
+    .auth-sub{font-size:13px;color:var(--muted);margin-top:8px}
+
+    .tabs{display:flex;border-bottom:1px solid rgba(151,179,255,.15);margin-bottom:22px;position:relative;z-index:1}
+    .tab{flex:1;background:transparent;border:none;padding:14px 0 16px;font-size:13.5px;font-weight:700;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:.25s;letter-spacing:.02em}
+    .tab.active{color:#fff;border-bottom-color:#5e9cff}
+    .tab:hover{color:#d8e1f7}
+    .tab.active:hover{color:#fff}
+
+    .msg{display:none;padding:12px 14px;border-radius:12px;font-size:12.5px;font-weight:500;margin-bottom:16px;border:1px solid;line-height:1.5;position:relative;z-index:1}
+    .msg.show{display:block}
+    .msg.error{background:rgba(244,63,94,.1);border-color:rgba(244,63,94,.3);color:#fb7185}
+    .msg.success{background:rgba(82,242,186,.1);border-color:rgba(82,242,186,.3);color:#6ff4ca}
+
+    .field{margin-bottom:14px;position:relative;z-index:1}
+    .field label{display:block;font-size:12.5px;color:#aebad4;margin-bottom:7px;font-weight:600;letter-spacing:.01em}
+    .field input{
+      width:100%;padding:13px 14px;border-radius:12px;
+      border:1px solid rgba(137,165,219,.19);
+      background:#081329;color:white;outline:none;
+      transition:.22s;font-family:inherit;
+    }
+    .field input:focus{border-color:#5797ff;box-shadow:0 0 0 3px rgba(87,151,255,.14)}
+    .field input::placeholder{color:#5b6a8c}
+    .field input:-webkit-autofill{-webkit-box-shadow:0 0 0 40px #081329 inset !important;-webkit-text-fill-color:#fff !important}
+
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+    .submit{
+      width:100%;padding:15px;margin-top:8px;border:none;border-radius:14px;
+      background:linear-gradient(135deg,#6da5ff,#4b80ff);
+      color:#fff;font-weight:800;font-size:14.5px;letter-spacing:.02em;
+      cursor:pointer;transition:.25s cubic-bezier(.22,1,.36,1);
+      box-shadow:0 10px 28px rgba(69,120,255,.35);position:relative;z-index:1;
+    }
+    .submit:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 14px 38px rgba(69,120,255,.5)}
+    .submit:active:not(:disabled){transform:translateY(0) scale(.99)}
+    .submit:disabled{opacity:.55;cursor:not-allowed}
+
+    .otp-row{display:flex;gap:8px}
+    .otp-row input{flex:1}
+    .btn-otp{
+      padding:13px 16px;border-radius:12px;
+      background:rgba(94,156,255,.09);border:1px solid rgba(94,156,255,.3);
+      color:#8eb8ff;font-weight:800;font-size:12.5px;cursor:pointer;
+      white-space:nowrap;transition:.22s;letter-spacing:.01em;
+    }
+    .btn-otp:hover:not(:disabled){background:rgba(94,156,255,.16);border-color:#5e9cff;color:#fff}
+    .btn-otp:disabled{opacity:.5;cursor:not-allowed}
+
+    footer{padding:22px 22px;color:#7f8baa;text-align:center;font-size:12px;position:relative;z-index:1;border-top:1px solid rgba(151,179,255,.08)}
+    .footer-brand{color:#a4c0ff;font-weight:800}
+
+    @media(max-width:720px){
+      .nav{height:74px}
+      .wrap{width:min(100% - 22px,1240px)}
+      .brand-logo{width:42px;height:42px;border-radius:12px;font-size:20px}
+      .brand-title{font-size:16px}
+      .brand-sub{font-size:11px}
+      main{padding:20px 18px 32px}
+      .auth-card{padding:30px 22px;border-radius:22px}
+      .auth-logo{width:50px;height:50px;border-radius:16px;font-size:23px}
+      .auth-title{font-size:17px}
+      .auth-sub{font-size:12px}
+      .tab{font-size:12.5px;padding:12px 0 14px}
+      .field label{font-size:12px}
+      .field input{padding:12px 13px;font-size:15px}
+      .submit{padding:14px;font-size:14px;border-radius:12px}
+      .btn-otp{padding:12px 12px;font-size:11.5px}
+      .btn{padding:11px 14px;font-size:13.5px;border-radius:13px}
+      footer{padding:16px 18px;font-size:11px}
+    }
+    @media(max-width:470px){
+      .grid-2{grid-template-columns:1fr;gap:0}
+      .grid-2 .field{margin-bottom:14px}
+    }
+    @media (prefers-reduced-motion: reduce){
+      *,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important}
+    }
+  </style>
 </head>
 <body>
+  <div class="grid-bg"></div>
 
-  <div class="bg-lacquer" aria-hidden="true"></div>
-  <div class="bg-grain" aria-hidden="true"></div>
-  <div class="bg-vignette" aria-hidden="true"></div>
-
-  <!-- Trống đồng bên trái -->
-  <div class="drum-side" aria-hidden="true">
-    <svg viewBox="0 0 800 800" fill="none" stroke="currentColor">
-      <g stroke-width="1">
-        <circle cx="400" cy="400" r="395" stroke-width="0.8"/>
-        <circle cx="400" cy="400" r="382" stroke-width="0.4"/>
-        <circle cx="400" cy="400" r="368" stroke-width="1.2"/>
-        <circle cx="400" cy="400" r="350" stroke-width="48" stroke-dasharray="1.5 26" opacity="0.55"/>
-        <circle cx="400" cy="400" r="322" stroke-width="0.6"/>
-        <circle cx="400" cy="400" r="308" stroke-width="0.4"/>
-        <circle cx="400" cy="400" r="285" stroke-width="34" stroke-dasharray="5 32" opacity="0.7"/>
-        <circle cx="400" cy="400" r="252" stroke-width="0.8"/>
-        <circle cx="400" cy="400" r="236" stroke-width="0.4"/>
-        <circle cx="400" cy="400" r="215" stroke-width="24" stroke-dasharray="0.8 22" opacity="0.5"/>
-        <circle cx="400" cy="400" r="188" stroke-width="0.8"/>
-        <circle cx="400" cy="400" r="170" stroke-width="0.4"/>
-        <circle cx="400" cy="400" r="145" stroke-width="26" stroke-dasharray="2.5 26" opacity="0.7"/>
-        <circle cx="400" cy="400" r="118" stroke-width="0.8"/>
-        <circle cx="400" cy="400" r="100" stroke-width="0.5"/>
-        <circle cx="400" cy="400" r="72" stroke-width="52" stroke-dasharray="3 33" opacity="0.85"/>
-        <circle cx="400" cy="400" r="40" stroke-width="1.2"/>
-        <circle cx="400" cy="400" r="28" stroke-width="0.6"/>
-        <circle cx="400" cy="400" r="14" fill="currentColor" fill-opacity="0.3" stroke="none"/>
-      </g>
-    </svg>
-  </div>
-
-  <!-- Topbar -->
-  <header class="topbar">
-    <div class="topbar-item dot">Bảo mật · Mã hoá</div>
-    <a href="./index.html" class="back"><i>←</i> VORAPRIME</a>
-    <div class="topbar-item">Xác thực · v2.6</div>
+  <header>
+    <div class="wrap nav">
+      <a class="brand" href="./index.html">
+        <div class="brand-logo">⚡</div>
+        <div>
+          <div class="brand-title">Voraprime</div>
+          <div class="brand-sub">Xác thực</div>
+        </div>
+      </a>
+      <a href="./index.html" class="btn">← Về trang chủ</a>
+    </div>
   </header>
 
-  <!-- Main -->
-  <main class="auth-main">
-    <div class="glass-form">
-      <span class="corner-tr"></span>
-      <span class="corner-bl"></span>
-      <span class="corner-br"></span>
-
-      <!-- Brand -->
-      <div class="brand">
-        <div class="brand-mark">V</div>
-        <div class="brand-name">VORAPRIME</div>
-        <div class="brand-sub">Độc bản Việt Nam</div>
+  <main>
+    <div class="auth-card">
+      <div class="auth-brand">
+        <div class="auth-logo">⚡</div>
+        <div class="auth-title">VORAPRIME</div>
+        <div class="auth-sub">Đăng nhập hoặc tạo tài khoản để bắt đầu</div>
       </div>
 
-      <!-- Tabs -->
       <div class="tabs">
         <button id="tab-login"    type="button" onclick="switchTab('login')"    class="tab active">Đăng nhập</button>
         <button id="tab-register" type="button" onclick="switchTab('register')" class="tab">Đăng ký</button>
@@ -572,7 +185,6 @@
 
       <div id="msg-box" class="msg"></div>
 
-      <!-- LOGIN -->
       <form id="login-form" onsubmit="handleAuth(event, 'login')">
         <div class="field">
           <label>Tài khoản</label>
@@ -585,7 +197,6 @@
         <button type="submit" id="btn-login-submit" class="submit">Đăng nhập</button>
       </form>
 
-      <!-- REGISTER -->
       <form id="register-form" onsubmit="handleAuth(event, 'register')" style="display:none;">
         <div class="field">
           <label>Tài khoản · 5–8 ký tự</label>
@@ -615,7 +226,7 @@
         </div>
 
         <div class="field">
-          <label class="otp-label">Mã xác nhận</label>
+          <label style="color:#8eb8ff;">Mã xác nhận</label>
           <div class="otp-row">
             <input type="text" id="reg-otp" required inputmode="numeric" autocomplete="one-time-code" placeholder="123456">
             <button type="button" id="btn-send-otp" onclick="sendOTP()" class="btn-otp">Nhận mã</button>
@@ -627,10 +238,9 @@
     </div>
   </main>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div>Sài Gòn · Hà Nội · Đà Nẵng</div>
-    <div class="made-in">Làm tại Việt Nam</div>
+  <footer>
+    <div class="footer-brand">⚡ Voraprime</div>
+    <div style="margin-top:6px">Chợ mua bán số Việt Nam · © 2026</div>
   </footer>
 
   <script>
@@ -638,9 +248,9 @@
 
     function switchTab(tab, updateUrl = true) {
       document.getElementById('msg-box').className = 'msg';
-      const tabLogin = document.getElementById('tab-login');
+      const tabLogin    = document.getElementById('tab-login');
       const tabRegister = document.getElementById('tab-register');
-      const formLogin = document.getElementById('login-form');
+      const formLogin    = document.getElementById('login-form');
       const formRegister = document.getElementById('register-form');
 
       if (tab === 'login') {
@@ -680,7 +290,8 @@
 
       const btn = document.getElementById('btn-send-otp');
       const original = btn.textContent;
-      btn.textContent = '...'; btn.disabled = true;
+      btn.textContent = '...';
+      btn.disabled = true;
 
       try {
         const res = await fetch(`${API_URL}/api/auth/send-otp`, {
@@ -699,7 +310,8 @@
         }, 1000);
       } catch {
         showMessage('Hệ thống bận, vui lòng thử lại!', 'error');
-        btn.textContent = original; btn.disabled = false;
+        btn.textContent = original;
+        btn.disabled = false;
       }
     }
 
@@ -711,7 +323,8 @@
         ? document.getElementById('btn-login-submit')
         : document.getElementById('btn-reg-submit');
       const original = btn.textContent;
-      btn.textContent = 'Đang xử lý...'; btn.disabled = true;
+      btn.textContent = 'Đang xử lý...';
+      btn.disabled = true;
 
       try {
         let payload = {};
