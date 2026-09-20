@@ -1,158 +1,247 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
-  <meta name="theme-color" content="#050b18" />
-  <title>Voraprime — Xác thực</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --bg:#050b18;
-      --panel:#0a1224;
-      --line:rgba(132,168,255,.16);
-      --text:#f5f7ff;
-      --muted:#aeb9d6;
-      --blue:#5e9cff;
-      --cyan:#29d8ff;
-      --violet:#8b79ff;
-      --green:#52f2ba;
-      --yellow:#ffd35a;
-      --shadow:0 18px 70px rgba(0,0,0,.38);
-    }
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;text-size-adjust:100%}
-    html,body{max-width:100%;overflow-x:hidden;overscroll-behavior-x:none}
-    body{
-      margin:0;color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-      background:
-        radial-gradient(circle at 18% 6%,rgba(58,111,255,.16),transparent 28%),
-        radial-gradient(circle at 88% 20%,rgba(0,214,255,.10),transparent 28%),
-        radial-gradient(circle at 65% 90%,rgba(118,76,255,.08),transparent 25%),
-        var(--bg);
-      min-height:100vh;
-      min-height:100dvh;
-      display:flex;
-      flex-direction:column;
-      overflow-x:hidden;
-      -webkit-font-smoothing:antialiased;
-    }
-    a{color:inherit;text-decoration:none}
-    button,input,select{font:inherit}
-    input,select,textarea,button{font-size:16px;touch-action:manipulation}
-    a,button,[role="button"],label{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
-    .wrap{width:min(1240px,calc(100% - 34px));margin:auto}
-    .grid-bg{position:fixed;inset:0;pointer-events:none;opacity:.13;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:48px 48px;mask-image:linear-gradient(to bottom,black,transparent 85%);-webkit-mask-image:linear-gradient(to bottom,black,transparent 85%);z-index:0}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#050b18">
+<title>Voraprime — Sảnh chợ</title>
+<meta name="description" content="Sảnh Voraprime — nơi mua bán bot, account, source code và dịch vụ số.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+<style>
+  :root{
+    --bg:#050b18;
+    --panel:#0a1224;
+    --line:rgba(132,168,255,.16);
+    --text:#f5f7ff;
+    --muted:#aeb9d6;
+    --blue:#5e9cff;
+    --cyan:#29d8ff;
+    --violet:#8b79ff;
+    --green:#52f2ba;
+    --yellow:#ffd35a;
+    --danger:#fb7185;
+    --shadow:0 18px 70px rgba(0,0,0,.38);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+  html,body{max-width:100%;overflow-x:hidden;overscroll-behavior-x:none}
+  body{
+    margin:0;color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    background:
+      radial-gradient(circle at 18% 6%,rgba(58,111,255,.16),transparent 28%),
+      radial-gradient(circle at 88% 20%,rgba(0,214,255,.10),transparent 28%),
+      radial-gradient(circle at 65% 90%,rgba(118,76,255,.08),transparent 25%),
+      var(--bg);
+    min-height:100vh;min-height:100dvh;
+    display:flex;flex-direction:column;
+    overflow-x:hidden;-webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none}
+  button,input,select{font:inherit}
+  input,select,textarea,button{font-size:16px;touch-action:manipulation}
+  a,button,[role="button"],label{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+  img,video,iframe,svg{max-width:100%;height:auto}
+  .wrap{width:min(1100px,calc(100% - 34px));margin:auto}
+  .grid-bg{position:fixed;inset:0;pointer-events:none;opacity:.13;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:48px 48px;mask-image:linear-gradient(to bottom,black,transparent 85%);-webkit-mask-image:linear-gradient(to bottom,black,transparent 85%);z-index:0}
 
-    header{position:relative;z-index:20;background:rgba(5,11,24,.4);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(151,179,255,.09)}
-    .nav{height:86px;display:flex;align-items:center;justify-content:space-between;gap:20px}
-    .brand{display:flex;align-items:center;gap:12px;min-width:0}
-    .brand-logo{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(145deg,#2d6eff,#26cfff);box-shadow:0 0 26px rgba(58,130,255,.42);font-size:23px;flex:none}
-    .brand-title{font-size:18px;font-weight:800;line-height:1.1}
-    .brand-sub{font-size:12px;color:#7784a4;margin-top:3px}
-    .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;border:1px solid rgba(133,171,255,.22);border-radius:16px;padding:13px 20px;font-weight:750;cursor:pointer;transition:.22s ease;background:rgba(11,18,38,.65);color:white;text-decoration:none;white-space:nowrap;touch-action:manipulation}
-    .btn:hover{transform:translateY(-1px);border-color:rgba(124,171,255,.45)}
+  header{position:sticky;top:0;z-index:20;background:rgba(5,11,24,.76);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(151,179,255,.11)}
+  .nav{height:74px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .brand{display:flex;align-items:center;gap:12px;min-width:0}
+  .brand-logo{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(145deg,#2d6eff,#26cfff);box-shadow:0 0 24px rgba(58,130,255,.42);font-size:20px;flex:none}
+  .brand-title{font-size:16px;font-weight:800;line-height:1.1}
+  .brand-sub{font-size:11px;color:#7784a4;margin-top:3px;letter-spacing:.05em}
+  .nav-actions{display:flex;align-items:center;gap:10px}
+  .icon-btn{
+    width:42px;height:42px;border-radius:13px;
+    border:1px solid rgba(133,171,255,.22);
+    background:rgba(11,18,38,.65);color:#c7d1ea;
+    display:grid;place-items:center;cursor:pointer;
+    transition:.22s ease;touch-action:manipulation;
+  }
+  .icon-btn:hover{border-color:rgba(124,171,255,.5);color:#fff;transform:translateY(-1px)}
+  .icon-btn.danger{color:var(--danger);border-color:rgba(251,113,133,.25)}
+  .icon-btn.danger:hover{border-color:rgba(251,113,133,.6);background:rgba(251,113,133,.08)}
 
-    main{flex:1;display:flex;align-items:center;justify-content:center;padding:32px 22px 48px;position:relative;z-index:1}
-    .auth-card{
-      width:100%;max-width:440px;padding:38px 34px;border-radius:26px;
-      background:linear-gradient(145deg,rgba(17,31,70,.92),rgba(6,13,28,.94));
-      border:1px solid rgba(103,152,255,.35);
-      box-shadow:0 25px 80px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.05);
-      position:relative;overflow:hidden;
-      animation:cardIn .7s cubic-bezier(.22,1,.36,1) both;
-    }
-    .auth-card::before{
-      content:"";position:absolute;inset:auto -30% -60% -30%;height:80%;
-      background:radial-gradient(circle,rgba(32,211,255,.12),transparent 58%);
-      pointer-events:none;
-    }
-    @keyframes cardIn{from{opacity:0;transform:translateY(18px) scale(.98)}to{opacity:1;transform:none}}
+  main{flex:1;position:relative;z-index:1;padding:32px 0 60px}
 
-    .auth-brand{text-align:center;margin-bottom:28px;position:relative;z-index:1}
-    .auth-logo{width:56px;height:56px;border-radius:18px;margin:0 auto 14px;display:grid;place-items:center;background:linear-gradient(145deg,#2d6eff,#26cfff);box-shadow:0 0 32px rgba(58,130,255,.55);font-size:26px}
-    .auth-title{font-size:19px;font-weight:900;letter-spacing:.05em;line-height:1}
-    .auth-sub{font-size:13px;color:var(--muted);margin-top:8px}
+  .welcome{
+    position:relative;margin-bottom:24px;padding:30px 28px;border-radius:24px;overflow:hidden;
+    background:
+      radial-gradient(circle at 82% 20%,rgba(0,199,255,.14),transparent 35%),
+      radial-gradient(circle at 15% 80%,rgba(118,76,255,.16),transparent 40%),
+      linear-gradient(145deg,rgba(17,31,70,.92),rgba(6,13,28,.94));
+    border:1px solid rgba(103,152,255,.35);
+    box-shadow:var(--shadow),inset 0 1px 0 rgba(255,255,255,.04);
+    animation:fadeUp .7s cubic-bezier(.22,1,.36,1) both;
+  }
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  .welcome-top{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+  .welcome-avatar{
+    width:54px;height:54px;border-radius:18px;flex-shrink:0;
+    background:linear-gradient(145deg,#6da5ff,#8b79ff);
+    display:grid;place-items:center;font-size:22px;font-weight:900;color:#fff;
+    box-shadow:0 10px 28px rgba(94,156,255,.35);
+  }
+  .welcome h1{font-size:clamp(20px,3vw,26px);font-weight:900;letter-spacing:-.02em;margin:0 0 4px;line-height:1.15}
+  .welcome h1 span{background:linear-gradient(90deg,#8eb8ff,#39d7ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .welcome-sub{color:var(--muted);font-size:13.5px;line-height:1.5}
 
-    .tabs{display:flex;border-bottom:1px solid rgba(151,179,255,.15);margin-bottom:22px;position:relative;z-index:1}
-    .tab{flex:1;background:transparent;border:none;padding:14px 0 16px;font-size:13.5px;font-weight:700;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:.25s;letter-spacing:.02em}
-    .tab.active{color:#fff;border-bottom-color:#5e9cff}
-    .tab:hover{color:#d8e1f7}
-    .tab.active:hover{color:#fff}
+  .search{
+    margin-top:20px;display:flex;gap:10px;
+    background:rgba(8,19,41,.85);border:1px solid rgba(137,165,219,.19);
+    border-radius:14px;padding:6px 6px 6px 16px;align-items:center;
+    transition:.22s;
+  }
+  .search:focus-within{border-color:#5797ff;box-shadow:0 0 0 3px rgba(87,151,255,.14)}
+  .search i{color:#6b7ba0;font-size:14px}
+  .search input{
+    flex:1;background:transparent;border:none;outline:none;color:#fff;
+    padding:12px 8px;font-size:14.5px;
+  }
+  .search input::placeholder{color:#5b6a8c}
+  .search button{
+    padding:12px 20px;border-radius:10px;border:none;cursor:pointer;
+    background:linear-gradient(135deg,#6da5ff,#4b80ff);color:#fff;
+    font-weight:800;font-size:13.5px;letter-spacing:.02em;
+    transition:.22s;
+  }
+  .search button:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(69,120,255,.4)}
 
-    .msg{display:none;padding:12px 14px;border-radius:12px;font-size:12.5px;font-weight:500;margin-bottom:16px;border:1px solid;line-height:1.5;position:relative;z-index:1}
-    .msg.show{display:block}
-    .msg.error{background:rgba(244,63,94,.1);border-color:rgba(244,63,94,.3);color:#fb7185}
-    .msg.success{background:rgba(82,242,186,.1);border-color:rgba(82,242,186,.3);color:#6ff4ca}
+  .sec-head{display:flex;align-items:end;justify-content:space-between;gap:16px;margin:32px 0 16px;flex-wrap:wrap}
+  .sec-title{font-size:19px;font-weight:800;letter-spacing:-.01em;margin:0}
+  .sec-desc{font-size:12.5px;color:var(--muted);margin:4px 0 0}
+  .sec-link{font-size:12.5px;font-weight:700;color:#8eb8ff;transition:.2s;display:inline-flex;align-items:center;gap:6px}
+  .sec-link:hover{color:#fff}
 
-    .field{margin-bottom:14px;position:relative;z-index:1}
-    .field label{display:block;font-size:12.5px;color:#aebad4;margin-bottom:7px;font-weight:600;letter-spacing:.01em}
-    .field input{
-      width:100%;padding:13px 14px;border-radius:12px;
-      border:1px solid rgba(137,165,219,.19);
-      background:#081329;color:white;outline:none;
-      transition:.22s;font-family:inherit;
-    }
-    .field input:focus{border-color:#5797ff;box-shadow:0 0 0 3px rgba(87,151,255,.14)}
-    .field input::placeholder{color:#5b6a8c}
-    .field input:-webkit-autofill{-webkit-box-shadow:0 0 0 40px #081329 inset !important;-webkit-text-fill-color:#fff !important}
+  .quick{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .quick a{
+    padding:20px 16px;border-radius:18px;
+    background:linear-gradient(180deg,rgba(12,23,46,.92),rgba(8,15,31,.94));
+    border:1px solid var(--line);
+    display:flex;flex-direction:column;gap:12px;
+    transition:.24s cubic-bezier(.22,1,.36,1);
+  }
+  .quick a:hover{transform:translateY(-3px);border-color:rgba(105,158,255,.35)}
+  .quick-icon{
+    width:40px;height:40px;border-radius:12px;
+    display:grid;place-items:center;font-size:17px;
+    border:1px solid rgba(111,154,255,.32);
+    background:linear-gradient(145deg,rgba(69,117,255,.32),rgba(16,207,255,.12));
+  }
+  .quick h4{font-size:14px;font-weight:800;margin:0;letter-spacing:-.005em}
+  .quick p{font-size:11.5px;color:var(--muted);margin:0;line-height:1.45}
 
-    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;margin-bottom:4px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .chips::-webkit-scrollbar{display:none}
+  .chip-filter{
+    padding:8px 14px;border-radius:999px;white-space:nowrap;
+    border:1px solid rgba(133,171,255,.2);
+    background:rgba(11,18,38,.65);color:#c7d1ea;
+    font-size:12.5px;font-weight:700;cursor:pointer;transition:.22s;
+    flex-shrink:0;
+  }
+  .chip-filter.active{
+    background:linear-gradient(135deg,#6da5ff,#4b80ff);
+    border-color:rgba(154,189,255,.6);color:#fff;
+    box-shadow:0 6px 18px rgba(69,120,255,.3);
+  }
+  .chip-filter:hover:not(.active){border-color:rgba(124,171,255,.5);color:#fff}
 
-    .submit{
-      width:100%;padding:15px;margin-top:8px;border:none;border-radius:14px;
-      background:linear-gradient(135deg,#6da5ff,#4b80ff);
-      color:#fff;font-weight:800;font-size:14.5px;letter-spacing:.02em;
-      cursor:pointer;transition:.25s cubic-bezier(.22,1,.36,1);
-      box-shadow:0 10px 28px rgba(69,120,255,.35);position:relative;z-index:1;
-    }
-    .submit:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 14px 38px rgba(69,120,255,.5)}
-    .submit:active:not(:disabled){transform:translateY(0) scale(.99)}
-    .submit:disabled{opacity:.55;cursor:not-allowed}
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .card{
+    padding:20px;border-radius:20px;
+    border:1px solid var(--line);
+    background:linear-gradient(180deg,rgba(12,23,46,.92),rgba(8,15,31,.94));
+    box-shadow:0 14px 45px rgba(0,0,0,.2);
+    transition:.24s cubic-bezier(.22,1,.36,1);
+    display:flex;flex-direction:column;
+  }
+  .card:hover{transform:translateY(-3px);border-color:rgba(105,158,255,.32)}
+  .card-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+  .prod-icon{
+    width:48px;height:48px;border-radius:14px;
+    display:grid;place-items:center;font-size:22px;flex-shrink:0;
+    background:linear-gradient(145deg,rgba(69,117,255,.35),rgba(16,207,255,.14));
+    border:1px solid rgba(111,154,255,.32);
+  }
+  .tag{
+    padding:6px 10px;border-radius:999px;font-size:10.5px;font-weight:850;
+    border:1px solid rgba(69,219,201,.26);background:rgba(40,208,180,.08);
+    color:#6ff4ca;white-space:nowrap;
+  }
+  .tag.blue{border-color:rgba(94,156,255,.35);background:rgba(58,111,255,.1);color:#8eb8ff}
+  .tag.violet{border-color:rgba(139,121,255,.35);background:rgba(118,76,255,.1);color:#b4a8ff}
+  .tag.yellow{border-color:rgba(255,211,90,.35);background:rgba(255,211,90,.1);color:#ffd35a}
+  .prod-name{font-size:16px;margin:12px 0 5px;line-height:1.3;font-weight:800}
+  .muted{color:var(--muted);font-size:12.5px;line-height:1.55}
+  .price-row{display:flex;align-items:end;justify-content:space-between;gap:10px;margin-top:14px}
+  .price{font-size:22px;font-weight:900;letter-spacing:-.03em}
+  .period{color:#93a1c1;font-size:11.5px;margin-top:2px}
+  .seller{display:flex;align-items:center;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid rgba(138,163,219,.1);font-size:11.5px;color:#8b98bb}
+  .seller-avatar{width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#5e9cff,#8b79ff);display:grid;place-items:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0}
+  .seller strong{color:#c3ccec;font-weight:700}
+  .card .buy{
+    margin-top:14px;width:100%;padding:12px;border:none;border-radius:12px;
+    background:linear-gradient(135deg,#6da5ff,#4b80ff);color:#fff;
+    font-weight:800;font-size:13px;cursor:pointer;transition:.22s;
+    box-shadow:0 8px 22px rgba(69,120,255,.28);
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    text-decoration:none;
+  }
+  .card .buy:hover{transform:translateY(-1px);box-shadow:0 12px 28px rgba(69,120,255,.4)}
+  .card .buy:active{transform:translateY(0) scale(.99)}
 
-    .otp-row{display:flex;gap:8px}
-    .otp-row input{flex:1}
-    .btn-otp{
-      padding:13px 16px;border-radius:12px;
-      background:rgba(94,156,255,.09);border:1px solid rgba(94,156,255,.3);
-      color:#8eb8ff;font-weight:800;font-size:12.5px;cursor:pointer;
-      white-space:nowrap;transition:.22s;letter-spacing:.01em;
-    }
-    .btn-otp:hover:not(:disabled){background:rgba(94,156,255,.16);border-color:#5e9cff;color:#fff}
-    .btn-otp:disabled{opacity:.5;cursor:not-allowed}
+  .empty{
+    padding:40px 24px;text-align:center;border-radius:20px;
+    border:1px dashed rgba(133,171,255,.2);
+    background:rgba(10,20,40,.4);
+    color:var(--muted);font-size:13.5px;
+  }
+  .empty i{font-size:32px;color:#3b4a6f;display:block;margin-bottom:12px}
 
-    footer{padding:22px 22px;color:#7f8baa;text-align:center;font-size:12px;position:relative;z-index:1;border-top:1px solid rgba(151,179,255,.08)}
-    .footer-brand{color:#a4c0ff;font-weight:800}
+  footer{padding:24px 0 40px;color:#7f8baa;text-align:center;font-size:12px;position:relative;z-index:1;border-top:1px solid rgba(151,179,255,.06);margin-top:40px}
+  .footer-brand{color:#a4c0ff;font-weight:800}
 
-    @media(max-width:720px){
-      .nav{height:74px}
-      .wrap{width:min(100% - 22px,1240px)}
-      .brand-logo{width:42px;height:42px;border-radius:12px;font-size:20px}
-      .brand-title{font-size:16px}
-      .brand-sub{font-size:11px}
-      main{padding:20px 18px 32px}
-      .auth-card{padding:30px 22px;border-radius:22px}
-      .auth-logo{width:50px;height:50px;border-radius:16px;font-size:23px}
-      .auth-title{font-size:17px}
-      .auth-sub{font-size:12px}
-      .tab{font-size:12.5px;padding:12px 0 14px}
-      .field label{font-size:12px}
-      .field input{padding:12px 13px;font-size:15px}
-      .submit{padding:14px;font-size:14px;border-radius:12px}
-      .btn-otp{padding:12px 12px;font-size:11.5px}
-      .btn{padding:11px 14px;font-size:13.5px;border-radius:13px}
-      footer{padding:16px 18px;font-size:11px}
-    }
-    @media(max-width:470px){
-      .grid-2{grid-template-columns:1fr;gap:0}
-      .grid-2 .field{margin-bottom:14px}
-    }
-    @media (prefers-reduced-motion: reduce){
-      *,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important}
-    }
-  </style>
+  @media(max-width:900px){
+    .cards{grid-template-columns:1fr 1fr}
+    .quick{grid-template-columns:1fr 1fr}
+  }
+  @media(max-width:720px){
+    .wrap{width:min(100% - 22px,1100px)}
+    .nav{height:66px}
+    .brand-logo{width:38px;height:38px;border-radius:12px;font-size:18px}
+    .brand-title{font-size:15px}
+    .brand-sub{font-size:10px}
+    .icon-btn{width:38px;height:38px;border-radius:11px}
+    main{padding:20px 0 40px}
+    .welcome{padding:24px 20px;border-radius:20px}
+    .welcome-avatar{width:48px;height:48px;border-radius:14px;font-size:20px}
+    .welcome h1{font-size:19px}
+    .welcome-sub{font-size:12.5px}
+    .search{padding:4px 4px 4px 14px;margin-top:16px}
+    .search input{padding:11px 6px;font-size:14px}
+    .search button{padding:11px 16px;font-size:13px}
+    .sec-title{font-size:17px}
+    .cards{grid-template-columns:1fr;gap:12px}
+    .quick{grid-template-columns:1fr 1fr;gap:10px}
+    .quick a{padding:16px 14px;border-radius:16px}
+    .quick-icon{width:36px;height:36px;font-size:15px}
+    .quick h4{font-size:13px}
+    .quick p{font-size:11px}
+    .card{padding:18px}
+    .prod-name{font-size:15px}
+    .price{font-size:20px}
+  }
+  @media(max-width:420px){
+    .quick{grid-template-columns:1fr}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important}
+  }
+</style>
 </head>
 <body>
   <div class="grid-bg"></div>
@@ -163,214 +252,274 @@
         <div class="brand-logo">⚡</div>
         <div>
           <div class="brand-title">Voraprime</div>
-          <div class="brand-sub">Xác thực</div>
+          <div class="brand-sub">SẢNH CHỢ</div>
         </div>
       </a>
-      <a href="./index.html" class="btn">← Về trang chủ</a>
+      <div class="nav-actions">
+        <a href="#my-products" class="icon-btn" title="Tin đăng của tôi"><i class="fa-solid fa-box-open"></i></a>
+        <a href="#messages" class="icon-btn" title="Tin nhắn"><i class="fa-regular fa-comments"></i></a>
+        <button onclick="logout()" class="icon-btn danger" title="Đăng xuất"><i class="fa-solid fa-power-off"></i></button>
+      </div>
     </div>
   </header>
 
   <main>
-    <div class="auth-card">
-      <div class="auth-brand">
-        <div class="auth-logo">⚡</div>
-        <div class="auth-title">VORAPRIME</div>
-        <div class="auth-sub">Đăng nhập hoặc tạo tài khoản để bắt đầu</div>
+    <div class="wrap">
+
+      <div class="welcome">
+        <div class="welcome-top">
+          <div class="welcome-avatar" id="avatar">V</div>
+          <div>
+            <h1>Xin chào, <span id="user-name">bạn</span> 👋</h1>
+            <div class="welcome-sub">Chào mừng tới sảnh chợ Voraprime — nơi kết nối người mua và người bán.</div>
+          </div>
+        </div>
+        <form class="search" onsubmit="event.preventDefault(); alert('Tính năng tìm kiếm sẽ hoạt động sau khi nối backend.');">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" placeholder="Tìm bot, account, source code, dịch vụ...">
+          <button type="submit">Tìm</button>
+        </form>
       </div>
 
-      <div class="tabs">
-        <button id="tab-login"    type="button" onclick="switchTab('login')"    class="tab active">Đăng nhập</button>
-        <button id="tab-register" type="button" onclick="switchTab('register')" class="tab">Đăng ký</button>
+      <div class="sec-head">
+        <div>
+          <h2 class="sec-title">Thao tác nhanh</h2>
+          <p class="sec-desc">Bắt đầu mua hoặc bán chỉ trong vài cú nhấp.</p>
+        </div>
+      </div>
+      <div class="quick">
+        <a href="#products">
+          <div class="quick-icon" style="color:#8eb8ff"><i class="fa-solid fa-store"></i></div>
+          <h4>Duyệt chợ</h4>
+          <p>Xem tất cả sản phẩm đang bán</p>
+        </a>
+        <a href="#sell">
+          <div class="quick-icon" style="color:#6ff4ca"><i class="fa-solid fa-plus"></i></div>
+          <h4>Đăng bán</h4>
+          <p>Tạo tin đăng miễn phí</p>
+        </a>
+        <a href="#my-products">
+          <div class="quick-icon" style="color:#ffd35a"><i class="fa-solid fa-box-open"></i></div>
+          <h4>Tin của tôi</h4>
+          <p>Quản lý sản phẩm đã đăng</p>
+        </a>
+        <a href="#messages">
+          <div class="quick-icon" style="color:#b4a8ff"><i class="fa-regular fa-comments"></i></div>
+          <h4>Tin nhắn</h4>
+          <p>Trao đổi với người mua / bán</p>
+        </a>
       </div>
 
-      <div id="msg-box" class="msg"></div>
-
-      <form id="login-form" onsubmit="handleAuth(event, 'login')">
-        <div class="field">
-          <label>Tài khoản</label>
-          <input type="text" id="login-username" required autocomplete="username" placeholder="Nhập tài khoản">
+      <div class="sec-head" id="products">
+        <div>
+          <h2 class="sec-title">Sản phẩm mới nhất</h2>
+          <p class="sec-desc">Cập nhật liên tục từ người bán uy tín.</p>
         </div>
-        <div class="field">
-          <label>Mật khẩu</label>
-          <input type="password" id="login-password" required autocomplete="current-password" placeholder="Nhập mật khẩu">
-        </div>
-        <button type="submit" id="btn-login-submit" class="submit">Đăng nhập</button>
-      </form>
+        <a href="#" class="sec-link">Xem tất cả <i class="fa-solid fa-arrow-right text-[10px]"></i></a>
+      </div>
 
-      <form id="register-form" onsubmit="handleAuth(event, 'register')" style="display:none;">
-        <div class="field">
-          <label>Tài khoản · 5–8 ký tự</label>
-          <input type="text" id="reg-username" required minlength="5" maxlength="8" autocomplete="username" placeholder="username">
-        </div>
+      <div class="chips" style="margin-bottom:14px">
+        <button class="chip-filter active">Tất cả</button>
+        <button class="chip-filter">🤖 Bot</button>
+        <button class="chip-filter">👤 Account</button>
+        <button class="chip-filter">💻 Source code</button>
+        <button class="chip-filter">🎨 Dịch vụ</button>
+        <button class="chip-filter">📱 App</button>
+        <button class="chip-filter">🎮 Game</button>
+      </div>
 
-        <div class="grid-2">
-          <div class="field">
-            <label>Email</label>
-            <input type="email" id="reg-email" required autocomplete="email" placeholder="you@mail.com">
+      <div class="cards">
+        <article class="card">
+          <div class="card-top">
+            <div class="prod-icon">🤖</div>
+            <div class="tag blue">Bot</div>
           </div>
-          <div class="field">
-            <label>Xác nhận mail</label>
-            <input type="email" id="reg-email-confirm" required placeholder="you@mail.com">
+          <h3 class="prod-name">Bot Discord đa năng</h3>
+          <p class="muted">Moderation, welcome, ticket, economy, music. Đã test 500+ server.</p>
+          <div class="price-row">
+            <div>
+              <div class="price">199.000đ</div>
+              <div class="period">bản quyền vĩnh viễn</div>
+            </div>
           </div>
-        </div>
+          <div class="seller">
+            <div class="seller-avatar">M</div>
+            <span><strong>MinhDev</strong> · 4.9★ · 128 đơn</span>
+          </div>
+          <a href="#buy" class="buy">Mua ngay</a>
+        </article>
 
-        <div class="grid-2">
-          <div class="field">
-            <label>Mật khẩu</label>
-            <input type="password" id="reg-password" required autocomplete="new-password" placeholder="••••••••">
+        <article class="card">
+          <div class="card-top">
+            <div class="prod-icon">👤</div>
+            <div class="tag violet">Account</div>
           </div>
-          <div class="field">
-            <label>Nhập lại MK</label>
-            <input type="password" id="reg-password-confirm" required autocomplete="new-password" placeholder="••••••••">
+          <h3 class="prod-name">Account Premium 1 năm</h3>
+          <p class="muted">Tài khoản chính chủ, bảo hành full thời gian, đổi info được.</p>
+          <div class="price-row">
+            <div>
+              <div class="price">350.000đ</div>
+              <div class="period">bảo hành 12 tháng</div>
+            </div>
           </div>
-        </div>
+          <div class="seller">
+            <div class="seller-avatar">H</div>
+            <span><strong>HoangStore</strong> · 5.0★ · 342 đơn</span>
+          </div>
+          <a href="#buy" class="buy">Mua ngay</a>
+        </article>
 
-        <div class="field">
-          <label style="color:#8eb8ff;">Mã xác nhận</label>
-          <div class="otp-row">
-            <input type="text" id="reg-otp" required inputmode="numeric" autocomplete="one-time-code" placeholder="123456">
-            <button type="button" id="btn-send-otp" onclick="sendOTP()" class="btn-otp">Nhận mã</button>
+        <article class="card">
+          <div class="card-top">
+            <div class="prod-icon">💻</div>
+            <div class="tag yellow">Source</div>
           </div>
-        </div>
+          <h3 class="prod-name">Web bán hàng full source</h3>
+          <p class="muted">Code sạch, có admin panel, thanh toán tự động, deploy 1 lệnh.</p>
+          <div class="price-row">
+            <div>
+              <div class="price">899.000đ</div>
+              <div class="period">mua 1 lần dùng mãi</div>
+            </div>
+          </div>
+          <div class="seller">
+            <div class="seller-avatar">T</div>
+            <span><strong>TuanFullstack</strong> · 4.8★ · 76 đơn</span>
+          </div>
+          <a href="#buy" class="buy">Mua ngay</a>
+        </article>
 
-        <button type="submit" id="btn-reg-submit" class="submit">Tạo tài khoản</button>
-      </form>
+        <article class="card">
+          <div class="card-top">
+            <div class="prod-icon">🎨</div>
+            <div class="tag">Dịch vụ</div>
+          </div>
+          <h3 class="prod-name">Thiết kế website trọn gói</h3>
+          <p class="muted">Landing page, web bán hàng, web giới thiệu. Giao trong 3–5 ngày.</p>
+          <div class="price-row">
+            <div>
+              <div class="price">1.200.000đ</div>
+              <div class="period">gói tiêu chuẩn</div>
+            </div>
+          </div>
+          <div class="seller">
+            <div class="seller-avatar">L</div>
+            <span><strong>LinhDesign</strong> · 5.0★ · 210 đơn</span>
+          </div>
+          <a href="#buy" class="buy">Liên hệ</a>
+        </article>
+
+        <article class="card">
+          <div class="card-top">
+            <div class="prod-icon">📱</div>
+            <div class="tag blue">App</div>
+          </div>
+          <h3 class="prod-name">App mobile full source</h3>
+          <p class="muted">React Native, có backend NodeJS, build APK/iOS sẵn.</p>
+          <div class="price-row">
+            <div>
+              <div class="price">1.500.000đ</div>
+              <div class="period">mua 1 lần</div>
+            </div>
+          </div>
+          <div class="seller">
+            <div class="seller-avatar">K</div>
+            <span><strong>KhoaMobile</strong> · 4.9★ · 45 đơn</span>
+          </div>
+          <a href="#buy" class="buy">Mua ngay</a>
+        </article>
+
+        <article class="card">
+          <div class="card-top">
+            <div class="prod-icon">🎮</div>
+            <div class="tag violet">Game</div>
+          </div>
+          <h3 class="prod-name">Account Game VIP</h3>
+          <p class="muted">Nhiều tựa game phổ biến, có refund, đổi mật khẩu ngay sau khi mua.</p>
+          <div class="price-row">
+            <div>
+              <div class="price">89.000đ</div>
+              <div class="period">theo loại</div>
+            </div>
+          </div>
+          <div class="seller">
+            <div class="seller-avatar">G</div>
+            <span><strong>GameStore24h</strong> · 4.9★ · 890 đơn</span>
+          </div>
+          <a href="#buy" class="buy">Mua ngay</a>
+        </article>
+      </div>
+
+      <div class="sec-head" id="my-products">
+        <div>
+          <h2 class="sec-title">Tin đăng của tôi</h2>
+          <p class="sec-desc">Sản phẩm bạn đã đăng bán sẽ hiển thị ở đây.</p>
+        </div>
+      </div>
+      <div class="empty">
+        <i class="fa-solid fa-box-open"></i>
+        Bạn chưa có tin đăng nào. Nhấn <strong style="color:#8eb8ff">Đăng bán</strong> để tạo tin đầu tiên.
+      </div>
+
+      <div class="sec-head" id="messages">
+        <div>
+          <h2 class="sec-title">Tin nhắn</h2>
+          <p class="sec-desc">Trao đổi với người mua / người bán khác.</p>
+        </div>
+      </div>
+      <div class="empty">
+        <i class="fa-regular fa-comments"></i>
+        Chưa có cuộc trò chuyện nào. Khi có giao dịch, tin nhắn sẽ hiện ở đây.
+      </div>
+
     </div>
   </main>
 
   <footer>
     <div class="footer-brand">⚡ Voraprime</div>
-    <div style="margin-top:6px">Chợ mua bán số Việt Nam · © 2026</div>
+    <div style="margin-top:6px">Sảnh chợ mua bán số Việt Nam · © 2026</div>
   </footer>
 
   <script>
-    const API_URL = "http://de26.spaceify.eu:26355";
+    const token = localStorage.getItem('hub_token');
+    const username = localStorage.getItem('hub_user');
 
-    function switchTab(tab, updateUrl = true) {
-      document.getElementById('msg-box').className = 'msg';
-      const tabLogin    = document.getElementById('tab-login');
-      const tabRegister = document.getElementById('tab-register');
-      const formLogin    = document.getElementById('login-form');
-      const formRegister = document.getElementById('register-form');
-
-      if (tab === 'login') {
-        tabLogin.classList.add('active');
-        tabRegister.classList.remove('active');
-        formLogin.style.display = '';
-        formRegister.style.display = 'none';
-      } else {
-        tabRegister.classList.add('active');
-        tabLogin.classList.remove('active');
-        formRegister.style.display = '';
-        formLogin.style.display = 'none';
-      }
-
-      if (updateUrl && history.replaceState) {
-        const url = new URL(window.location.href);
-        url.searchParams.set('tab', tab);
-        history.replaceState({}, '', url);
+    if (!token) {
+      window.location.href = 'login.html';
+    } else {
+      const nameEl = document.getElementById('user-name');
+      const avatarEl = document.getElementById('avatar');
+      if (username) {
+        nameEl.textContent = username;
+        avatarEl.textContent = username.charAt(0).toUpperCase();
       }
     }
 
-    (function init() {
-      const tab = new URLSearchParams(window.location.search).get('tab');
-      switchTab(tab === 'register' ? 'register' : 'login', false);
-    })();
-
-    function showMessage(text, type = 'error') {
-      const box = document.getElementById('msg-box');
-      box.className = 'msg show ' + type;
-      box.textContent = text;
-    }
-
-    async function sendOTP() {
-      const email = document.getElementById('reg-email').value.trim();
-      const emailConfirm = document.getElementById('reg-email-confirm').value.trim();
-      if (!email || email !== emailConfirm) return showMessage('Email không hợp lệ hoặc không khớp!', 'error');
-
-      const btn = document.getElementById('btn-send-otp');
-      const original = btn.textContent;
-      btn.textContent = '...';
-      btn.disabled = true;
-
-      try {
-        const res = await fetch(`${API_URL}/api/auth/send-otp`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email })
-        });
-        if (!res.ok) throw new Error();
-        showMessage('Đã gửi OTP tới email của bạn.', 'success');
-
-        let count = 60;
-        const iv = setInterval(() => {
-          btn.textContent = `Thử lại ${count}s`;
-          count--;
-          if (count < 0) { clearInterval(iv); btn.textContent = original; btn.disabled = false; }
-        }, 1000);
-      } catch {
-        showMessage('Hệ thống bận, vui lòng thử lại!', 'error');
-        btn.textContent = original;
-        btn.disabled = false;
+    function logout() {
+      if (confirm('Đăng xuất khỏi Voraprime?')) {
+        localStorage.clear();
+        window.location.href = 'login.html';
       }
     }
 
-    async function handleAuth(e, type) {
-      e.preventDefault();
-      document.getElementById('msg-box').className = 'msg';
+    document.querySelectorAll('.chip-filter').forEach(chip => {
+      chip.addEventListener('click', () => {
+        document.querySelectorAll('.chip-filter').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+      });
+    });
 
-      const btn = type === 'login'
-        ? document.getElementById('btn-login-submit')
-        : document.getElementById('btn-reg-submit');
-      const original = btn.textContent;
-      btn.textContent = 'Đang xử lý...';
-      btn.disabled = true;
-
-      try {
-        let payload = {};
-
-        if (type === 'register') {
-          const p1 = document.getElementById('reg-password').value;
-          const p2 = document.getElementById('reg-password-confirm').value;
-          if (p1 !== p2) throw new Error('Mật khẩu không khớp!');
-          payload = {
-            username: document.getElementById('reg-username').value.trim(),
-            email:    document.getElementById('reg-email').value.trim(),
-            password: p1,
-            otp:      document.getElementById('reg-otp').value.trim()
-          };
-        } else {
-          payload = {
-            username: document.getElementById('login-username').value.trim(),
-            password: document.getElementById('login-password').value
-          };
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        const id = a.getAttribute('href').slice(1);
+        if (!id) return;
+        const el = document.getElementById(id);
+        if (el) {
+          e.preventDefault();
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
-
-        const res = await fetch(`${API_URL}/api/auth/${type}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-
-        const data = await res.json().catch(() => ({}));
-        if (!res.ok) throw new Error(data.error || 'Có lỗi xảy ra, vui lòng thử lại!');
-
-        if (type === 'login') {
-          localStorage.setItem('hub_token', data.token);
-          localStorage.setItem('hub_user', data.username);
-          window.location.href = 'lobby.html';
-        } else {
-          showMessage('Đăng ký thành công! Vui lòng đăng nhập.', 'success');
-          document.getElementById('register-form').reset();
-          setTimeout(() => switchTab('login'), 900);
-        }
-      } catch (err) {
-        showMessage(err.message || 'Có lỗi xảy ra!', 'error');
-      } finally {
-        btn.textContent = original;
-        btn.disabled = false;
-      }
-    }
+      });
+    });
   </script>
 </body>
-</html>
+</html> 
