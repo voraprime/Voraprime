@@ -1,109 +1,685 @@
 <!DOCTYPE html>
-<html lang="vi" class="dark">
+<html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Voraprime — Authentication</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
-    * { box-sizing: border-box; }
-    body { margin: 0; font-family: 'Outfit', sans-serif; background-color: #0a0a0a; color: white; overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh; background-image: linear-gradient(to right, rgba(255,255,255,.02) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,.02) 1px, transparent 1px); background-size: 40px 40px; }
-    .glow { position: absolute; width: 500px; height: 500px; border-radius: 50%; pointer-events: none; z-index: -3; opacity: 0.12; filter: blur(60px); }
-    .glow-orange { top: -150px; left: -150px; background: radial-gradient(circle, #f97316 0%, transparent 70%); }
-    .glass-form { background: #111111; border: 1px solid #27272a; box-shadow: 0 20px 40px rgba(0,0,0,.8), 0 0 40px rgba(249,115,22,.03); }
-    input:-webkit-autofill { -webkit-box-shadow: 0 0 0 30px #18181b inset !important; -webkit-text-fill-color: white !important; }
-    .primary-btn { background: linear-gradient(to right, #ea580c, #f97316); transition: .2s ease; box-shadow: 0 4px 15px rgba(249,115,22,.2); }
-    .primary-btn:active { transform: scale(.98); }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#05060a">
+<title>Voraprime — Authentication</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #05060a;
+    --text: #ffffff;
+    --border: rgba(255,255,255,.09);
+    --glass: rgba(10,10,16,.55);
+    --accent: #f97316;
+    --mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+
+  /* ===== FIX ZOOM MOBILE ===== */
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+  html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+    overscroll-behavior-x: none;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  input, select, textarea, button {
+    font-size: 16px;
+    touch-action: manipulation;
+    font-family: inherit;
+  }
+  a, button, [role="button"], label {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+  /* ===== END FIX ZOOM ===== */
+
+  body {
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    min-height: 100dvh;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ===== AURORA BG ===== */
+  .aurora {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    background: radial-gradient(ellipse 90% 60% at 50% 45%, #0a0b14 0%, #05060a 70%);
+    pointer-events: none;
+  }
+  .blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    will-change: transform;
+    pointer-events: none;
+  }
+  .blob-blue {
+    width: 70vw; height: 70vw;
+    left: -15%; bottom: -25%;
+    background: radial-gradient(circle, #3b82f6 0%, #6366f1 45%, transparent 72%);
+    opacity: .55;
+    animation: driftA 22s ease-in-out infinite;
+  }
+  .blob-purple {
+    width: 60vw; height: 60vw;
+    left: 25%; top: 30%;
+    background: radial-gradient(circle, #a855f7 0%, #8b5cf6 45%, transparent 72%);
+    opacity: .38;
+    animation: driftB 26s ease-in-out infinite;
+  }
+  .blob-pink {
+    width: 55vw; height: 55vw;
+    right: -8%; top: -12%;
+    background: radial-gradient(circle, #ec4899 0%, #f43f5e 45%, transparent 72%);
+    opacity: .5;
+    animation: driftC 20s ease-in-out infinite;
+  }
+  .blob-red {
+    width: 50vw; height: 50vw;
+    right: 5%; top: 5%;
+    background: radial-gradient(circle, #ef4444 0%, #f97316 50%, transparent 72%);
+    opacity: .48;
+    animation: driftD 24s ease-in-out infinite;
+  }
+  .blob-white {
+    width: 38vw; height: 38vw;
+    left: 38%; top: 42%;
+    background: radial-gradient(circle, #ffffff 0%, #c7d2fe 40%, transparent 70%);
+    opacity: .22;
+    filter: blur(120px);
+    animation: driftE 28s ease-in-out infinite;
+  }
+  @keyframes driftA { 0%,100%{transform:translate(0,0) scale(1);} 50%{transform:translate(40px,-30px) scale(1.08);} }
+  @keyframes driftB { 0%,100%{transform:translate(0,0) scale(1);} 50%{transform:translate(-50px,30px) scale(1.12);} }
+  @keyframes driftC { 0%,100%{transform:translate(0,0) scale(1);} 50%{transform:translate(-30px,40px) scale(1.06);} }
+  @keyframes driftD { 0%,100%{transform:translate(0,0) scale(1);} 50%{transform:translate(30px,50px) scale(1.1);} }
+  @keyframes driftE { 0%,100%{transform:translate(0,0) scale(1); opacity:.22;} 50%{transform:translate(-40px,-20px) scale(1.15); opacity:.32;} }
+
+  .vignette {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: radial-gradient(ellipse at center, transparent 35%, rgba(5,6,10,.75) 100%);
+  }
+  .noise {
+    position: fixed;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    opacity: .035;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ===== TOP BAR ===== */
+  .topbar {
+    position: relative;
+    z-index: 30;
+    padding: 20px 28px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+  .status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.45);
+    margin-bottom: 10px;
+  }
+  .status-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: #22c55e;
+    box-shadow: 0 0 10px #22c55e;
+    animation: pulseDot 2s ease-in-out infinite;
+  }
+  @keyframes pulseDot { 0%,100%{opacity:1;} 50%{opacity:.35;} }
+
+  .back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: .18em;
+    color: #fff;
+    text-decoration: none;
+    transition: color .2s;
+  }
+  .back:hover { color: var(--accent); }
+  .back i { font-size: 12px; opacity: .55; transition: opacity .2s; }
+  .back:hover i { opacity: 1; }
+
+  .rev {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.4);
+    padding-top: 2px;
+  }
+
+  /* ===== MAIN ===== */
+  .auth-main {
+    position: relative;
+    z-index: 10;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 24px 40px;
+  }
+
+  .glass-form {
+    width: 100%;
+    max-width: 440px;
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: 26px;
+    padding: 40px 36px;
+    backdrop-filter: blur(32px) saturate(140%);
+    -webkit-backdrop-filter: blur(32px) saturate(140%);
+    box-shadow:
+      0 30px 80px -20px rgba(0,0,0,.7),
+      inset 0 1px 0 rgba(255,255,255,.06);
+    animation: cardIn .7s cubic-bezier(.22,1,.36,1) both;
+  }
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(20px) scale(.98); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  /* Brand */
+  .brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 32px;
+  }
+  .brand-mark {
+    width: 48px; height: 48px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #f97316, #ea580c);
+    display: grid;
+    place-items: center;
+    color: #fff;
+    font-size: 18px;
+    margin-bottom: 14px;
+    box-shadow: 0 10px 30px -8px rgba(249,115,22,.6);
+  }
+  .brand-name {
+    font-family: 'Outfit', sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: .22em;
+    color: #fff;
+  }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    margin-bottom: 24px;
+  }
+  .tab {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 14px 0;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.35);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: color .25s, border-color .25s;
+  }
+  .tab.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+  .tab:hover { color: rgba(255,255,255,.75); }
+  .tab.active:hover { color: var(--accent); }
+
+  /* Message */
+  .msg {
+    display: none;
+    padding: 12px 14px;
+    border-radius: 12px;
+    font-size: 12.5px;
+    font-weight: 500;
+    margin-bottom: 16px;
+    border: 1px solid;
+    line-height: 1.5;
+  }
+  .msg.show { display: block; }
+  .msg.error   { background: rgba(244,63,94,.1);  border-color: rgba(244,63,94,.25);  color: #fb7185; }
+  .msg.success { background: rgba(16,185,129,.1); border-color: rgba(16,185,129,.25); color: #34d399; }
+
+  /* Fields */
+  .field { margin-bottom: 16px; }
+  .field label {
+    display: block;
+    font-family: var(--mono);
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.4);
+    margin-bottom: 8px;
+  }
+  .field input {
+    width: 100%;
+    padding: 14px 16px;
+    background: rgba(255,255,255,.025);
+    border: 1px solid rgba(255,255,255,.09);
+    border-radius: 12px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 400;
+    transition: all .25s;
+    outline: none;
+  }
+  .field input:focus {
+    border-color: rgba(249,115,22,.5);
+    background: rgba(255,255,255,.04);
+    box-shadow: 0 0 0 3px rgba(249,115,22,.1);
+  }
+  .field input::placeholder { color: rgba(255,255,255,.25); }
+
+  .field input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 30px #14151c inset !important;
+    -webkit-text-fill-color: #fff !important;
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  /* Submit */
+  .submit {
+    width: 100%;
+    padding: 16px;
+    margin-top: 8px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+    color: #fff;
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: .02em;
+    cursor: pointer;
+    transition: all .25s cubic-bezier(.22,1,.36,1);
+    box-shadow: 0 10px 30px -8px rgba(249,115,22,.5);
+  }
+  .submit:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 14px 40px -8px rgba(249,115,22,.7);
+  }
+  .submit:active:not(:disabled) { transform: translateY(0) scale(.99); }
+  .submit:disabled { opacity: .6; cursor: not-allowed; }
+
+  /* OTP button */
+  .otp-row {
+    display: flex;
+    gap: 8px;
+  }
+  .otp-row input { flex: 1; }
+  .btn-otp {
+    padding: 14px 18px;
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 12px;
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all .25s;
+  }
+  .btn-otp:hover:not(:disabled) {
+    background: rgba(249,115,22,.1);
+    border-color: rgba(249,115,22,.35);
+  }
+  .btn-otp:disabled { opacity: .5; cursor: not-allowed; }
+
+  /* Footer small */
+  .foot {
+    position: relative;
+    z-index: 10;
+    padding: 20px 28px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.3);
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 640px) {
+    .topbar { padding: 16px 20px; }
+    .status { font-size: 9px; letter-spacing: .18em; }
+    .back { font-size: 14px; letter-spacing: .16em; }
+    .rev { font-size: 9px; letter-spacing: .18em; }
+
+    .auth-main { padding: 12px 18px 24px; }
+    .glass-form {
+      padding: 32px 24px;
+      border-radius: 22px;
+    }
+    .brand { margin-bottom: 24px; }
+    .brand-mark { width: 44px; height: 44px; border-radius: 12px; font-size: 16px; }
+    .brand-name { font-size: 14px; letter-spacing: .2em; }
+
+    .tab { font-size: 10px; letter-spacing: .18em; padding: 12px 0; }
+    .field label { font-size: 9px; letter-spacing: .18em; }
+    .field input { padding: 13px 14px; font-size: 14px; }
+    .submit { padding: 15px; font-size: 13.5px; }
+    .btn-otp { padding: 13px 14px; font-size: 9.5px; letter-spacing: .12em; }
+
+    .foot { padding: 16px 20px; font-size: 9px; letter-spacing: .15em; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: .01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: .01ms !important;
+    }
+  }
+</style>
 </head>
 <body>
-  <div class="glow glow-orange"></div>
-  <a href="./index.html" class="absolute top-5 left-5 text-zinc-500 hover:text-orange-500 transition flex items-center gap-2 text-sm font-medium z-30 p-2"><i class="fa-solid fa-arrow-left"></i> Quay lại</a>
-  <main class="flex-1 flex items-center justify-center p-5 z-10 w-full relative">
-    <div class="w-full max-w-md glass-form rounded-3xl p-6 sm:p-8">
-      <div class="flex flex-col items-center justify-center mb-6">
-        <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-gradient-to-br from-orange-500 to-red-600 mb-3"><i class="fa-solid fa-bolt text-white text-lg"></i></div>
-        <h2 class="text-xl font-black tracking-[.1em] uppercase text-white">Voraprime</h2>
+
+  <!-- Aurora BG -->
+  <div class="aurora" aria-hidden="true">
+    <div class="blob blob-blue"></div>
+    <div class="blob blob-purple"></div>
+    <div class="blob blob-pink"></div>
+    <div class="blob blob-red"></div>
+    <div class="blob blob-white"></div>
+  </div>
+  <div class="vignette" aria-hidden="true"></div>
+  <div class="noise" aria-hidden="true"></div>
+
+  <!-- Top bar -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="status">
+        <span class="status-dot"></span>
+        Secure · Encrypted
+      </div>
+      <a href="./index.html" class="back">
+        <i class="fa-solid fa-arrow-left"></i> VORAPRIME
+      </a>
+    </div>
+    <div class="topbar-right">
+      <div class="rev">Auth · v2.6</div>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="auth-main">
+    <div class="glass-form">
+
+      <!-- Brand -->
+      <div class="brand">
+        <div class="brand-mark"><i class="fa-solid fa-bolt"></i></div>
+        <div class="brand-name">VORAPRIME</div>
       </div>
 
-      <div class="flex border-b border-zinc-800 mb-5">
-        <button id="tab-login" onclick="switchTab('login')" class="flex-1 py-3 text-center text-[13px] font-bold border-b-2 border-orange-500 text-orange-500">ĐĂNG NHẬP</button>
-        <button id="tab-register" onclick="switchTab('register')" class="flex-1 py-3 text-center text-[13px] font-bold border-b-2 border-transparent text-zinc-500">ĐĂNG KÝ</button>
+      <!-- Tabs -->
+      <div class="tabs">
+        <button id="tab-login"    type="button" onclick="switchTab('login')"    class="tab active">Đăng nhập</button>
+        <button id="tab-register" type="button" onclick="switchTab('register')" class="tab">Đăng ký</button>
       </div>
 
-      <div id="msg-box" class="hidden mb-4 rounded-lg p-3 flex items-start gap-2 border"><p id="msg-text" class="text-xs font-medium"></p></div>
+      <!-- Message -->
+      <div id="msg-box" class="msg"></div>
 
-      <form id="login-form" onsubmit="handleAuth(event, 'login')" class="space-y-4">
-        <div><label class="block text-[10px] font-bold text-zinc-500 uppercase mb-1.5 ml-1">Tài khoản</label><input type="text" id="login-username" required class="w-full bg-[#18181b] border border-zinc-800 rounded-xl px-4 py-3 text-sm text-zinc-200"></div>
-        <div><label class="block text-[10px] font-bold text-zinc-500 uppercase mb-1.5 ml-1">Mật khẩu</label><input type="password" id="login-password" required class="w-full bg-[#18181b] border border-zinc-800 rounded-xl px-4 py-3 text-sm text-zinc-200"></div>
-        <button type="submit" id="btn-login-submit" class="w-full py-3.5 primary-btn text-white font-bold rounded-xl text-[14px] mt-2">Đăng Nhập</button>
+      <!-- LOGIN FORM -->
+      <form id="login-form" onsubmit="handleAuth(event, 'login')">
+        <div class="field">
+          <label>Tài khoản</label>
+          <input type="text" id="login-username" required autocomplete="username" placeholder="Nhập tài khoản">
+        </div>
+        <div class="field">
+          <label>Mật khẩu</label>
+          <input type="password" id="login-password" required autocomplete="current-password" placeholder="Nhập mật khẩu">
+        </div>
+        <button type="submit" id="btn-login-submit" class="submit">Đăng Nhập</button>
       </form>
 
-      <form id="register-form" onsubmit="handleAuth(event, 'register')" class="hidden space-y-4">
-        <div><label class="block text-[10px] font-bold text-zinc-500 uppercase mb-1.5 ml-1">Tên Tài khoản (5 đến 8 kí tự)</label><input type="text" id="reg-username" required minlength="5" maxlength="8" class="w-full bg-[#18181b] border border-zinc-800 rounded-xl px-4 py-2.5 text-sm text-zinc-200"></div>
-        <div class="grid grid-cols-2 gap-3">
-          <div><label class="block text-[10px] font-bold text-zinc-500 uppercase mb-1.5 ml-1">Gmail</label><input type="email" id="reg-email" required class="w-full bg-[#18181b] border border-zinc-800 rounded-xl px-3 py-2.5 text-sm text-zinc-200"></div>
-          <div><label class="block text-[10px] font-bold text-zinc-500 uppercase mb-1.5 ml-1">Xác nhận Gmail</label><input type="email" id="reg-email-confirm" required class="w-full bg-[#18181b] border border-zinc-800 rounded-xl px-3 py-2.5 text-sm text-zinc-200"></div>
+      <!-- REGISTER FORM -->
+      <form id="register-form" onsubmit="handleAuth(event, 'register')" style="display:none;">
+        <div class="field">
+          <label>Tài khoản · 5–8 ký tự</label>
+          <input type="text" id="reg-username" required minlength="5" maxlength="8" autocomplete="username" placeholder="username">
         </div>
-        <div class="grid grid-cols-2 gap-3">
-          <div><label class="block text-[10px] font-bold text-zinc-500 uppercase mb-1.5 ml-1">Mật khẩu</label><input type="password" id="reg-password" required class="w-full bg-[#18181b] border border-zinc-800 rounded-xl px-3 py-2.5 text-sm text-zinc-200"></div>
-          <div><label class="block text-[10px] font-bold text-zinc-500 uppercase mb-1.5 ml-1">Nhập lại Mật Khẩu</label><input type="password" id="reg-password-confirm" required class="w-full bg-[#18181b] border border-zinc-800 rounded-xl px-3 py-2.5 text-sm text-zinc-200"></div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label>Email</label>
+            <input type="email" id="reg-email" required autocomplete="email" placeholder="you@mail.com">
+          </div>
+          <div class="field">
+            <label>Xác nhận mail</label>
+            <input type="email" id="reg-email-confirm" required placeholder="you@mail.com">
+          </div>
         </div>
-        <div><label class="block text-[10px] font-bold text-orange-500 uppercase mb-1.5 ml-1">Mã xác nhận</label><div class="flex gap-2"><input type="text" id="reg-otp" required class="flex-1 bg-[#18181b] border border-zinc-800 rounded-xl px-4 py-2.5 text-sm text-zinc-200"><button type="button" id="btn-send-otp" onclick="sendOTP()" class="px-4 bg-zinc-800 text-orange-400 font-bold text-xs rounded-xl">Nhận Mã</button></div></div>
-        <button type="submit" id="btn-reg-submit" class="w-full py-3.5 primary-btn text-white font-bold rounded-xl text-[14px] mt-2">Tạo Tài Khoản</button>
+
+        <div class="grid-2">
+          <div class="field">
+            <label>Mật khẩu</label>
+            <input type="password" id="reg-password" required autocomplete="new-password" placeholder="••••••••">
+          </div>
+          <div class="field">
+            <label>Nhập lại MK</label>
+            <input type="password" id="reg-password-confirm" required autocomplete="new-password" placeholder="••••••••">
+          </div>
+        </div>
+
+        <div class="field">
+          <label style="color:#fb923c;">Mã xác nhận</label>
+          <div class="otp-row">
+            <input type="text" id="reg-otp" required inputmode="numeric" autocomplete="one-time-code" placeholder="123456">
+            <button type="button" id="btn-send-otp" onclick="sendOTP()" class="btn-otp">Nhận mã</button>
+          </div>
+        </div>
+
+        <button type="submit" id="btn-reg-submit" class="submit">Tạo Tài Khoản</button>
       </form>
     </div>
   </main>
 
+  <!-- Footer -->
+  <div class="foot">
+    <span>© 2026 Voraprime</span>
+    <span>Encrypted · TLS 1.3</span>
+  </div>
+
   <script>
-    // ✅ ĐÃ ĐIỀN SẴN LINK HOST SPACEIFY CỦA BẠN VÀO ĐÂY:
-    const API_URL = "http://de26.spaceify.eu:26355"; 
-    
-    function switchTab(tab) {
-      document.getElementById('msg-box').classList.add('hidden');
+    const API_URL = "http://de26.spaceify.eu:26355";
+
+    /* ============ TAB SWITCHING ============ */
+    function switchTab(tab, updateUrl = true) {
+      document.getElementById('msg-box').className = 'msg';
+
+      const tabLogin    = document.getElementById('tab-login');
+      const tabRegister = document.getElementById('tab-register');
+      const formLogin    = document.getElementById('login-form');
+      const formRegister = document.getElementById('register-form');
+
       if (tab === 'login') {
-        document.getElementById('tab-login').className = 'flex-1 py-3 text-center text-[13px] font-bold border-b-2 border-orange-500 text-orange-500'; document.getElementById('tab-register').className = 'flex-1 py-3 text-center text-[13px] font-bold border-b-2 border-transparent text-zinc-500';
-        document.getElementById('login-form').classList.remove('hidden'); document.getElementById('register-form').classList.add('hidden');
+        tabLogin.classList.add('active');
+        tabRegister.classList.remove('active');
+        formLogin.style.display = '';
+        formRegister.style.display = 'none';
       } else {
-        document.getElementById('tab-register').className = 'flex-1 py-3 text-center text-[13px] font-bold border-b-2 border-orange-500 text-orange-500'; document.getElementById('tab-login').className = 'flex-1 py-3 text-center text-[13px] font-bold border-b-2 border-transparent text-zinc-500';
-        document.getElementById('register-form').classList.remove('hidden'); document.getElementById('login-form').classList.add('hidden');
+        tabRegister.classList.add('active');
+        tabLogin.classList.remove('active');
+        formRegister.style.display = '';
+        formLogin.style.display = 'none';
+      }
+
+      if (updateUrl && history.replaceState) {
+        const url = new URL(window.location.href);
+        url.searchParams.set('tab', tab);
+        history.replaceState({}, '', url);
       }
     }
+
+    /* ============ AUTO OPEN FROM URL ============ */
+    (function init() {
+      const tab = new URLSearchParams(window.location.search).get('tab');
+      switchTab(tab === 'register' ? 'register' : 'login', false);
+    })();
+
+    /* ============ MESSAGE ============ */
     function showMessage(text, type = 'error') {
-      const box = document.getElementById('msg-box'); const msgText = document.getElementById('msg-text');
-      box.className = 'mb-4 rounded-lg p-3 flex items-start gap-2 border ' + (type === 'error' ? 'bg-rose-500/10 border-rose-500/20' : 'bg-emerald-500/10 border-emerald-500/20');
-      msgText.className = 'text-xs font-medium ' + (type === 'error' ? 'text-rose-400' : 'text-emerald-400');
-      msgText.innerText = text; box.classList.remove('hidden');
+      const box = document.getElementById('msg-box');
+      box.className = 'msg show ' + type;
+      box.textContent = text;
     }
+
+    /* ============ SEND OTP ============ */
     async function sendOTP() {
-      const email = document.getElementById('reg-email').value; const emailConfirm = document.getElementById('reg-email-confirm').value;
-      if (!email || email !== emailConfirm) return showMessage('Email không hợp lệ hoặc không khớp!', 'error');
-      const btn = document.getElementById('btn-send-otp'); btn.innerHTML = '...'; btn.disabled = true;
+      const email = document.getElementById('reg-email').value.trim();
+      const emailConfirm = document.getElementById('reg-email-confirm').value.trim();
+
+      if (!email || email !== emailConfirm) {
+        return showMessage('Email không hợp lệ hoặc không khớp!', 'error');
+      }
+
+      const btn = document.getElementById('btn-send-otp');
+      const original = btn.textContent;
+      btn.textContent = '...';
+      btn.disabled = true;
+
       try {
-        const res = await fetch(`${API_URL}/api/auth/send-otp`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) });
-        if (!res.ok) throw new Error('Lỗi gửi mã'); showMessage(`Đã gửi OTP.`, 'success');
-        let count = 60; const iv = setInterval(() => { btn.innerText = `Thử lại (${count}s)`; count--; if (count < 0) { clearInterval(iv); btn.innerText = 'Nhận Mã'; btn.disabled = false; } }, 1000);
-      } catch (err) { showMessage('Hệ thống bận!', 'error'); btn.innerText = 'Nhận Mã'; btn.disabled = false; }
+        const res = await fetch(`${API_URL}/api/auth/send-otp`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+        if (!res.ok) throw new Error();
+        showMessage('Đã gửi OTP tới email của bạn.', 'success');
+
+        let count = 60;
+        const iv = setInterval(() => {
+          btn.textContent = `Thử lại ${count}s`;
+          count--;
+          if (count < 0) {
+            clearInterval(iv);
+            btn.textContent = original;
+            btn.disabled = false;
+          }
+        }, 1000);
+      } catch {
+        showMessage('Hệ thống bận, vui lòng thử lại!', 'error');
+        btn.textContent = original;
+        btn.disabled = false;
+      }
     }
+
+    /* ============ HANDLE AUTH ============ */
     async function handleAuth(e, type) {
-      e.preventDefault(); document.getElementById('msg-box').classList.add('hidden');
-      const btn = type === 'login' ? document.getElementById('btn-login-submit') : document.getElementById('btn-reg-submit');
-      const originalHtml = btn.innerHTML; btn.innerHTML = 'Đang xử lý...'; btn.disabled = true;
+      e.preventDefault();
+      document.getElementById('msg-box').className = 'msg';
+
+      const btn = type === 'login'
+        ? document.getElementById('btn-login-submit')
+        : document.getElementById('btn-reg-submit');
+      const original = btn.textContent;
+      btn.textContent = 'Đang xử lý...';
+      btn.disabled = true;
+
       try {
         let payload = {};
+
         if (type === 'register') {
-          payload = { username: document.getElementById('reg-username').value, email: document.getElementById('reg-email').value, password: document.getElementById('reg-password').value, otp: document.getElementById('reg-otp').value };
-          if (payload.password !== document.getElementById('reg-password-confirm').value) throw new Error('Mật khẩu không khớp!');
-        } else { payload = { username: document.getElementById('login-username').value, password: document.getElementById('login-password').value }; }
-        
-        const res = await fetch(`${API_URL}/api/auth/${type}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-        const data = await res.json(); if (!res.ok) throw new Error(data.error || 'Lỗi!');
-        if (type === 'login') { localStorage.setItem('hub_token', data.token); localStorage.setItem('hub_user', data.username); window.location.href = 'lobby.html'; } 
-        else { alert('Đăng ký thành công!'); document.getElementById('register-form').reset(); switchTab('login'); }
-      } catch (err) { showMessage(err.message, 'error'); } finally { btn.innerHTML = originalHtml; btn.disabled = false; }
+          const p1 = document.getElementById('reg-password').value;
+          const p2 = document.getElementById('reg-password-confirm').value;
+          if (p1 !== p2) throw new Error('Mật khẩu không khớp!');
+
+          payload = {
+            username: document.getElementById('reg-username').value.trim(),
+            email:    document.getElementById('reg-email').value.trim(),
+            password: p1,
+            otp:      document.getElementById('reg-otp').value.trim()
+          };
+        } else {
+          payload = {
+            username: document.getElementById('login-username').value.trim(),
+            password: document.getElementById('login-password').value
+          };
+        }
+
+        const res = await fetch(`${API_URL}/api/auth/${type}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.error || 'Có lỗi xảy ra, vui lòng thử lại!');
+
+        if (type === 'login') {
+          localStorage.setItem('hub_token', data.token);
+          localStorage.setItem('hub_user', data.username);
+          window.location.href = 'lobby.html';
+        } else {
+          showMessage('Đăng ký thành công! Vui lòng đăng nhập.', 'success');
+          document.getElementById('register-form').reset();
+          setTimeout(() => switchTab('login'), 900);
+        }
+      } catch (err) {
+        showMessage(err.message || 'Có lỗi xảy ra!', 'error');
+      } finally {
+        btn.textContent = original;
+        btn.disabled = false;
+      }
     }
   </script>
 </body>
-</html>
+</html> 
