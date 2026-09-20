@@ -1,52 +1,376 @@
-<!DOCTYPE html>
-<html lang="vi" class="dark">
+<!doctype html>
+<html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Voraprime — Hub</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
+  <meta name="theme-color" content="#050b18" />
+  <title>Voraprime — Xác thực</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
-    body { margin: 0; font-family: 'Outfit', sans-serif; background-color: #0a0a0a; color: white; background-image: linear-gradient(to right, rgba(255,255,255,.015) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,.015) 1px, transparent 1px); background-size: 40px 40px; overflow-x: hidden; }
-    .glow { position: absolute; width: 400px; height: 400px; border-radius: 50%; pointer-events: none; z-index: -1; opacity: 0.15; filter: blur(60px); }
-    .glow-orange { top: -100px; right: -100px; background: radial-gradient(circle, #f97316 0%, transparent 70%); }
-    .glass-card { background: #111111; border: 1px solid #27272a; transition: all 0.2s ease; }
-    .glass-card:hover { border-color: rgba(249,115,22,0.3); background: #171717; transform: translateY(-2px); }
+    :root{
+      --bg:#050b18;
+      --panel:#0a1224;
+      --line:rgba(132,168,255,.16);
+      --text:#f5f7ff;
+      --muted:#aeb9d6;
+      --blue:#5e9cff;
+      --cyan:#29d8ff;
+      --violet:#8b79ff;
+      --green:#52f2ba;
+      --yellow:#ffd35a;
+      --shadow:0 18px 70px rgba(0,0,0,.38);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+    html,body{max-width:100%;overflow-x:hidden;overscroll-behavior-x:none}
+    body{
+      margin:0;color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:
+        radial-gradient(circle at 18% 6%,rgba(58,111,255,.16),transparent 28%),
+        radial-gradient(circle at 88% 20%,rgba(0,214,255,.10),transparent 28%),
+        radial-gradient(circle at 65% 90%,rgba(118,76,255,.08),transparent 25%),
+        var(--bg);
+      min-height:100vh;
+      min-height:100dvh;
+      display:flex;
+      flex-direction:column;
+      overflow-x:hidden;
+      -webkit-font-smoothing:antialiased;
+    }
+    a{color:inherit;text-decoration:none}
+    button,input,select{font:inherit}
+    input,select,textarea,button{font-size:16px;touch-action:manipulation}
+    a,button,[role="button"],label{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+    .wrap{width:min(1240px,calc(100% - 34px));margin:auto}
+    .grid-bg{position:fixed;inset:0;pointer-events:none;opacity:.13;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:48px 48px;mask-image:linear-gradient(to bottom,black,transparent 85%);-webkit-mask-image:linear-gradient(to bottom,black,transparent 85%);z-index:0}
+
+    header{position:relative;z-index:20;background:rgba(5,11,24,.4);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(151,179,255,.09)}
+    .nav{height:86px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+    .brand{display:flex;align-items:center;gap:12px;min-width:0}
+    .brand-logo{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(145deg,#2d6eff,#26cfff);box-shadow:0 0 26px rgba(58,130,255,.42);font-size:23px;flex:none}
+    .brand-title{font-size:18px;font-weight:800;line-height:1.1}
+    .brand-sub{font-size:12px;color:#7784a4;margin-top:3px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;border:1px solid rgba(133,171,255,.22);border-radius:16px;padding:13px 20px;font-weight:750;cursor:pointer;transition:.22s ease;background:rgba(11,18,38,.65);color:white;text-decoration:none;white-space:nowrap;touch-action:manipulation}
+    .btn:hover{transform:translateY(-1px);border-color:rgba(124,171,255,.45)}
+
+    main{flex:1;display:flex;align-items:center;justify-content:center;padding:32px 22px 48px;position:relative;z-index:1}
+    .auth-card{
+      width:100%;max-width:440px;padding:38px 34px;border-radius:26px;
+      background:linear-gradient(145deg,rgba(17,31,70,.92),rgba(6,13,28,.94));
+      border:1px solid rgba(103,152,255,.35);
+      box-shadow:0 25px 80px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.05);
+      position:relative;overflow:hidden;
+      animation:cardIn .7s cubic-bezier(.22,1,.36,1) both;
+    }
+    .auth-card::before{
+      content:"";position:absolute;inset:auto -30% -60% -30%;height:80%;
+      background:radial-gradient(circle,rgba(32,211,255,.12),transparent 58%);
+      pointer-events:none;
+    }
+    @keyframes cardIn{from{opacity:0;transform:translateY(18px) scale(.98)}to{opacity:1;transform:none}}
+
+    .auth-brand{text-align:center;margin-bottom:28px;position:relative;z-index:1}
+    .auth-logo{width:56px;height:56px;border-radius:18px;margin:0 auto 14px;display:grid;place-items:center;background:linear-gradient(145deg,#2d6eff,#26cfff);box-shadow:0 0 32px rgba(58,130,255,.55);font-size:26px}
+    .auth-title{font-size:19px;font-weight:900;letter-spacing:.05em;line-height:1}
+    .auth-sub{font-size:13px;color:var(--muted);margin-top:8px}
+
+    .tabs{display:flex;border-bottom:1px solid rgba(151,179,255,.15);margin-bottom:22px;position:relative;z-index:1}
+    .tab{flex:1;background:transparent;border:none;padding:14px 0 16px;font-size:13.5px;font-weight:700;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:.25s;letter-spacing:.02em}
+    .tab.active{color:#fff;border-bottom-color:#5e9cff}
+    .tab:hover{color:#d8e1f7}
+    .tab.active:hover{color:#fff}
+
+    .msg{display:none;padding:12px 14px;border-radius:12px;font-size:12.5px;font-weight:500;margin-bottom:16px;border:1px solid;line-height:1.5;position:relative;z-index:1}
+    .msg.show{display:block}
+    .msg.error{background:rgba(244,63,94,.1);border-color:rgba(244,63,94,.3);color:#fb7185}
+    .msg.success{background:rgba(82,242,186,.1);border-color:rgba(82,242,186,.3);color:#6ff4ca}
+
+    .field{margin-bottom:14px;position:relative;z-index:1}
+    .field label{display:block;font-size:12.5px;color:#aebad4;margin-bottom:7px;font-weight:600;letter-spacing:.01em}
+    .field input{
+      width:100%;padding:13px 14px;border-radius:12px;
+      border:1px solid rgba(137,165,219,.19);
+      background:#081329;color:white;outline:none;
+      transition:.22s;font-family:inherit;
+    }
+    .field input:focus{border-color:#5797ff;box-shadow:0 0 0 3px rgba(87,151,255,.14)}
+    .field input::placeholder{color:#5b6a8c}
+    .field input:-webkit-autofill{-webkit-box-shadow:0 0 0 40px #081329 inset !important;-webkit-text-fill-color:#fff !important}
+
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+    .submit{
+      width:100%;padding:15px;margin-top:8px;border:none;border-radius:14px;
+      background:linear-gradient(135deg,#6da5ff,#4b80ff);
+      color:#fff;font-weight:800;font-size:14.5px;letter-spacing:.02em;
+      cursor:pointer;transition:.25s cubic-bezier(.22,1,.36,1);
+      box-shadow:0 10px 28px rgba(69,120,255,.35);position:relative;z-index:1;
+    }
+    .submit:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 14px 38px rgba(69,120,255,.5)}
+    .submit:active:not(:disabled){transform:translateY(0) scale(.99)}
+    .submit:disabled{opacity:.55;cursor:not-allowed}
+
+    .otp-row{display:flex;gap:8px}
+    .otp-row input{flex:1}
+    .btn-otp{
+      padding:13px 16px;border-radius:12px;
+      background:rgba(94,156,255,.09);border:1px solid rgba(94,156,255,.3);
+      color:#8eb8ff;font-weight:800;font-size:12.5px;cursor:pointer;
+      white-space:nowrap;transition:.22s;letter-spacing:.01em;
+    }
+    .btn-otp:hover:not(:disabled){background:rgba(94,156,255,.16);border-color:#5e9cff;color:#fff}
+    .btn-otp:disabled{opacity:.5;cursor:not-allowed}
+
+    footer{padding:22px 22px;color:#7f8baa;text-align:center;font-size:12px;position:relative;z-index:1;border-top:1px solid rgba(151,179,255,.08)}
+    .footer-brand{color:#a4c0ff;font-weight:800}
+
+    @media(max-width:720px){
+      .nav{height:74px}
+      .wrap{width:min(100% - 22px,1240px)}
+      .brand-logo{width:42px;height:42px;border-radius:12px;font-size:20px}
+      .brand-title{font-size:16px}
+      .brand-sub{font-size:11px}
+      main{padding:20px 18px 32px}
+      .auth-card{padding:30px 22px;border-radius:22px}
+      .auth-logo{width:50px;height:50px;border-radius:16px;font-size:23px}
+      .auth-title{font-size:17px}
+      .auth-sub{font-size:12px}
+      .tab{font-size:12.5px;padding:12px 0 14px}
+      .field label{font-size:12px}
+      .field input{padding:12px 13px;font-size:15px}
+      .submit{padding:14px;font-size:14px;border-radius:12px}
+      .btn-otp{padding:12px 12px;font-size:11.5px}
+      .btn{padding:11px 14px;font-size:13.5px;border-radius:13px}
+      footer{padding:16px 18px;font-size:11px}
+    }
+    @media(max-width:470px){
+      .grid-2{grid-template-columns:1fr;gap:0}
+      .grid-2 .field{margin-bottom:14px}
+    }
+    @media (prefers-reduced-motion: reduce){
+      *,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important}
+    }
   </style>
 </head>
-<body class="min-h-screen pb-10 flex flex-col">
-  <div class="glow glow-orange"></div>
-  <header class="sticky top-0 z-40 border-b border-white/[.05] bg-[#0a0a0a]/80 backdrop-blur-md">
-    <div class="max-w-3xl mx-auto px-5 py-4 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <div class="w-9 h-9 rounded-xl flex items-center justify-center bg-gradient-to-br from-orange-500 to-red-600 shadow-md"><i class="fa-solid fa-bolt text-white text-sm"></i></div>
+<body>
+  <div class="grid-bg"></div>
+
+  <header>
+    <div class="wrap nav">
+      <a class="brand" href="./index.html">
+        <div class="brand-logo">⚡</div>
         <div>
-          <div class="text-[17px] font-black tracking-[.1em] uppercase leading-tight">Voraprime</div>
-          <div class="text-[8px] text-orange-500 tracking-[.25em] uppercase font-bold">Lobby / Sảnh</div>
+          <div class="brand-title">Voraprime</div>
+          <div class="brand-sub">Xác thực</div>
         </div>
-      </div>
-      <button onclick="logout()" class="w-9 h-9 rounded-xl border border-zinc-800 bg-[#111111] text-rose-500 hover:bg-zinc-800 transition"><i class="fa-solid fa-power-off text-sm"></i></button>
+      </a>
+      <a href="./index.html" class="btn">← Về trang chủ</a>
     </div>
   </header>
-  <main class="flex-1 max-w-3xl mx-auto w-full px-5 pt-8">
-    <div class="mb-8">
-      <h1 class="text-2xl font-black mb-1">Xin chào, <span id="user-name" class="text-orange-500">Người dùng</span>!</h1>
-      <p class="text-[13px] text-zinc-500 font-medium">Chọn một công cụ tự động hóa để bắt đầu.</p>
-    </div>
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-      <a href="treovoice.html" class="glass-card rounded-3xl p-6 relative overflow-hidden group">
-        <div class="w-12 h-12 rounded-2xl bg-orange-500/10 text-orange-500 flex items-center justify-center text-xl mb-4 border border-orange-500/20"><i class="fa-solid fa-microphone-lines"></i></div>
-        <h3 class="text-lg font-bold text-white mb-2">Treo Voice 24/7</h3>
-        <p class="text-xs text-zinc-400 font-medium leading-relaxed mb-4">Quản lý account treo voice Discord 24/7, tuỳ chỉnh trạng thái.</p>
-        <span class="text-[10px] font-bold text-orange-400 flex items-center gap-1"><i class="fa-solid fa-circle-play"></i> TRUY CẬP</span>
-      </a>
+
+  <main>
+    <div class="auth-card">
+      <div class="auth-brand">
+        <div class="auth-logo">⚡</div>
+        <div class="auth-title">VORAPRIME</div>
+        <div class="auth-sub">Đăng nhập hoặc tạo tài khoản để bắt đầu</div>
+      </div>
+
+      <div class="tabs">
+        <button id="tab-login"    type="button" onclick="switchTab('login')"    class="tab active">Đăng nhập</button>
+        <button id="tab-register" type="button" onclick="switchTab('register')" class="tab">Đăng ký</button>
+      </div>
+
+      <div id="msg-box" class="msg"></div>
+
+      <form id="login-form" onsubmit="handleAuth(event, 'login')">
+        <div class="field">
+          <label>Tài khoản</label>
+          <input type="text" id="login-username" required autocomplete="username" placeholder="Nhập tài khoản">
+        </div>
+        <div class="field">
+          <label>Mật khẩu</label>
+          <input type="password" id="login-password" required autocomplete="current-password" placeholder="Nhập mật khẩu">
+        </div>
+        <button type="submit" id="btn-login-submit" class="submit">Đăng nhập</button>
+      </form>
+
+      <form id="register-form" onsubmit="handleAuth(event, 'register')" style="display:none;">
+        <div class="field">
+          <label>Tài khoản · 5–8 ký tự</label>
+          <input type="text" id="reg-username" required minlength="5" maxlength="8" autocomplete="username" placeholder="username">
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label>Email</label>
+            <input type="email" id="reg-email" required autocomplete="email" placeholder="you@mail.com">
+          </div>
+          <div class="field">
+            <label>Xác nhận mail</label>
+            <input type="email" id="reg-email-confirm" required placeholder="you@mail.com">
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label>Mật khẩu</label>
+            <input type="password" id="reg-password" required autocomplete="new-password" placeholder="••••••••">
+          </div>
+          <div class="field">
+            <label>Nhập lại MK</label>
+            <input type="password" id="reg-password-confirm" required autocomplete="new-password" placeholder="••••••••">
+          </div>
+        </div>
+
+        <div class="field">
+          <label style="color:#8eb8ff;">Mã xác nhận</label>
+          <div class="otp-row">
+            <input type="text" id="reg-otp" required inputmode="numeric" autocomplete="one-time-code" placeholder="123456">
+            <button type="button" id="btn-send-otp" onclick="sendOTP()" class="btn-otp">Nhận mã</button>
+          </div>
+        </div>
+
+        <button type="submit" id="btn-reg-submit" class="submit">Tạo tài khoản</button>
+      </form>
     </div>
   </main>
+
+  <footer>
+    <div class="footer-brand">⚡ Voraprime</div>
+    <div style="margin-top:6px">Chợ mua bán số Việt Nam · © 2026</div>
+  </footer>
+
   <script>
-    const token = localStorage.getItem('hub_token'); const username = localStorage.getItem('hub_user');
-    if (!token) window.location.href = 'login.html'; if (username) document.getElementById('user-name').innerText = username;
-    function logout() { localStorage.clear(); window.location.href = 'login.html'; }
+    const API_URL = "http://de26.spaceify.eu:26355";
+
+    function switchTab(tab, updateUrl = true) {
+      document.getElementById('msg-box').className = 'msg';
+      const tabLogin    = document.getElementById('tab-login');
+      const tabRegister = document.getElementById('tab-register');
+      const formLogin    = document.getElementById('login-form');
+      const formRegister = document.getElementById('register-form');
+
+      if (tab === 'login') {
+        tabLogin.classList.add('active');
+        tabRegister.classList.remove('active');
+        formLogin.style.display = '';
+        formRegister.style.display = 'none';
+      } else {
+        tabRegister.classList.add('active');
+        tabLogin.classList.remove('active');
+        formRegister.style.display = '';
+        formLogin.style.display = 'none';
+      }
+
+      if (updateUrl && history.replaceState) {
+        const url = new URL(window.location.href);
+        url.searchParams.set('tab', tab);
+        history.replaceState({}, '', url);
+      }
+    }
+
+    (function init() {
+      const tab = new URLSearchParams(window.location.search).get('tab');
+      switchTab(tab === 'register' ? 'register' : 'login', false);
+    })();
+
+    function showMessage(text, type = 'error') {
+      const box = document.getElementById('msg-box');
+      box.className = 'msg show ' + type;
+      box.textContent = text;
+    }
+
+    async function sendOTP() {
+      const email = document.getElementById('reg-email').value.trim();
+      const emailConfirm = document.getElementById('reg-email-confirm').value.trim();
+      if (!email || email !== emailConfirm) return showMessage('Email không hợp lệ hoặc không khớp!', 'error');
+
+      const btn = document.getElementById('btn-send-otp');
+      const original = btn.textContent;
+      btn.textContent = '...';
+      btn.disabled = true;
+
+      try {
+        const res = await fetch(`${API_URL}/api/auth/send-otp`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+        if (!res.ok) throw new Error();
+        showMessage('Đã gửi OTP tới email của bạn.', 'success');
+
+        let count = 60;
+        const iv = setInterval(() => {
+          btn.textContent = `Thử lại ${count}s`;
+          count--;
+          if (count < 0) { clearInterval(iv); btn.textContent = original; btn.disabled = false; }
+        }, 1000);
+      } catch {
+        showMessage('Hệ thống bận, vui lòng thử lại!', 'error');
+        btn.textContent = original;
+        btn.disabled = false;
+      }
+    }
+
+    async function handleAuth(e, type) {
+      e.preventDefault();
+      document.getElementById('msg-box').className = 'msg';
+
+      const btn = type === 'login'
+        ? document.getElementById('btn-login-submit')
+        : document.getElementById('btn-reg-submit');
+      const original = btn.textContent;
+      btn.textContent = 'Đang xử lý...';
+      btn.disabled = true;
+
+      try {
+        let payload = {};
+
+        if (type === 'register') {
+          const p1 = document.getElementById('reg-password').value;
+          const p2 = document.getElementById('reg-password-confirm').value;
+          if (p1 !== p2) throw new Error('Mật khẩu không khớp!');
+          payload = {
+            username: document.getElementById('reg-username').value.trim(),
+            email:    document.getElementById('reg-email').value.trim(),
+            password: p1,
+            otp:      document.getElementById('reg-otp').value.trim()
+          };
+        } else {
+          payload = {
+            username: document.getElementById('login-username').value.trim(),
+            password: document.getElementById('login-password').value
+          };
+        }
+
+        const res = await fetch(`${API_URL}/api/auth/${type}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.error || 'Có lỗi xảy ra, vui lòng thử lại!');
+
+        if (type === 'login') {
+          localStorage.setItem('hub_token', data.token);
+          localStorage.setItem('hub_user', data.username);
+          window.location.href = 'lobby.html';
+        } else {
+          showMessage('Đăng ký thành công! Vui lòng đăng nhập.', 'success');
+          document.getElementById('register-form').reset();
+          setTimeout(() => switchTab('login'), 900);
+        }
+      } catch (err) {
+        showMessage(err.message || 'Có lỗi xảy ra!', 'error');
+      } finally {
+        btn.textContent = original;
+        btn.disabled = false;
+      }
+    }
   </script>
 </body>
 </html>
