@@ -1,48 +1,546 @@
 <!DOCTYPE html>
-<html lang="vi" class="dark">
+<html lang="vi" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Voraprime — Automation</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
-    body { margin: 0; font-family: 'Outfit', sans-serif; background-color: #0a0a0a; color: white; overflow-x: hidden; background-image: linear-gradient(to right, rgba(255,255,255,.015) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,.015) 1px, transparent 1px); background-size: 40px 40px; }
-    .glow { position: absolute; width: 600px; height: 600px; border-radius: 50%; pointer-events: none; z-index: -1; opacity: 0.15; filter: blur(80px); }
-    .glow-orange { top: -200px; left: 50%; transform: translateX(-50%); background: radial-gradient(circle, #f97316 0%, transparent 70%); }
-    .btn-orange { background: linear-gradient(to right, #ea580c, #f97316); box-shadow: 0 4px 20px rgba(249, 115, 22, 0.3); transition: all 0.2s ease; }
-    .btn-orange:active { transform: scale(0.96); box-shadow: 0 2px 10px rgba(249, 115, 22, 0.2); }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Voraprime — Tự động hoá 24/7</title>
+<meta name="description" content="Voraprime biến sự phức tạp thành tự động. Treo Voice, Activity, Custom Status — account chạy 24/7, không cần cắm máy.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: { sans: ['Outfit', 'ui-sans-serif', 'system-ui'] },
+        colors: {
+          ink:  '#0a0a0a',
+          ink2: '#0f0f10',
+          brand: { 400:'#fb923c', 500:'#f97316', 600:'#ea580c' }
+        },
+        keyframes: {
+          floaty:  { '0%,100%':{transform:'translateY(0)'}, '50%':{transform:'translateY(-10px)'} },
+          pulseSoft:{ '0%,100%':{opacity:'1'}, '50%':{opacity:'.35'} },
+          shine:   { '0%':{backgroundPosition:'0% 50%'}, '100%':{backgroundPosition:'200% 50%'} },
+          drift:   { '0%,100%':{transform:'translate(0,0) scale(1)'}, '50%':{transform:'translate(20px,-20px) scale(1.08)'} }
+        },
+        animation: {
+          floaty:  'floaty 6s ease-in-out infinite',
+          pulseSoft:'pulseSoft 2.4s ease-in-out infinite',
+          shine:   'shine 6s linear infinite',
+          drift:   'drift 14s ease-in-out infinite'
+        }
+      }
+    }
+  }
+</script>
+
+<style>
+  :root { color-scheme: dark; }
+
+  body {
+    background-color: #0a0a0a;
+    color: #fff;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Lưới nền */
+  .grid-bg::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image:
+      linear-gradient(to right, rgba(255,255,255,.028) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,.028) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: radial-gradient(ellipse 90% 60% at 50% 0%, #000 40%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 90% 60% at 50% 0%, #000 40%, transparent 100%);
+  }
+
+  /* Vệt sáng nền */
+  .glow {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(90px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Nút cam */
+  .btn-orange {
+    background: linear-gradient(135deg, #ea580c 0%, #f97316 55%, #fb923c 100%);
+    box-shadow: 0 6px 24px -6px rgba(249,115,22,.55), inset 0 1px 0 rgba(255,255,255,.18);
+    transition: transform .18s cubic-bezier(.22,1,.36,1), box-shadow .25s ease, filter .25s ease;
+  }
+  .btn-orange:hover  { transform: translateY(-2px); box-shadow: 0 12px 34px -8px rgba(249,115,22,.7), inset 0 1px 0 rgba(255,255,255,.22); filter: saturate(1.1); }
+  .btn-orange:active { transform: translateY(0) scale(.975); }
+
+  /* Nút viền */
+  .btn-ghost {
+    transition: background-color .2s ease, border-color .2s ease, transform .18s ease;
+  }
+  .btn-ghost:hover { background-color: rgba(255,255,255,.05); border-color: rgba(255,255,255,.18); transform: translateY(-2px); }
+  .btn-ghost:active { transform: translateY(0) scale(.98); }
+
+  /* Thẻ kính */
+  .card {
+    position: relative;
+    background: linear-gradient(180deg, rgba(255,255,255,.045) 0%, rgba(255,255,255,.015) 100%);
+    border: 1px solid rgba(255,255,255,.07);
+    backdrop-filter: blur(8px);
+    transition: transform .3s cubic-bezier(.22,1,.36,1), border-color .3s ease, background .3s ease;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(249,115,22,.35);
+    background: linear-gradient(180deg, rgba(249,115,22,.07) 0%, rgba(255,255,255,.015) 100%);
+  }
+  .card::after {
+    content:"";
+    position:absolute; inset:-1px;
+    border-radius: inherit;
+    padding:1px;
+    background: linear-gradient(135deg, rgba(249,115,22,.5), transparent 45%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    opacity: 0;
+    transition: opacity .3s ease;
+    pointer-events: none;
+  }
+  .card:hover::after { opacity: 1; }
+
+  /* Chữ gradient */
+  .text-gradient {
+    background: linear-gradient(100deg, #f97316, #fdba74, #f97316);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shine 6s linear infinite;
+  }
+
+  /* Reveal khi cuộn */
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(26px);
+    transition: opacity .8s cubic-bezier(.22,1,.36,1), transform .8s cubic-bezier(.22,1,.36,1);
+    will-change: opacity, transform;
+  }
+  [data-reveal].is-visible { opacity: 1; transform: none; }
+
+  /* Terminal log */
+  .log-line { animation: logIn .45s cubic-bezier(.22,1,.36,1) both; }
+  @keyframes logIn { from { opacity:0; transform: translateY(6px);} to {opacity:1; transform:none;} }
+
+  /* FAQ */
+  details > summary { list-style: none; cursor: pointer; }
+  details > summary::-webkit-details-marker { display: none; }
+  details[open] .faq-icon { transform: rotate(45deg); }
+  .faq-icon { transition: transform .3s cubic-bezier(.22,1,.36,1); }
+  details[open] .faq-body { animation: faqOpen .35s cubic-bezier(.22,1,.36,1); }
+  @keyframes faqOpen { from { opacity:0; transform: translateY(-6px);} to {opacity:1; transform:none;} }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 10px; }
+  ::-webkit-scrollbar-track { background: #0a0a0a; }
+  ::-webkit-scrollbar-thumb { background: #26262a; border-radius: 99px; border: 2px solid #0a0a0a; }
+  ::-webkit-scrollbar-thumb:hover { background: #f97316; }
+
+  /* Selection */
+  ::selection { background: rgba(249,115,22,.35); color: #fff; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition-duration: .01ms !important; }
+    [data-reveal] { opacity: 1; transform: none; }
+  }
+</style>
 </head>
-<body class="min-h-screen flex flex-col relative">
-  <div class="glow glow-orange"></div>
-  <header class="w-full px-5 py-4 flex items-center justify-between border-b border-white/[.05] bg-[#0a0a0a]/80 backdrop-blur-md sticky top-0 z-50">
-    <div class="flex items-center gap-6">
-      <div class="text-white font-black text-lg tracking-wide flex items-center gap-2">
-        <i class="fa-solid fa-bolt text-orange-500"></i> VORAPRIME
+
+<body class="grid-bg min-h-screen flex flex-col relative antialiased">
+
+  <!-- Vệt sáng nền -->
+  <div class="glow animate-drift" style="top:-260px; left:50%; transform:translateX(-50%); width:680px; height:680px; background: radial-gradient(circle, rgba(249,115,22,.55) 0%, transparent 70%);"></div>
+  <div class="glow" style="top:60%; left:-200px; width:520px; height:520px; background: radial-gradient(circle, rgba(234,88,12,.32) 0%, transparent 70%);"></div>
+
+  <!-- ============ HEADER ============ -->
+  <header class="sticky top-0 z-50 w-full border-b border-white/[.06] bg-[#0a0a0a]/75 backdrop-blur-xl">
+    <div class="mx-auto flex max-w-6xl items-center justify-between px-5 py-3.5">
+
+      <a href="#" class="group flex items-center gap-2.5">
+        <span class="relative grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-orange-500 to-orange-700 shadow-lg shadow-orange-600/30">
+          <i class="fa-solid fa-bolt text-[15px] text-white"></i>
+        </span>
+        <span class="text-[17px] font-black tracking-[.12em] text-white">VORAPRIME</span>
+      </a>
+
+      <!-- Nav desktop -->
+      <nav class="hidden items-center gap-8 text-[14px] font-medium text-zinc-400 md:flex">
+        <a href="#features"  class="transition-colors hover:text-white">Tính năng</a>
+        <a href="#how"       class="transition-colors hover:text-white">Cách hoạt động</a>
+        <a href="#faq"       class="transition-colors hover:text-white">Câu hỏi</a>
+      </nav>
+
+      <div class="flex items-center gap-2">
+        <a href="login.html" class="hidden btn-ghost rounded-lg border border-white/10 px-4 py-2 text-sm font-semibold text-zinc-300 sm:inline-flex items-center gap-2">
+          Đăng nhập
+        </a>
+        <a href="login.html" class="btn-orange inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-bold text-white">
+          Bắt đầu <i class="fa-solid fa-arrow-right text-[11px]"></i>
+        </a>
+
+        <!-- Nút menu mobile -->
+        <button id="menuBtn" aria-label="Menu" class="ml-1 grid h-9 w-9 place-items-center rounded-lg border border-white/10 text-zinc-300 md:hidden">
+          <i class="fa-solid fa-bars text-sm"></i>
+        </button>
       </div>
     </div>
-    <a href="login.html" class="btn-orange text-white text-sm font-bold px-5 py-2.5 rounded-lg flex items-center gap-2">
-      <i class="fa-solid fa-arrow-right-to-bracket"></i> Đăng nhập
-    </a>
+
+    <!-- Menu mobile -->
+    <div id="mobileMenu" class="hidden border-t border-white/[.06] bg-[#0a0a0a]/95 px-5 py-3 md:hidden">
+      <a href="#features" class="block rounded-lg px-3 py-2.5 text-sm font-medium text-zinc-300 hover:bg-white/5 hover:text-white">Tính năng</a>
+      <a href="#how"      class="block rounded-lg px-3 py-2.5 text-sm font-medium text-zinc-300 hover:bg-white/5 hover:text-white">Cách hoạt động</a>
+      <a href="#faq"      class="block rounded-lg px-3 py-2.5 text-sm font-medium text-zinc-300 hover:bg-white/5 hover:text-white">Câu hỏi</a>
+      <a href="login.html" class="mt-1 block rounded-lg px-3 py-2.5 text-sm font-semibold text-orange-400 hover:bg-orange-500/10">Đăng nhập →</a>
+    </div>
   </header>
-  <main class="flex-1 flex flex-col items-center justify-center text-center px-5 mt-16 mb-20">
-    <div class="mb-8 inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-orange-500/30 bg-orange-500/10 text-orange-400 text-xs font-bold tracking-wide">
-      <div class="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></div>
-      Mã nguồn mở • Miễn phí • Online 24/7
-    </div>
-    <h1 class="text-[40px] sm:text-6xl font-black leading-[1.1] tracking-tight mb-6">
-      Tự động hoá,<br/>ra đời <span class="text-orange-500">Voraprime</span>
-    </h1>
-    <p class="text-zinc-400 text-[15px] sm:text-lg max-w-xl mx-auto leading-relaxed mb-10">
-      Voraprime biến sự phức tạp thành tự động. Treo Voice, Activity, Custom Status — account của bạn chạy ngay 24/7, không cần cắm máy tính.
-    </p>
-    <div class="flex flex-col w-full sm:w-auto sm:flex-row gap-3 max-w-xs mx-auto">
-      <a href="login.html" class="btn-orange w-full py-3.5 rounded-xl text-white font-bold text-[15px] flex items-center justify-center gap-2">
-        Bắt đầu ngay <i class="fa-solid fa-arrow-right"></i>
-      </a>
-    </div>
+
+  <!-- ============ MAIN ============ -->
+  <main class="relative z-10 flex-1">
+
+    <!-- ---------- HERO ---------- -->
+    <section class="mx-auto max-w-6xl px-5 pt-16 pb-20 sm:pt-24 sm:pb-28">
+      <div class="flex flex-col items-center text-center">
+
+        <div data-reveal class="mb-7 inline-flex items-center gap-2.5 rounded-full border border-orange-500/25 bg-orange-500/[.08] px-4 py-1.5 text-[12px] font-bold tracking-wide text-orange-400">
+          <span class="relative flex h-2 w-2">
+            <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-orange-500 opacity-70"></span>
+            <span class="relative inline-flex h-2 w-2 rounded-full bg-orange-500"></span>
+          </span>
+          Mã nguồn mở · Miễn phí · Online 24/7
+        </div>
+
+        <h1 data-reveal style="transition-delay:60ms" class="mb-6 text-[42px] font-black leading-[1.06] tracking-tight sm:text-6xl lg:text-7xl">
+          Tự động hoá,<br class="hidden sm:block">
+          ra đời <span class="text-gradient">Voraprime</span>
+        </h1>
+
+        <p data-reveal style="transition-delay:120ms" class="mx-auto mb-10 max-w-xl text-[15px] leading-relaxed text-zinc-400 sm:text-lg">
+          Voraprime biến sự phức tạp thành tự động. Treo <span class="text-zinc-200">Voice</span>,
+          <span class="text-zinc-200">Activity</span>, <span class="text-zinc-200">Custom Status</span> —
+          account của bạn chạy ngay 24/7, không cần cắm máy tính.
+        </p>
+
+        <div data-reveal style="transition-delay:180ms" class="flex w-full max-w-xs flex-col gap-3 sm:w-auto sm:max-w-none sm:flex-row">
+          <a href="login.html" class="btn-orange group inline-flex w-full items-center justify-center gap-2 rounded-xl px-7 py-3.5 text-[15px] font-bold text-white sm:w-auto">
+            Bắt đầu ngay
+            <i class="fa-solid fa-arrow-right text-[12px] transition-transform duration-300 group-hover:translate-x-1"></i>
+          </a>
+          <a href="#features" class="btn-ghost inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/10 px-7 py-3.5 text-[15px] font-semibold text-zinc-300 sm:w-auto">
+            <i class="fa-regular fa-circle-play text-[13px]"></i> Xem tính năng
+          </a>
+        </div>
+
+        <p data-reveal style="transition-delay:230ms" class="mt-6 text-[13px] text-zinc-600">
+          Không cần thẻ tín dụng · Cài đặt trong 30 giây
+        </p>
+      </div>
+
+      <!-- Khung terminal minh hoạ -->
+      <div data-reveal style="transition-delay:280ms" class="mx-auto mt-16 max-w-3xl">
+        <div class="animate-floaty rounded-2xl border border-white/[.08] bg-[#0d0d0f]/90 shadow-2xl shadow-black/60 backdrop-blur-xl">
+          <!-- Thanh tiêu đề -->
+          <div class="flex items-center gap-2 border-b border-white/[.06] px-4 py-3">
+            <span class="h-3 w-3 rounded-full bg-[#ff5f57]"></span>
+            <span class="h-3 w-3 rounded-full bg-[#febc2e]"></span>
+            <span class="h-3 w-3 rounded-full bg-[#28c840]"></span>
+            <span class="ml-3 font-mono text-[11px] tracking-wide text-zinc-500">voraprime ~ session.log</span>
+            <span class="ml-auto inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-2.5 py-1 text-[10px] font-bold text-emerald-400">
+              <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulseSoft"></span> RUNNING
+            </span>
+          </div>
+
+          <!-- Log -->
+          <div class="space-y-2 p-5 font-mono text-[12px] leading-relaxed sm:text-[13px]">
+            <p class="log-line text-zinc-500" style="animation-delay:.35s"><span class="text-orange-500">$</span> voraprime start --all</p>
+            <p class="log-line text-zinc-400" style="animation-delay:.55s"><span class="text-emerald-400">✓</span> Đăng nhập thành công <span class="text-zinc-600">· tài khoản #1</span></p>
+            <p class="log-line text-zinc-400" style="animation-delay:.75s"><span class="text-emerald-400">✓</span> Voice <span class="text-zinc-600">→</span> <span class="text-orange-300">Voraprime HQ</span> <span class="text-zinc-600">(đã treo 24/7)</span></p>
+            <p class="log-line text-zinc-400" style="animation-delay:.95s"><span class="text-emerald-400">✓</span> Custom Status <span class="text-zinc-600">→</span> <span class="text-orange-300">"/help • Voraprime"</span></p>
+            <p class="log-line text-zinc-400" style="animation-delay:1.15s"><span class="text-emerald-400">✓</span> Activity <span class="text-zinc-600">→</span> <span class="text-orange-300">Playing Voraprime</span></p>
+            <p class="log-line text-zinc-500" style="animation-delay:1.35s"><span class="text-orange-500">$</span> <span class="inline-block h-3.5 w-1.5 translate-y-0.5 bg-orange-500 animate-pulseSoft"></span></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div data-reveal style="transition-delay:320ms" class="mx-auto mt-14 grid max-w-3xl grid-cols-2 gap-4 sm:grid-cols-4">
+        <div class="rounded-xl border border-white/[.06] bg-white/[.02] px-4 py-5 text-center">
+          <div class="text-2xl font-black text-white">24/7</div>
+          <div class="mt-1 text-[12px] font-medium text-zinc-500">Hoạt động liên tục</div>
+        </div>
+        <div class="rounded-xl border border-white/[.06] bg-white/[.02] px-4 py-5 text-center">
+          <div class="text-2xl font-black text-white">&lt;30s</div>
+          <div class="mt-1 text-[12px] font-medium text-zinc-500">Thiết lập xong</div>
+        </div>
+        <div class="rounded-xl border border-white/[.06] bg-white/[.02] px-4 py-5 text-center">
+          <div class="text-2xl font-black text-white">0đ</div>
+          <div class="mt-1 text-[12px] font-medium text-zinc-500">Chi phí sử dụng</div>
+        </div>
+        <div class="rounded-xl border border-white/[.06] bg-white/[.02] px-4 py-5 text-center">
+          <div class="text-2xl font-black text-white">∞</div>
+          <div class="mt-1 text-[12px] font-medium text-zinc-500">Số tài khoản</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- FEATURES ---------- -->
+    <section id="features" class="mx-auto max-w-6xl scroll-mt-24 px-5 py-20 sm:py-24">
+      <div class="mb-14 text-center">
+        <div data-reveal class="mb-3 text-[12px] font-bold uppercase tracking-[.2em] text-orange-500">Tính năng</div>
+        <h2 data-reveal style="transition-delay:60ms" class="text-3xl font-black tracking-tight sm:text-4xl">
+          Mọi thứ bạn cần, <span class="text-zinc-500">không thứ nào bạn không</span>
+        </h2>
+        <p data-reveal style="transition-delay:100ms" class="mx-auto mt-4 max-w-lg text-[15px] text-zinc-400">
+          Bật một lần, chạy mãi mãi. Voraprime lo phần còn lại.
+        </p>
+      </div>
+
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <!-- Card 1 -->
+        <div data-reveal class="card rounded-2xl p-6">
+          <div class="mb-4 grid h-11 w-11 place-items-center rounded-xl bg-orange-500/10 text-orange-500">
+            <i class="fa-solid fa-microphone-lines text-lg"></i>
+          </div>
+          <h3 class="mb-2 text-[17px] font-bold text-white">Treo Voice 24/7</h3>
+          <p class="text-[14px] leading-relaxed text-zinc-400">Ngồi mãi trong voice channel, tự động kết nối lại nếu bị ngắt.</p>
+        </div>
+
+        <!-- Card 2 -->
+        <div data-reveal style="transition-delay:60ms" class="card rounded-2xl p-6">
+          <div class="mb-4 grid h-11 w-11 place-items-center rounded-xl bg-orange-500/10 text-orange-500">
+            <i class="fa-solid fa-comment-dots text-lg"></i>
+          </div>
+          <h3 class="mb-2 text-[17px] font-bold text-white">Custom Status</h3>
+          <p class="text-[14px] leading-relaxed text-zinc-400">Đặt trạng thái tuỳ ý kèm emoji, hiển thị đúng như bạn muốn — 24/7.</p>
+        </div>
+
+        <!-- Card 3 -->
+        <div data-reveal style="transition-delay:120ms" class="card rounded-2xl p-6">
+          <div class="mb-4 grid h-11 w-11 place-items-center rounded-xl bg-orange-500/10 text-orange-500">
+            <i class="fa-solid fa-gamepad text-lg"></i>
+          </div>
+          <h3 class="mb-2 text-[17px] font-bold text-white">Activity / Rich Presence</h3>
+          <p class="text-[14px] leading-relaxed text-zinc-400">Hiển thị "đang chơi" bất kỳ game hay app nào, không cần mở chúng.</p>
+        </div>
+
+        <!-- Card 4 -->
+        <div data-reveal class="card rounded-2xl p-6">
+          <div class="mb-4 grid h-11 w-11 place-items-center rounded-xl bg-orange-500/10 text-orange-500">
+            <i class="fa-solid fa-cloud text-lg"></i>
+          </div>
+          <h3 class="mb-2 text-[17px] font-bold text-white">Không cần cắm máy</h3>
+          <p class="text-[14px] leading-relaxed text-zinc-400">Chạy hoàn toàn trên cloud. Tắt máy, tắt điện thoại — vẫn online.</p>
+        </div>
+
+        <!-- Card 5 -->
+        <div data-reveal style="transition-delay:60ms" class="card rounded-2xl p-6">
+          <div class="mb-4 grid h-11 w-11 place-items-center rounded-xl bg-orange-500/10 text-orange-500">
+            <i class="fa-solid fa-layer-group text-lg"></i>
+          </div>
+          <h3 class="mb-2 text-[17px] font-bold text-white">Đa tài khoản</h3>
+          <p class="text-[14px] leading-relaxed text-zinc-400">Quản lý nhiều account cùng lúc trong một bảng điều khiển duy nhất.</p>
+        </div>
+
+        <!-- Card 6 -->
+        <div data-reveal style="transition-delay:120ms" class="card rounded-2xl p-6">
+          <div class="mb-4 grid h-11 w-11 place-items-center rounded-xl bg-orange-500/10 text-orange-500">
+            <i class="fa-solid fa-shield-halved text-lg"></i>
+          </div>
+          <h3 class="mb-2 text-[17px] font-bold text-white">Bảo mật token</h3>
+          <p class="text-[14px] leading-relaxed text-zinc-400">Token được mã hoá, không chia sẻ cho bên thứ ba. Bạn toàn quyền.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- HOW IT WORKS ---------- -->
+    <section id="how" class="mx-auto max-w-6xl scroll-mt-24 px-5 py-20 sm:py-24">
+      <div class="mb-14 text-center">
+        <div data-reveal class="mb-3 text-[12px] font-bold uppercase tracking-[.2em] text-orange-500">Cách hoạt động</div>
+        <h2 data-reveal style="transition-delay:60ms" class="text-3xl font-black tracking-tight sm:text-4xl">
+          Ba bước. Hết.
+        </h2>
+      </div>
+
+      <div class="relative grid gap-4 md:grid-cols-3">
+        <!-- Đường nối -->
+        <div class="pointer-events-none absolute left-0 right-0 top-[38px] hidden h-px bg-gradient-to-r from-transparent via-orange-500/25 to-transparent md:block"></div>
+
+        <div data-reveal class="relative rounded-2xl border border-white/[.06] bg-white/[.02] p-7 text-center">
+          <div class="mx-auto mb-5 grid h-12 w-12 place-items-center rounded-xl border border-orange-500/30 bg-[#0a0a0a] text-[15px] font-black text-orange-500">01</div>
+          <h3 class="mb-2 text-[17px] font-bold text-white">Đăng nhập</h3>
+          <p class="text-[14px] leading-relaxed text-zinc-400">Vào bằng token tài khoản của bạn. Chỉ mất vài giây.</p>
+        </div>
+
+        <div data-reveal style="transition-delay:80ms" class="relative rounded-2xl border border-white/[.06] bg-white/[.02] p-7 text-center">
+          <div class="mx-auto mb-5 grid h-12 w-12 place-items-center rounded-xl border border-orange-500/30 bg-[#0a0a0a] text-[15px] font-black text-orange-500">02</div>
+          <h3 class="mb-2 text-[17px] font-bold text-white">Chọn cấu hình</h3>
+          <p class="text-[14px] leading-relaxed text-zinc-400">Bật Voice, Status hay Activity — tuỳ bạn muốn treo cái gì.</p>
+        </div>
+
+        <div data-reveal style="transition-delay:160ms" class="relative rounded-2xl border border-white/[.06] bg-white/[.02] p-7 text-center">
+          <div class="mx-auto mb-5 grid h-12 w-12 place-items-center rounded-xl border border-orange-500/30 bg-[#0a0a0a] text-[15px] font-black text-orange-500">03</div>
+          <h3 class="mb-2 text-[17px] font-bold text-white">Bật &amp; quên đi</h3>
+          <p class="text-[14px] leading-relaxed text-zinc-400">Nhấn chạy. Voraprime giữ nó sống 24/7 thay bạn.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- FAQ ---------- -->
+    <section id="faq" class="mx-auto max-w-3xl scroll-mt-24 px-5 py-20 sm:py-24">
+      <div class="mb-12 text-center">
+        <div data-reveal class="mb-3 text-[12px] font-bold uppercase tracking-[.2em] text-orange-500">Câu hỏi thường gặp</div>
+        <h2 data-reveal style="transition-delay:60ms" class="text-3xl font-black tracking-tight sm:text-4xl">Còn thắc mắc?</h2>
+      </div>
+
+      <div class="space-y-3">
+        <details data-reveal class="group rounded-xl border border-white/[.07] bg-white/[.02] px-5 transition-colors hover:border-white/[.12]">
+          <summary class="flex items-center justify-between gap-4 py-4">
+            <span class="text-[15px] font-semibold text-zinc-100">Voraprime có miễn phí không?</span>
+            <i class="faq-icon fa-solid fa-plus text-[12px] text-orange-500"></i>
+          </summary>
+          <p class="faq-body pb-4 text-[14px] leading-relaxed text-zinc-400">
+            Có. Voraprime là dự án mã nguồn mở và hoàn toàn miễn phí. Bạn không phải trả bất kỳ khoản nào để sử dụng các tính năng cơ bản.
+          </p>
+        </details>
+
+        <details data-reveal style="transition-delay:50ms" class="group rounded-xl border border-white/[.07] bg-white/[.02] px-5 transition-colors hover:border-white/[.12]">
+          <summary class="flex items-center justify-between gap-4 py-4">
+            <span class="text-[15px] font-semibold text-zinc-100">Tôi có cần bật máy tính 24/7 không?</span>
+            <i class="faq-icon fa-solid fa-plus text-[12px] text-orange-500"></i>
+          </summary>
+          <p class="faq-body pb-4 text-[14px] leading-relaxed text-zinc-400">
+            Không. Bot chạy trên hạ tầng cloud, nên bạn có thể tắt máy hoàn toàn mà account vẫn duy trì trạng thái.
+          </p>
+        </details>
+
+        <details data-reveal style="transition-delay:100ms" class="group rounded-xl border border-white/[.07] bg-white/[.02] px-5 transition-colors hover:border-white/[.12]">
+          <summary class="flex items-center justify-between gap-4 py-4">
+            <span class="text-[15px] font-semibold text-zinc-100">Token của tôi có an toàn không?</span>
+            <i class="faq-icon fa-solid fa-plus text-[12px] text-orange-500"></i>
+          </summary>
+          <p class="faq-body pb-4 text-[14px] leading-relaxed text-zinc-400">
+            Token được mã hoá khi lưu trữ và không bao giờ chia sẻ cho bên thứ ba. Bạn có thể thu hồi quyền truy cập bất cứ lúc nào.
+          </p>
+        </details>
+
+        <details data-reveal style="transition-delay:150ms" class="group rounded-xl border border-white/[.07] bg-white/[.02] px-5 transition-colors hover:border-white/[.12]">
+          <summary class="flex items-center justify-between gap-4 py-4">
+            <span class="text-[15px] font-semibold text-zinc-100">Dùng được cho bao nhiêu tài khoản?</span>
+            <i class="faq-icon fa-solid fa-plus text-[12px] text-orange-500"></i>
+          </summary>
+          <p class="faq-body pb-4 text-[14px] leading-relaxed text-zinc-400">
+            Không giới hạn. Bạn có thể thêm và quản lý nhiều tài khoản cùng lúc trong một bảng điều khiển.
+          </p>
+        </details>
+      </div>
+    </section>
+
+    <!-- ---------- CTA CUỐI ---------- -->
+    <section class="mx-auto max-w-6xl px-5 pb-24">
+      <div data-reveal class="relative overflow-hidden rounded-3xl border border-orange-500/20 bg-gradient-to-b from-orange-500/[.09] to-transparent px-6 py-14 text-center sm:px-12 sm:py-16">
+        <div class="pointer-events-none absolute -top-32 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full bg-orange-500/25 blur-[80px]"></div>
+
+        <h2 class="relative mb-4 text-3xl font-black tracking-tight sm:text-4xl">
+          Sẵn sàng để account <span class="text-gradient">tự chạy</span>?
+        </h2>
+        <p class="relative mx-auto mb-8 max-w-md text-[15px] text-zinc-400">
+          Đăng nhập và bật chế độ tự động chỉ trong vài cú nhấp.
+        </p>
+        <a href="login.html" class="btn-orange group relative inline-flex items-center gap-2 rounded-xl px-8 py-3.5 text-[15px] font-bold text-white">
+          Bắt đầu ngay
+          <i class="fa-solid fa-arrow-right text-[12px] transition-transform duration-300 group-hover:translate-x-1"></i>
+        </a>
+      </div>
+    </section>
   </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="relative z-10 border-t border-white/[.06] px-5 py-10">
+    <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 sm:flex-row">
+      <div class="flex items-center gap-2.5">
+        <span class="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-orange-500 to-orange-700">
+          <i class="fa-solid fa-bolt text-[13px] text-white"></i>
+        </span>
+        <span class="text-[15px] font-black tracking-[.12em] text-white">VORAPRIME</span>
+      </div>
+
+      <nav class="flex items-center gap-6 text-[13px] font-medium text-zinc-500">
+        <a href="#features" class="transition-colors hover:text-white">Tính năng</a>
+        <a href="#faq" class="transition-colors hover:text-white">FAQ</a>
+        <a href="login.html" class="transition-colors hover:text-white">Đăng nhập</a>
+      </nav>
+
+      <p class="text-[12px] text-zinc-600">© 2025 Voraprime. Mã nguồn mở.</p>
+    </div>
+  </footer>
+
+  <!-- ============ SCRIPT ============ -->
+  <script>
+    // Menu mobile
+    (function () {
+      const btn = document.getElementById('menuBtn');
+      const menu = document.getElementById('mobileMenu');
+      if (!btn || !menu) return;
+
+      btn.addEventListener('click', () => {
+        const open = menu.classList.toggle('hidden') === false;
+        btn.innerHTML = open
+          ? '<i class="fa-solid fa-xmark text-sm"></i>'
+          : '<i class="fa-solid fa-bars text-sm"></i>';
+      });
+
+      menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+        menu.classList.add('hidden');
+        btn.innerHTML = '<i class="fa-solid fa-bars text-sm"></i>';
+      }));
+    })();
+
+    // Reveal khi cuộn
+    (function () {
+      const els = document.querySelectorAll('[data-reveal]');
+      if (!('IntersectionObserver' in window)) {
+        els.forEach(el => el.classList.add('is-visible'));
+        return;
+      }
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            io.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+
+      els.forEach(el => io.observe(el));
+    })();
+
+    // Chỉ mở 1 FAQ tại một thời điểm
+    (function () {
+      const items = document.querySelectorAll('#faq details');
+      items.forEach(item => {
+        item.addEventListener('toggle', () => {
+          if (item.open) items.forEach(o => { if (o !== item) o.open = false; });
+        });
+      });
+    })();
+  </script>
 </body>
 </html>
