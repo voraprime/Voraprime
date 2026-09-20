@@ -3,23 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#05060a">
-<title>Voraprime — Authentication</title>
+<meta name="theme-color" content="#0b0605">
+<title>Voraprime · Xác thực</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Be+Vietnam+Pro:wght@200;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
 
 <style>
   :root {
     color-scheme: dark;
-    --bg: #05060a;
-    --text: #ffffff;
-    --border: rgba(255,255,255,.09);
-    --glass: rgba(10,10,16,.55);
-    --accent: #f97316;
-    --mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    --lacquer: #0b0605;
+    --gold: #c9a961;
+    --gold-bright: #e8c88a;
+    --gold-dim: #8a7540;
+    --vermillion: #c8391f;
+    --turmeric: #e89b2c;
+    --paper: #f2e4c4;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+    --serif: 'Playfair Display', Georgia, serif;
+    --sans: 'Be Vietnam Pro', -apple-system, system-ui, sans-serif;
   }
 
   /* ===== FIX ZOOM MOBILE ===== */
@@ -48,146 +51,117 @@
   /* ===== END FIX ZOOM ===== */
 
   body {
-    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: var(--bg);
-    color: var(--text);
+    font-family: var(--sans);
+    background: var(--lacquer);
+    color: var(--paper);
     min-height: 100vh;
     min-height: 100dvh;
     overflow-x: hidden;
     display: flex;
     flex-direction: column;
     -webkit-font-smoothing: antialiased;
+    position: relative;
   }
 
-  /* ===== AURORA BG ===== */
-  .aurora {
+  /* Nền sơn mài */
+  .bg-lacquer {
     position: fixed;
     inset: 0;
     z-index: 0;
-    overflow: hidden;
-    background: radial-gradient(ellipse 90% 60% at 50% 45%, #0a0b14 0%, #05060a 70%);
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 40%, #1a0e0a 0%, var(--lacquer) 65%),
+      radial-gradient(ellipse 40% 30% at 85% 15%, rgba(200,57,31,.18) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 10% 85%, rgba(232,155,44,.12) 0%, transparent 60%);
     pointer-events: none;
   }
-  .blob {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(90px);
-    will-change: transform;
-    pointer-events: none;
-  }
-  .blob-blue {
-    width: 70vw; height: 70vw;
-    left: -15%; bottom: -25%;
-    background: radial-gradient(circle, #3b82f6 0%, #6366f1 45%, transparent 72%);
-    opacity: .55;
-    animation: driftA 22s ease-in-out infinite;
-  }
-  .blob-purple {
-    width: 60vw; height: 60vw;
-    left: 25%; top: 30%;
-    background: radial-gradient(circle, #a855f7 0%, #8b5cf6 45%, transparent 72%);
-    opacity: .38;
-    animation: driftB 26s ease-in-out infinite;
-  }
-  .blob-pink {
-    width: 55vw; height: 55vw;
-    right: -8%; top: -12%;
-    background: radial-gradient(circle, #ec4899 0%, #f43f5e 45%, transparent 72%);
-    opacity: .5;
-    animation: driftC 20s ease-in-out infinite;
-  }
-  .blob-red {
-    width: 50vw; height: 50vw;
-    right: 5%; top: 5%;
-    background: radial-gradient(circle, #ef4444 0%, #f97316 50%, transparent 72%);
-    opacity: .48;
-    animation: driftD 24s ease-in-out infinite;
-  }
-  .blob-white {
-    width: 38vw; height: 38vw;
-    left: 38%; top: 42%;
-    background: radial-gradient(circle, #ffffff 0%, #c7d2fe 40%, transparent 70%);
-    opacity: .22;
-    filter: blur(120px);
-    animation: driftE 28s ease-in-out infinite;
-  }
-  @keyframes driftA { 0%,100%{transform:translate(0,0) scale(1);} 50%{transform:translate(40px,-30px) scale(1.08);} }
-  @keyframes driftB { 0%,100%{transform:translate(0,0) scale(1);} 50%{transform:translate(-50px,30px) scale(1.12);} }
-  @keyframes driftC { 0%,100%{transform:translate(0,0) scale(1);} 50%{transform:translate(-30px,40px) scale(1.06);} }
-  @keyframes driftD { 0%,100%{transform:translate(0,0) scale(1);} 50%{transform:translate(30px,50px) scale(1.1);} }
-  @keyframes driftE { 0%,100%{transform:translate(0,0) scale(1); opacity:.22;} 50%{transform:translate(-40px,-20px) scale(1.15); opacity:.32;} }
-
-  .vignette {
+  .bg-grain {
     position: fixed;
     inset: 0;
     z-index: 1;
     pointer-events: none;
-    background: radial-gradient(ellipse at center, transparent 35%, rgba(5,6,10,.75) 100%);
+    opacity: .08;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' seed='3'/%3E%3CfeColorMatrix values='0 0 0 0 0.79 0 0 0 0 0.66 0 0 0 0 0.38 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    mix-blend-mode: overlay;
   }
-  .noise {
+  .bg-vignette {
     position: fixed;
     inset: 0;
     z-index: 2;
     pointer-events: none;
-    opacity: .035;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background: radial-gradient(ellipse at center, transparent 25%, rgba(11,6,5,.9) 100%);
   }
 
-  /* ===== TOP BAR ===== */
+  /* Trống đồng nửa bên trái */
+  .drum-side {
+    position: fixed;
+    top: 50%;
+    left: -18vw;
+    width: 70vw;
+    height: 70vw;
+    max-width: 900px;
+    max-height: 900px;
+    transform: translateY(-50%);
+    z-index: 3;
+    pointer-events: none;
+    color: var(--gold);
+    opacity: .28;
+    animation: spin 200s linear infinite;
+  }
+  @keyframes spin {
+    from { transform: translateY(-50%) rotate(0deg); }
+    to   { transform: translateY(-50%) rotate(360deg); }
+  }
+  .drum-side svg { width: 100%; height: 100%; display: block; }
+
+  /* Topbar */
   .topbar {
     position: relative;
-    z-index: 30;
-    padding: 20px 28px;
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-  }
-  .status {
+    z-index: 40;
+    padding: 22px 28px;
     display: flex;
     align-items: center;
-    gap: 8px;
+    justify-content: space-between;
+    gap: 16px;
     font-family: var(--mono);
     font-size: 10px;
-    letter-spacing: .22em;
+    letter-spacing: .28em;
     text-transform: uppercase;
-    color: rgba(255,255,255,.45);
-    margin-bottom: 10px;
   }
-  .status-dot {
-    width: 5px; height: 5px;
+  .topbar-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: rgba(201,169,97,.55);
+  }
+  .topbar-item.dot::before {
+    content: '';
+    width: 5px;
+    height: 5px;
     border-radius: 50%;
-    background: #22c55e;
-    box-shadow: 0 0 10px #22c55e;
-    animation: pulseDot 2s ease-in-out infinite;
+    background: var(--turmeric);
+    box-shadow: 0 0 8px var(--turmeric);
+    animation: pulseDot 2.4s ease-in-out infinite;
   }
-  @keyframes pulseDot { 0%,100%{opacity:1;} 50%{opacity:.35;} }
-
+  @keyframes pulseDot {
+    0%,100% { opacity: 1; }
+    50%     { opacity: .35; }
+  }
   .back {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    font-family: 'Outfit', sans-serif;
-    font-size: 15px;
-    font-weight: 800;
-    letter-spacing: .18em;
-    color: #fff;
+    gap: 10px;
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 14px;
+    letter-spacing: .3em;
+    color: var(--paper);
     text-decoration: none;
     transition: color .2s;
   }
-  .back:hover { color: var(--accent); }
-  .back i { font-size: 12px; opacity: .55; transition: opacity .2s; }
-  .back:hover i { opacity: 1; }
+  .back:hover { color: var(--gold-bright); }
+  .back i { font-style: normal; font-family: var(--mono); color: var(--vermillion); font-weight: 400; }
 
-  .rev {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: .22em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,.4);
-    padding-top: 2px;
-  }
-
-  /* ===== MAIN ===== */
+  /* Main */
   .auth-main {
     position: relative;
     z-index: 10;
@@ -195,131 +169,199 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px 24px 40px;
+    padding: 20px 28px 40px;
   }
 
   .glass-form {
     width: 100%;
     max-width: 440px;
-    background: var(--glass);
-    border: 1px solid var(--border);
-    border-radius: 26px;
-    padding: 40px 36px;
-    backdrop-filter: blur(32px) saturate(140%);
-    -webkit-backdrop-filter: blur(32px) saturate(140%);
+    background: linear-gradient(180deg, rgba(18,9,10,.85) 0%, rgba(11,6,5,.75) 100%);
+    border: 1px solid rgba(201,169,97,.18);
+    padding: 44px 38px;
+    backdrop-filter: blur(24px) saturate(130%);
+    -webkit-backdrop-filter: blur(24px) saturate(130%);
+    position: relative;
     box-shadow:
-      0 30px 80px -20px rgba(0,0,0,.7),
-      inset 0 1px 0 rgba(255,255,255,.06);
-    animation: cardIn .7s cubic-bezier(.22,1,.36,1) both;
+      0 40px 80px -30px rgba(0,0,0,.9),
+      inset 0 1px 0 rgba(201,169,97,.08);
+    animation: cardIn .9s cubic-bezier(.22,1,.36,1) both;
   }
+  .glass-form::before {
+    content: '';
+    position: absolute;
+    inset: 7px;
+    border: 1px solid rgba(201,169,97,.1);
+    pointer-events: none;
+  }
+  /* Góc vàng */
+  .glass-form::after {
+    content: '';
+    position: absolute;
+    top: -1px; left: -1px;
+    width: 28px; height: 28px;
+    border-top: 2px solid var(--vermillion);
+    border-left: 2px solid var(--vermillion);
+    pointer-events: none;
+  }
+  .glass-form .corner-tr {
+    position: absolute;
+    top: -1px; right: -1px;
+    width: 28px; height: 28px;
+    border-top: 2px solid var(--vermillion);
+    border-right: 2px solid var(--vermillion);
+    pointer-events: none;
+  }
+  .glass-form .corner-bl {
+    position: absolute;
+    bottom: -1px; left: -1px;
+    width: 28px; height: 28px;
+    border-bottom: 2px solid var(--vermillion);
+    border-left: 2px solid var(--vermillion);
+    pointer-events: none;
+  }
+  .glass-form .corner-br {
+    position: absolute;
+    bottom: -1px; right: -1px;
+    width: 28px; height: 28px;
+    border-bottom: 2px solid var(--vermillion);
+    border-right: 2px solid var(--vermillion);
+    pointer-events: none;
+  }
+
   @keyframes cardIn {
-    from { opacity: 0; transform: translateY(20px) scale(.98); }
+    from { opacity: 0; transform: translateY(24px) scale(.98); }
     to   { opacity: 1; transform: none; }
   }
 
   /* Brand */
   .brand {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 32px;
+    text-align: center;
+    margin-bottom: 34px;
+    position: relative;
   }
   .brand-mark {
-    width: 48px; height: 48px;
-    border-radius: 14px;
-    background: linear-gradient(135deg, #f97316, #ea580c);
+    width: 52px;
+    height: 52px;
+    margin: 0 auto 16px;
     display: grid;
     place-items: center;
-    color: #fff;
-    font-size: 18px;
-    margin-bottom: 14px;
-    box-shadow: 0 10px 30px -8px rgba(249,115,22,.6);
+    background: linear-gradient(135deg, #8a2416 0%, #c8391f 100%);
+    color: var(--paper);
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 22px;
+    position: relative;
+    box-shadow: 0 12px 28px -10px rgba(200,57,31,.7);
+  }
+  .brand-mark::before {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    border: 1px solid rgba(242,228,196,.3);
+    pointer-events: none;
   }
   .brand-name {
-    font-family: 'Outfit', sans-serif;
-    font-size: 15px;
-    font-weight: 800;
-    letter-spacing: .22em;
-    color: #fff;
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 16px;
+    letter-spacing: .38em;
+    color: var(--paper);
+    padding-left: .38em;
+  }
+  .brand-sub {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: .35em;
+    color: rgba(201,169,97,.5);
+    text-transform: uppercase;
+    margin-top: 8px;
+    padding-left: .35em;
   }
 
   /* Tabs */
   .tabs {
     display: flex;
-    border-bottom: 1px solid rgba(255,255,255,.08);
-    margin-bottom: 24px;
+    border-bottom: 1px solid rgba(201,169,97,.12);
+    margin-bottom: 26px;
+    position: relative;
   }
   .tab {
     flex: 1;
     background: transparent;
     border: none;
-    padding: 14px 0;
+    padding: 14px 0 16px;
     font-family: var(--mono);
-    font-size: 10.5px;
+    font-size: 10px;
     font-weight: 700;
-    letter-spacing: .22em;
+    letter-spacing: .3em;
     text-transform: uppercase;
-    color: rgba(255,255,255,.35);
+    color: rgba(242,228,196,.3);
     cursor: pointer;
-    border-bottom: 2px solid transparent;
-    transition: color .25s, border-color .25s;
+    position: relative;
+    transition: color .3s;
+    padding-left: .3em;
   }
-  .tab.active {
-    color: var(--accent);
-    border-bottom-color: var(--accent);
+  .tab.active { color: var(--gold-bright); }
+  .tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--vermillion), transparent);
   }
-  .tab:hover { color: rgba(255,255,255,.75); }
-  .tab.active:hover { color: var(--accent); }
+  .tab:not(.active):hover { color: rgba(242,228,196,.6); }
 
   /* Message */
   .msg {
     display: none;
     padding: 12px 14px;
-    border-radius: 12px;
     font-size: 12.5px;
     font-weight: 500;
-    margin-bottom: 16px;
+    margin-bottom: 18px;
     border: 1px solid;
     line-height: 1.5;
+    position: relative;
   }
   .msg.show { display: block; }
-  .msg.error   { background: rgba(244,63,94,.1);  border-color: rgba(244,63,94,.25);  color: #fb7185; }
-  .msg.success { background: rgba(16,185,129,.1); border-color: rgba(16,185,129,.25); color: #34d399; }
+  .msg.error   { background: rgba(200,57,31,.12);  border-color: rgba(200,57,31,.4);  color: #f5a89a; }
+  .msg.success { background: rgba(201,169,97,.1); border-color: rgba(201,169,97,.35); color: var(--gold-bright); }
 
   /* Fields */
-  .field { margin-bottom: 16px; }
+  .field { margin-bottom: 18px; }
   .field label {
     display: block;
     font-family: var(--mono);
-    font-size: 9.5px;
+    font-size: 9px;
     font-weight: 700;
-    letter-spacing: .22em;
+    letter-spacing: .3em;
     text-transform: uppercase;
-    color: rgba(255,255,255,.4);
-    margin-bottom: 8px;
+    color: rgba(201,169,97,.6);
+    margin-bottom: 10px;
+    padding-left: .2em;
   }
+  .field label.otp-label { color: var(--turmeric); }
   .field input {
     width: 100%;
     padding: 14px 16px;
-    background: rgba(255,255,255,.025);
-    border: 1px solid rgba(255,255,255,.09);
-    border-radius: 12px;
-    color: #fff;
+    background: rgba(11,6,5,.6);
+    border: 1px solid rgba(201,169,97,.18);
+    color: var(--paper);
     font-size: 14px;
     font-weight: 400;
     transition: all .25s;
     outline: none;
+    font-family: var(--sans);
   }
   .field input:focus {
-    border-color: rgba(249,115,22,.5);
-    background: rgba(255,255,255,.04);
-    box-shadow: 0 0 0 3px rgba(249,115,22,.1);
+    border-color: rgba(200,57,31,.7);
+    background: rgba(11,6,5,.85);
+    box-shadow: 0 0 0 3px rgba(200,57,31,.12);
   }
-  .field input::placeholder { color: rgba(255,255,255,.25); }
-
+  .field input::placeholder { color: rgba(242,228,196,.2); }
   .field input:-webkit-autofill {
-    -webkit-box-shadow: 0 0 0 30px #14151c inset !important;
-    -webkit-text-fill-color: #fff !important;
+    -webkit-box-shadow: 0 0 0 40px #1a0e0a inset !important;
+    -webkit-text-fill-color: var(--paper) !important;
   }
 
   .grid-2 {
@@ -331,93 +373,131 @@
   /* Submit */
   .submit {
     width: 100%;
-    padding: 16px;
-    margin-top: 8px;
+    padding: 17px 20px;
+    margin-top: 10px;
     border: none;
-    border-radius: 12px;
-    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
-    color: #fff;
-    font-family: 'Outfit', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    letter-spacing: .02em;
+    background: linear-gradient(135deg, #8a2416 0%, #c8391f 100%);
+    color: var(--paper);
+    font-family: var(--mono);
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: .32em;
+    text-transform: uppercase;
     cursor: pointer;
-    transition: all .25s cubic-bezier(.22,1,.36,1);
-    box-shadow: 0 10px 30px -8px rgba(249,115,22,.5);
+    transition: all .3s cubic-bezier(.22,1,.36,1);
+    box-shadow:
+      0 14px 32px -10px rgba(200,57,31,.65),
+      inset 0 1px 0 rgba(255,255,255,.1);
+    position: relative;
+    padding-left: calc(20px + .32em);
+  }
+  .submit::before {
+    content: '';
+    position: absolute;
+    inset: 5px;
+    border: 1px solid rgba(242,228,196,.25);
+    pointer-events: none;
+    transition: border-color .3s;
   }
   .submit:hover:not(:disabled) {
-    transform: translateY(-1px);
-    box-shadow: 0 14px 40px -8px rgba(249,115,22,.7);
+    transform: translateY(-2px);
+    box-shadow:
+      0 20px 44px -10px rgba(200,57,31,.85),
+      inset 0 1px 0 rgba(255,255,255,.15);
   }
+  .submit:hover:not(:disabled)::before { border-color: rgba(242,228,196,.5); }
   .submit:active:not(:disabled) { transform: translateY(0) scale(.99); }
-  .submit:disabled { opacity: .6; cursor: not-allowed; }
+  .submit:disabled { opacity: .55; cursor: not-allowed; }
 
-  /* OTP button */
-  .otp-row {
-    display: flex;
-    gap: 8px;
-  }
+  /* OTP */
+  .otp-row { display: flex; gap: 10px; }
   .otp-row input { flex: 1; }
   .btn-otp {
-    padding: 14px 18px;
-    background: rgba(255,255,255,.05);
-    border: 1px solid rgba(255,255,255,.1);
-    border-radius: 12px;
-    color: var(--accent);
+    padding: 14px 20px;
+    background: rgba(200,57,31,.08);
+    border: 1px solid rgba(200,57,31,.4);
+    color: #f5a89a;
     font-family: var(--mono);
-    font-size: 10.5px;
+    font-size: 10px;
     font-weight: 700;
-    letter-spacing: .15em;
+    letter-spacing: .22em;
     text-transform: uppercase;
     cursor: pointer;
     white-space: nowrap;
     transition: all .25s;
+    padding-left: calc(20px + .22em);
   }
   .btn-otp:hover:not(:disabled) {
-    background: rgba(249,115,22,.1);
-    border-color: rgba(249,115,22,.35);
+    background: rgba(200,57,31,.18);
+    border-color: var(--vermillion);
+    color: var(--paper);
   }
   .btn-otp:disabled { opacity: .5; cursor: not-allowed; }
 
-  /* Footer small */
-  .foot {
+  /* Footer */
+  .footer {
     position: relative;
     z-index: 10;
-    padding: 20px 28px;
+    padding: 22px 28px;
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 10px;
+    gap: 16px;
     font-family: var(--mono);
     font-size: 9.5px;
-    letter-spacing: .2em;
+    letter-spacing: .3em;
     text-transform: uppercase;
-    color: rgba(255,255,255,.3);
+    color: rgba(201,169,97,.4);
+  }
+  .footer .made-in {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: rgba(232,155,44,.65);
+  }
+  .footer .made-in::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: var(--vermillion);
+    transform: rotate(45deg);
+    box-shadow: 0 0 10px var(--vermillion);
   }
 
-  /* ===== RESPONSIVE ===== */
+  /* Responsive */
+  @media (max-width: 900px) {
+    .drum-side { left: -30vw; width: 90vw; height: 90vw; opacity: .18; }
+  }
+
   @media (max-width: 640px) {
-    .topbar { padding: 16px 20px; }
-    .status { font-size: 9px; letter-spacing: .18em; }
-    .back { font-size: 14px; letter-spacing: .16em; }
-    .rev { font-size: 9px; letter-spacing: .18em; }
+    .topbar { padding: 16px 18px; font-size: 9px; letter-spacing: .22em; }
+    .topbar-item:first-child { display: none; }
+    .back { font-size: 12px; letter-spacing: .24em; }
 
     .auth-main { padding: 12px 18px 24px; }
     .glass-form {
       padding: 32px 24px;
-      border-radius: 22px;
     }
-    .brand { margin-bottom: 24px; }
-    .brand-mark { width: 44px; height: 44px; border-radius: 12px; font-size: 16px; }
-    .brand-name { font-size: 14px; letter-spacing: .2em; }
+    .glass-form::before { inset: 5px; }
+    .glass-form::after,
+    .glass-form .corner-tr,
+    .glass-form .corner-bl,
+    .glass-form .corner-br { width: 20px; height: 20px; }
 
-    .tab { font-size: 10px; letter-spacing: .18em; padding: 12px 0; }
-    .field label { font-size: 9px; letter-spacing: .18em; }
+    .brand { margin-bottom: 26px; }
+    .brand-mark { width: 46px; height: 46px; font-size: 20px; }
+    .brand-name { font-size: 14px; letter-spacing: .32em; padding-left: .32em; }
+    .brand-sub { font-size: 8px; letter-spacing: .28em; }
+
+    .tab { font-size: 9.5px; letter-spacing: .24em; padding: 12px 0 14px; padding-left: .24em; }
+    .field label { font-size: 8.5px; letter-spacing: .24em; }
     .field input { padding: 13px 14px; font-size: 14px; }
-    .submit { padding: 15px; font-size: 13.5px; }
-    .btn-otp { padding: 13px 14px; font-size: 9.5px; letter-spacing: .12em; }
+    .grid-2 { gap: 10px; }
+    .submit { padding: 15px 18px; font-size: 10.5px; letter-spacing: .28em; padding-left: calc(18px + .28em); }
+    .btn-otp { padding: 13px 14px; font-size: 9px; letter-spacing: .18em; padding-left: calc(14px + .18em); }
 
-    .foot { padding: 16px 20px; font-size: 9px; letter-spacing: .15em; }
+    .footer { padding: 16px 18px; font-size: 8.5px; letter-spacing: .22em; flex-direction: column; gap: 8px; text-align: center; }
+    .footer > div:first-child { display: none; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -426,46 +506,62 @@
       animation-iteration-count: 1 !important;
       transition-duration: .01ms !important;
     }
+    .drum-side { animation: none !important; }
   }
 </style>
 </head>
 <body>
 
-  <!-- Aurora BG -->
-  <div class="aurora" aria-hidden="true">
-    <div class="blob blob-blue"></div>
-    <div class="blob blob-purple"></div>
-    <div class="blob blob-pink"></div>
-    <div class="blob blob-red"></div>
-    <div class="blob blob-white"></div>
-  </div>
-  <div class="vignette" aria-hidden="true"></div>
-  <div class="noise" aria-hidden="true"></div>
+  <div class="bg-lacquer" aria-hidden="true"></div>
+  <div class="bg-grain" aria-hidden="true"></div>
+  <div class="bg-vignette" aria-hidden="true"></div>
 
-  <!-- Top bar -->
+  <!-- Trống đồng bên trái -->
+  <div class="drum-side" aria-hidden="true">
+    <svg viewBox="0 0 800 800" fill="none" stroke="currentColor">
+      <g stroke-width="1">
+        <circle cx="400" cy="400" r="395" stroke-width="0.8"/>
+        <circle cx="400" cy="400" r="382" stroke-width="0.4"/>
+        <circle cx="400" cy="400" r="368" stroke-width="1.2"/>
+        <circle cx="400" cy="400" r="350" stroke-width="48" stroke-dasharray="1.5 26" opacity="0.55"/>
+        <circle cx="400" cy="400" r="322" stroke-width="0.6"/>
+        <circle cx="400" cy="400" r="308" stroke-width="0.4"/>
+        <circle cx="400" cy="400" r="285" stroke-width="34" stroke-dasharray="5 32" opacity="0.7"/>
+        <circle cx="400" cy="400" r="252" stroke-width="0.8"/>
+        <circle cx="400" cy="400" r="236" stroke-width="0.4"/>
+        <circle cx="400" cy="400" r="215" stroke-width="24" stroke-dasharray="0.8 22" opacity="0.5"/>
+        <circle cx="400" cy="400" r="188" stroke-width="0.8"/>
+        <circle cx="400" cy="400" r="170" stroke-width="0.4"/>
+        <circle cx="400" cy="400" r="145" stroke-width="26" stroke-dasharray="2.5 26" opacity="0.7"/>
+        <circle cx="400" cy="400" r="118" stroke-width="0.8"/>
+        <circle cx="400" cy="400" r="100" stroke-width="0.5"/>
+        <circle cx="400" cy="400" r="72" stroke-width="52" stroke-dasharray="3 33" opacity="0.85"/>
+        <circle cx="400" cy="400" r="40" stroke-width="1.2"/>
+        <circle cx="400" cy="400" r="28" stroke-width="0.6"/>
+        <circle cx="400" cy="400" r="14" fill="currentColor" fill-opacity="0.3" stroke="none"/>
+      </g>
+    </svg>
+  </div>
+
+  <!-- Topbar -->
   <header class="topbar">
-    <div class="topbar-left">
-      <div class="status">
-        <span class="status-dot"></span>
-        Secure · Encrypted
-      </div>
-      <a href="./index.html" class="back">
-        <i class="fa-solid fa-arrow-left"></i> VORAPRIME
-      </a>
-    </div>
-    <div class="topbar-right">
-      <div class="rev">Auth · v2.6</div>
-    </div>
+    <div class="topbar-item dot">Bảo mật · Mã hoá</div>
+    <a href="./index.html" class="back"><i>←</i> VORAPRIME</a>
+    <div class="topbar-item">Xác thực · v2.6</div>
   </header>
 
   <!-- Main -->
   <main class="auth-main">
     <div class="glass-form">
+      <span class="corner-tr"></span>
+      <span class="corner-bl"></span>
+      <span class="corner-br"></span>
 
       <!-- Brand -->
       <div class="brand">
-        <div class="brand-mark"><i class="fa-solid fa-bolt"></i></div>
+        <div class="brand-mark">V</div>
         <div class="brand-name">VORAPRIME</div>
+        <div class="brand-sub">Độc bản Việt Nam</div>
       </div>
 
       <!-- Tabs -->
@@ -474,10 +570,9 @@
         <button id="tab-register" type="button" onclick="switchTab('register')" class="tab">Đăng ký</button>
       </div>
 
-      <!-- Message -->
       <div id="msg-box" class="msg"></div>
 
-      <!-- LOGIN FORM -->
+      <!-- LOGIN -->
       <form id="login-form" onsubmit="handleAuth(event, 'login')">
         <div class="field">
           <label>Tài khoản</label>
@@ -487,10 +582,10 @@
           <label>Mật khẩu</label>
           <input type="password" id="login-password" required autocomplete="current-password" placeholder="Nhập mật khẩu">
         </div>
-        <button type="submit" id="btn-login-submit" class="submit">Đăng Nhập</button>
+        <button type="submit" id="btn-login-submit" class="submit">Đăng nhập</button>
       </form>
 
-      <!-- REGISTER FORM -->
+      <!-- REGISTER -->
       <form id="register-form" onsubmit="handleAuth(event, 'register')" style="display:none;">
         <div class="field">
           <label>Tài khoản · 5–8 ký tự</label>
@@ -520,34 +615,32 @@
         </div>
 
         <div class="field">
-          <label style="color:#fb923c;">Mã xác nhận</label>
+          <label class="otp-label">Mã xác nhận</label>
           <div class="otp-row">
             <input type="text" id="reg-otp" required inputmode="numeric" autocomplete="one-time-code" placeholder="123456">
             <button type="button" id="btn-send-otp" onclick="sendOTP()" class="btn-otp">Nhận mã</button>
           </div>
         </div>
 
-        <button type="submit" id="btn-reg-submit" class="submit">Tạo Tài Khoản</button>
+        <button type="submit" id="btn-reg-submit" class="submit">Tạo tài khoản</button>
       </form>
     </div>
   </main>
 
   <!-- Footer -->
-  <div class="foot">
-    <span>© 2026 Voraprime</span>
-    <span>Encrypted · TLS 1.3</span>
-  </div>
+  <footer class="footer">
+    <div>Sài Gòn · Hà Nội · Đà Nẵng</div>
+    <div class="made-in">Làm tại Việt Nam</div>
+  </footer>
 
   <script>
     const API_URL = "http://de26.spaceify.eu:26355";
 
-    /* ============ TAB SWITCHING ============ */
     function switchTab(tab, updateUrl = true) {
       document.getElementById('msg-box').className = 'msg';
-
-      const tabLogin    = document.getElementById('tab-login');
+      const tabLogin = document.getElementById('tab-login');
       const tabRegister = document.getElementById('tab-register');
-      const formLogin    = document.getElementById('login-form');
+      const formLogin = document.getElementById('login-form');
       const formRegister = document.getElementById('register-form');
 
       if (tab === 'login') {
@@ -569,32 +662,25 @@
       }
     }
 
-    /* ============ AUTO OPEN FROM URL ============ */
     (function init() {
       const tab = new URLSearchParams(window.location.search).get('tab');
       switchTab(tab === 'register' ? 'register' : 'login', false);
     })();
 
-    /* ============ MESSAGE ============ */
     function showMessage(text, type = 'error') {
       const box = document.getElementById('msg-box');
       box.className = 'msg show ' + type;
       box.textContent = text;
     }
 
-    /* ============ SEND OTP ============ */
     async function sendOTP() {
       const email = document.getElementById('reg-email').value.trim();
       const emailConfirm = document.getElementById('reg-email-confirm').value.trim();
-
-      if (!email || email !== emailConfirm) {
-        return showMessage('Email không hợp lệ hoặc không khớp!', 'error');
-      }
+      if (!email || email !== emailConfirm) return showMessage('Email không hợp lệ hoặc không khớp!', 'error');
 
       const btn = document.getElementById('btn-send-otp');
       const original = btn.textContent;
-      btn.textContent = '...';
-      btn.disabled = true;
+      btn.textContent = '...'; btn.disabled = true;
 
       try {
         const res = await fetch(`${API_URL}/api/auth/send-otp`, {
@@ -609,20 +695,14 @@
         const iv = setInterval(() => {
           btn.textContent = `Thử lại ${count}s`;
           count--;
-          if (count < 0) {
-            clearInterval(iv);
-            btn.textContent = original;
-            btn.disabled = false;
-          }
+          if (count < 0) { clearInterval(iv); btn.textContent = original; btn.disabled = false; }
         }, 1000);
       } catch {
         showMessage('Hệ thống bận, vui lòng thử lại!', 'error');
-        btn.textContent = original;
-        btn.disabled = false;
+        btn.textContent = original; btn.disabled = false;
       }
     }
 
-    /* ============ HANDLE AUTH ============ */
     async function handleAuth(e, type) {
       e.preventDefault();
       document.getElementById('msg-box').className = 'msg';
@@ -631,8 +711,7 @@
         ? document.getElementById('btn-login-submit')
         : document.getElementById('btn-reg-submit');
       const original = btn.textContent;
-      btn.textContent = 'Đang xử lý...';
-      btn.disabled = true;
+      btn.textContent = 'Đang xử lý...'; btn.disabled = true;
 
       try {
         let payload = {};
@@ -641,7 +720,6 @@
           const p1 = document.getElementById('reg-password').value;
           const p2 = document.getElementById('reg-password-confirm').value;
           if (p1 !== p2) throw new Error('Mật khẩu không khớp!');
-
           payload = {
             username: document.getElementById('reg-username').value.trim(),
             email:    document.getElementById('reg-email').value.trim(),
