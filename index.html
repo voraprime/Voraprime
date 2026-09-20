@@ -3,25 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#05060a">
-<meta name="description" content="Voraprime — Tự động hoá Voice, Activity, Custom Status. Account chạy 24/7 trên cloud.">
-<title>Voraprime — Tự động hoá</title>
+<meta name="theme-color" content="#0b0605">
+<meta name="description" content="Voraprime — Cỗ máy tự động hoá độc bản Việt Nam. Treo Voice, Activity, Custom Status 24/7.">
+<title>Voraprime · Độc bản Việt Nam</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Be+Vietnam+Pro:wght@200;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
 
 <style>
   :root {
     color-scheme: dark;
-    --bg: #05060a;
-    --text: #ffffff;
-    --muted: rgba(255,255,255,.5);
-    --muted-2: rgba(255,255,255,.32);
-    --border: rgba(255,255,255,.09);
-    --glass: rgba(10,10,16,.55);
-    --accent: #f97316;
-    --mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    --lacquer: #0b0605;
+    --lacquer-2: #12090a;
+    --gold: #c9a961;
+    --gold-bright: #e8c88a;
+    --gold-dim: #8a7540;
+    --vermillion: #c8391f;
+    --vermillion-bright: #e8502b;
+    --turmeric: #e89b2c;
+    --paper: #f2e4c4;
+    --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    --serif: 'Playfair Display', Georgia, serif;
+    --sans: 'Be Vietnam Pro', -apple-system, system-ui, sans-serif;
   }
 
   /* ===== FIX ZOOM MOBILE ===== */
@@ -51,163 +55,178 @@
   /* ===== END FIX ZOOM ===== */
 
   body {
-    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: var(--bg);
-    color: var(--text);
+    font-family: var(--sans);
+    background: var(--lacquer);
+    color: var(--paper);
     min-height: 100vh;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
     position: relative;
   }
 
-  /* ============ AURORA BACKGROUND ============ */
-  .aurora {
+  /* ============ NỀN SƠN MÀI ============ */
+  .bg-lacquer {
     position: fixed;
     inset: 0;
     z-index: 0;
-    overflow: hidden;
     background:
-      radial-gradient(ellipse 90% 60% at 50% 45%, #0a0b14 0%, #05060a 70%);
+      radial-gradient(ellipse 80% 60% at 50% 40%, #1a0e0a 0%, var(--lacquer) 65%),
+      radial-gradient(ellipse 40% 30% at 80% 20%, rgba(200,57,31,.15) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 15% 80%, rgba(232,155,44,.1) 0%, transparent 60%);
     pointer-events: none;
   }
-  .blob {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(90px);
-    will-change: transform;
-    pointer-events: none;
-  }
-  .blob-blue {
-    width: 70vw; height: 70vw;
-    left: -15%; bottom: -25%;
-    background: radial-gradient(circle, #3b82f6 0%, #6366f1 45%, transparent 72%);
-    opacity: .55;
-    animation: driftA 22s ease-in-out infinite;
-  }
-  .blob-purple {
-    width: 60vw; height: 60vw;
-    left: 25%; top: 30%;
-    background: radial-gradient(circle, #a855f7 0%, #8b5cf6 45%, transparent 72%);
-    opacity: .38;
-    animation: driftB 26s ease-in-out infinite;
-  }
-  .blob-pink {
-    width: 55vw; height: 55vw;
-    right: -8%; top: -12%;
-    background: radial-gradient(circle, #ec4899 0%, #f43f5e 45%, transparent 72%);
-    opacity: .5;
-    animation: driftC 20s ease-in-out infinite;
-  }
-  .blob-red {
-    width: 50vw; height: 50vw;
-    right: 5%; top: 5%;
-    background: radial-gradient(circle, #ef4444 0%, #f97316 50%, transparent 72%);
-    opacity: .48;
-    animation: driftD 24s ease-in-out infinite;
-  }
-  .blob-white {
-    width: 38vw; height: 38vw;
-    left: 38%; top: 42%;
-    background: radial-gradient(circle, #ffffff 0%, #c7d2fe 40%, transparent 70%);
-    opacity: .22;
-    filter: blur(120px);
-    animation: driftE 28s ease-in-out infinite;
-  }
 
-  @keyframes driftA {
-    0%,100% { transform: translate(0,0) scale(1); }
-    50%     { transform: translate(40px,-30px) scale(1.08); }
-  }
-  @keyframes driftB {
-    0%,100% { transform: translate(0,0) scale(1); }
-    50%     { transform: translate(-50px,30px) scale(1.12); }
-  }
-  @keyframes driftC {
-    0%,100% { transform: translate(0,0) scale(1); }
-    50%     { transform: translate(-30px,40px) scale(1.06); }
-  }
-  @keyframes driftD {
-    0%,100% { transform: translate(0,0) scale(1); }
-    50%     { transform: translate(30px,50px) scale(1.1); }
-  }
-  @keyframes driftE {
-    0%,100% { transform: translate(0,0) scale(1); opacity: .22; }
-    50%     { transform: translate(-40px,-20px) scale(1.15); opacity: .32; }
-  }
-
-  /* Vignette + grain */
-  .vignette {
+  /* Hạt vàng li ti */
+  .bg-grain {
     position: fixed;
     inset: 0;
     z-index: 1;
     pointer-events: none;
-    background: radial-gradient(ellipse at center, transparent 35%, rgba(5,6,10,.75) 100%);
+    opacity: .08;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' seed='3'/%3E%3CfeColorMatrix values='0 0 0 0 0.79 0 0 0 0 0.66 0 0 0 0 0.38 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    mix-blend-mode: overlay;
   }
-  .noise {
+
+  /* Vignette */
+  .bg-vignette {
     position: fixed;
     inset: 0;
     z-index: 2;
     pointer-events: none;
-    opacity: .035;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background: radial-gradient(ellipse at center, transparent 30%, rgba(11,6,5,.9) 100%);
   }
+
+  /* ============ TRỐNG ĐỒNG (XOAY CHẬM) ============ */
+  .drum-wrap {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: min(130vh, 900px);
+    height: min(130vh, 900px);
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    pointer-events: none;
+    color: var(--gold);
+    opacity: .22;
+    animation: spin 180s linear infinite;
+  }
+  @keyframes spin {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to   { transform: translate(-50%, -50%) rotate(360deg); }
+  }
+  .drum-wrap svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  /* ============ CÂU ĐỐI DỌC (2 BÊN) ============ */
+  .caudoi {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .6em;
+    text-transform: uppercase;
+    color: rgba(201,169,97,.35);
+    z-index: 20;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  .caudoi-left  { left: 24px; }
+  .caudoi-right { right: 24px; transform: translateY(-50%) rotate(180deg); }
+
+  .caudoi::before, .caudoi::after {
+    content: '';
+    display: inline-block;
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, transparent, rgba(201,169,97,.5), transparent);
+    margin: 12px 0;
+    vertical-align: middle;
+  }
+
+  /* ============ CON DẤU GÓC ============ */
+  .seal-corner {
+    position: fixed;
+    width: 56px;
+    height: 56px;
+    z-index: 20;
+    pointer-events: none;
+    border: 1px solid rgba(200,57,31,.55);
+    display: grid;
+    place-items: center;
+    font-family: var(--serif);
+    font-weight: 900;
+    color: rgba(200,57,31,.75);
+    font-size: 22px;
+    padding: 4px;
+    background: rgba(200,57,31,.04);
+  }
+  .seal-corner::before {
+    content: '';
+    position: absolute;
+    inset: 3px;
+    border: 1px solid rgba(200,57,31,.35);
+    pointer-events: none;
+  }
+  .seal-corner.tl { top: 92px; right: 28px; }
+  .seal-corner.br { bottom: 92px; left: 28px; }
 
   /* ============ TOP BAR ============ */
   .topbar {
     position: fixed;
     top: 0; left: 0; right: 0;
-    z-index: 30;
-    padding: 20px 28px;
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    pointer-events: none;
-  }
-  .topbar-left, .topbar-right { pointer-events: auto; }
-
-  .status {
+    z-index: 40;
+    padding: 22px 28px;
     display: flex;
     align-items: center;
-    gap: 8px;
+    justify-content: space-between;
+    gap: 16px;
     font-family: var(--mono);
     font-size: 10px;
-    letter-spacing: .22em;
+    letter-spacing: .28em;
     text-transform: uppercase;
-    color: rgba(255,255,255,.45);
-    margin-bottom: 10px;
   }
-  .status-dot {
-    width: 5px; height: 5px;
+  .topbar-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: rgba(201,169,97,.55);
+  }
+  .topbar-item.dot::before {
+    content: '';
+    width: 5px;
+    height: 5px;
     border-radius: 50%;
-    background: #22c55e;
-    box-shadow: 0 0 10px #22c55e;
-    animation: pulseDot 2s ease-in-out infinite;
+    background: var(--turmeric);
+    box-shadow: 0 0 8px var(--turmeric);
+    animation: pulseDot 2.4s ease-in-out infinite;
   }
   @keyframes pulseDot {
     0%,100% { opacity: 1; }
     50%     { opacity: .35; }
   }
-
-  .logo {
-    display: inline-block;
-    font-family: 'Outfit', sans-serif;
-    font-weight: 800;
-    font-size: 17px;
-    letter-spacing: .18em;
-    color: #fff;
-    text-decoration: none;
-    transition: opacity .2s;
+  .topbar-center {
+    font-family: var(--serif);
+    font-weight: 900;
+    letter-spacing: .35em;
+    font-size: 15px;
+    color: var(--paper);
+    padding-left: .35em;
   }
-  .logo:hover { opacity: .8; }
-
-  .rev {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: .22em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,.4);
-    padding-top: 2px;
+  .topbar-center::before,
+  .topbar-center::after {
+    content: '·';
+    color: var(--vermillion);
+    margin: 0 10px;
+    font-size: 18px;
+    line-height: 0;
+    position: relative;
+    top: 2px;
   }
 
   /* ============ HERO ============ */
@@ -217,322 +236,263 @@
     min-height: 100vh;
     min-height: 100dvh;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 0 28px;
-  }
-
-  .glass-card {
-    max-width: 620px;
-    background: var(--glass);
-    border: 1px solid var(--border);
-    border-radius: 28px;
-    padding: 48px 44px;
-    backdrop-filter: blur(32px) saturate(140%);
-    -webkit-backdrop-filter: blur(32px) saturate(140%);
-    box-shadow:
-      0 30px 80px -20px rgba(0,0,0,.6),
-      inset 0 1px 0 rgba(255,255,255,.06);
-  }
-
-  .title {
-    font-family: 'Outfit', sans-serif;
-    font-weight: 200;
-    font-size: clamp(44px, 8vw, 88px);
-    line-height: .98;
-    letter-spacing: -.03em;
-    color: #fff;
-    margin-bottom: 36px;
-  }
-  .title strong {
-    font-weight: 400;
-    background: linear-gradient(120deg, #ffffff 20%, #c7d2fe 50%, #f97316 90%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-
-  .tagline {
-    display: flex;
-    gap: 14px;
-    align-items: stretch;
-  }
-  .tagline-bar {
-    width: 2px;
-    background: linear-gradient(to bottom, var(--accent), rgba(249,115,22,.15));
-    border-radius: 2px;
-    flex-shrink: 0;
-  }
-  .tagline p {
-    font-size: 15px;
-    line-height: 1.7;
-    font-weight: 300;
-    color: rgba(255,255,255,.72);
-    letter-spacing: .005em;
-  }
-
-  /* ============ HERO BOTTOM ============ */
-  .hero-bottom {
-    position: absolute;
-    left: 28px;
-    right: 28px;
-    bottom: 28px;
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 20px;
-    flex-wrap: wrap;
-  }
-
-  .copyright {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: .2em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,.3);
-    line-height: 1.8;
-  }
-
-  .hero-actions {
-    display: flex;
-    gap: 12px;
-  }
-
-  .pill {
-    display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 18px 36px;
-    min-width: 180px;
-    border-radius: 999px;
-    background: rgba(255,255,255,.03);
-    border: 1px solid rgba(255,255,255,.12);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    color: rgba(255,255,255,.9);
-    font-family: 'Outfit', sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    letter-spacing: .02em;
-    text-decoration: none;
-    transition: all .3s cubic-bezier(.22,1,.36,1);
-    white-space: nowrap;
-  }
-  .pill:hover {
-    background: rgba(255,255,255,.07);
-    border-color: rgba(255,255,255,.25);
-    transform: translateY(-2px);
-  }
-  .pill:active { transform: translateY(0) scale(.98); }
-
-  .pill-primary {
-    background: rgba(249,115,22,.08);
-    border-color: rgba(249,115,22,.4);
-    color: #fed7aa;
-    box-shadow: 0 0 40px -10px rgba(249,115,22,.5);
-  }
-  .pill-primary:hover {
-    background: rgba(249,115,22,.15);
-    border-color: rgba(249,115,22,.7);
-    color: #fff;
-    box-shadow: 0 0 60px -5px rgba(249,115,22,.7);
+    padding: 100px 28px 130px;
   }
 
-  /* ============ SCROLL SECTIONS ============ */
-  .section {
-    position: relative;
-    z-index: 10;
-    padding: 100px 28px;
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-  .section-head {
+  .hero-inner {
+    max-width: 700px;
     text-align: center;
-    margin-bottom: 56px;
+    animation: fadeUp 1.2s cubic-bezier(.22,1,.36,1) both;
   }
-  .section-label {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: .3em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 16px;
-  }
-  .section-title {
-    font-family: 'Outfit', sans-serif;
-    font-weight: 200;
-    font-size: clamp(32px, 5vw, 52px);
-    line-height: 1.1;
-    letter-spacing: -.02em;
-    color: #fff;
-  }
-  .section-title em {
-    font-style: normal;
-    color: rgba(255,255,255,.4);
-  }
-
-  .features {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
-  }
-  .feature {
-    background: rgba(255,255,255,.02);
-    border: 1px solid rgba(255,255,255,.06);
-    border-radius: 20px;
-    padding: 28px 24px;
-    transition: all .35s cubic-bezier(.22,1,.36,1);
-  }
-  .feature:hover {
-    background: rgba(255,255,255,.04);
-    border-color: rgba(249,115,22,.3);
-    transform: translateY(-4px);
-  }
-  .feature-icon {
-    width: 40px; height: 40px;
-    border-radius: 12px;
-    background: rgba(249,115,22,.1);
-    border: 1px solid rgba(249,115,22,.2);
-    display: grid;
-    place-items: center;
-    color: var(--accent);
-    margin-bottom: 18px;
-    font-size: 15px;
-  }
-  .feature h3 {
-    font-size: 16px;
-    font-weight: 600;
-    color: #fff;
-    margin-bottom: 8px;
-    letter-spacing: -.01em;
-  }
-  .feature p {
-    font-size: 13.5px;
-    line-height: 1.65;
-    color: rgba(255,255,255,.5);
-    font-weight: 300;
-  }
-
-  /* FAQ */
-  .faq-list {
-    max-width: 720px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  .faq-item {
-    background: rgba(255,255,255,.02);
-    border: 1px solid rgba(255,255,255,.06);
-    border-radius: 16px;
-    overflow: hidden;
-    transition: border-color .25s;
-  }
-  .faq-item[open] { border-color: rgba(249,115,22,.25); }
-  .faq-item summary {
-    list-style: none;
-    cursor: pointer;
-    padding: 20px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    font-size: 15px;
-    font-weight: 500;
-    color: #fff;
-    transition: color .2s;
-  }
-  .faq-item summary::-webkit-details-marker { display: none; }
-  .faq-item summary:hover { color: var(--accent); }
-  .faq-icon {
-    color: var(--accent);
-    font-size: 14px;
-    transition: transform .3s cubic-bezier(.22,1,.36,1);
-    flex-shrink: 0;
-  }
-  .faq-item[open] .faq-icon { transform: rotate(45deg); }
-  .faq-body {
-    padding: 0 24px 22px;
-    font-size: 14px;
-    line-height: 1.7;
-    color: rgba(255,255,255,.5);
-    font-weight: 300;
-    animation: faqIn .35s cubic-bezier(.22,1,.36,1);
-  }
-  @keyframes faqIn {
-    from { opacity: 0; transform: translateY(-6px); }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(28px); }
     to   { opacity: 1; transform: none; }
   }
 
-  /* Footer */
-  .footer {
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: .5em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 32px;
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    padding-left: .5em;
+  }
+  .eyebrow::before, .eyebrow::after {
+    content: '';
+    width: 28px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold));
+  }
+  .eyebrow::after {
+    background: linear-gradient(to left, transparent, var(--gold));
+  }
+
+  .hero-title {
+    font-family: var(--serif);
+    font-weight: 900;
+    line-height: .92;
+    letter-spacing: -.02em;
+    margin-bottom: 36px;
+    color: var(--paper);
+  }
+  .hero-title .line-1 {
+    display: block;
+    font-size: clamp(48px, 11vw, 110px);
+  }
+  .hero-title .line-2 {
+    display: block;
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(40px, 9vw, 90px);
+    color: var(--gold-bright);
+    letter-spacing: -.01em;
+    margin: -8px 0 -4px;
+  }
+  .hero-title .line-3 {
+    display: block;
+    font-size: clamp(48px, 11vw, 110px);
+    background: linear-gradient(120deg, #c8391f 0%, #e89b2c 40%, #e8c88a 70%, #c9a961 100%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shimmer 8s ease-in-out infinite;
+  }
+  @keyframes shimmer {
+    0%,100% { background-position: 0% 50%; }
+    50%     { background-position: 100% 50%; }
+  }
+
+  .tagline {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(15px, 2.5vw, 19px);
+    line-height: 1.7;
+    color: rgba(242,228,196,.55);
+    max-width: 460px;
+    margin: 0 auto 44px;
+    font-weight: 400;
+    letter-spacing: .01em;
+  }
+  .tagline em {
+    font-style: italic;
+    color: var(--turmeric);
+    font-weight: 700;
+  }
+  .tagline::before, .tagline::after {
+    content: '「 ';
+    color: var(--gold-dim);
+    font-size: 1.4em;
+    vertical-align: middle;
+    opacity: .6;
+  }
+  .tagline::after { content: ' 」'; }
+
+  /* ============ NÚT CON DẤU ============ */
+  .seals {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .seal-btn {
     position: relative;
-    z-index: 10;
-    border-top: 1px solid rgba(255,255,255,.06);
-    padding: 32px 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px 38px;
+    min-width: 190px;
+    background: linear-gradient(135deg, #8a2416 0%, #c8391f 100%);
+    border: none;
+    color: var(--paper);
+    font-family: var(--mono);
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all .3s cubic-bezier(.22,1,.36,1);
+    box-shadow:
+      0 12px 32px -8px rgba(200,57,31,.55),
+      inset 0 1px 0 rgba(255,255,255,.1);
+    padding-left: calc(38px + .3em);
+  }
+  .seal-btn::before {
+    content: '';
+    position: absolute;
+    inset: 5px;
+    border: 1px solid rgba(242,228,196,.28);
+    pointer-events: none;
+    transition: border-color .3s;
+  }
+  .seal-btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent 0%, rgba(255,255,255,.12) 100%);
+    opacity: 0;
+    transition: opacity .3s;
+    pointer-events: none;
+  }
+  .seal-btn:hover {
+    transform: translateY(-3px);
+    box-shadow:
+      0 20px 44px -8px rgba(200,57,31,.75),
+      inset 0 1px 0 rgba(255,255,255,.15);
+  }
+  .seal-btn:hover::before { border-color: rgba(242,228,196,.5); }
+  .seal-btn:hover::after  { opacity: 1; }
+  .seal-btn:active {
+    transform: translateY(0) scale(.98);
+  }
+
+  .seal-btn.ghost {
+    background: transparent;
+    color: var(--gold-bright);
+    border: 1px solid rgba(201,169,97,.4);
+    box-shadow:
+      0 12px 32px -12px rgba(0,0,0,.6),
+      inset 0 1px 0 rgba(201,169,97,.08);
+  }
+  .seal-btn.ghost::before {
+    border-color: rgba(201,169,97,.22);
+  }
+  .seal-btn.ghost:hover {
+    border-color: rgba(201,169,97,.75);
+    color: var(--paper);
+    box-shadow:
+      0 20px 44px -12px rgba(201,169,97,.3),
+      inset 0 1px 0 rgba(201,169,97,.15);
+  }
+  .seal-btn.ghost:hover::before { border-color: rgba(201,169,97,.5); }
+
+  /* ============ FOOTER ============ */
+  .footer {
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    z-index: 40;
+    padding: 22px 28px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    flex-wrap: wrap;
     gap: 16px;
     font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: .2em;
+    font-size: 9.5px;
+    letter-spacing: .3em;
     text-transform: uppercase;
-    color: rgba(255,255,255,.3);
+    color: rgba(201,169,97,.4);
   }
-  .footer a {
-    color: rgba(255,255,255,.45);
-    text-decoration: none;
-    transition: color .2s;
+  .made-in {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: rgba(232,155,44,.65);
   }
-  .footer a:hover { color: var(--accent); }
+  .made-in::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: var(--vermillion);
+    transform: rotate(45deg);
+    box-shadow: 0 0 10px var(--vermillion);
+  }
 
   /* ============ RESPONSIVE ============ */
   @media (max-width: 900px) {
-    .features { grid-template-columns: repeat(2, 1fr); }
+    .drum-wrap { width: 140vw; height: 140vw; }
+    .seal-corner { width: 44px; height: 44px; font-size: 18px; }
+    .seal-corner.tl { top: 78px; right: 18px; }
+    .seal-corner.br { bottom: 78px; left: 18px; }
   }
 
   @media (max-width: 640px) {
-    .topbar { padding: 16px 20px; }
-    .hero { padding: 0 20px; }
-    .glass-card {
-      padding: 32px 26px;
-      border-radius: 22px;
-    }
-    .title { margin-bottom: 26px; }
-    .tagline p { font-size: 14px; }
+    .topbar { padding: 16px 18px; font-size: 9px; letter-spacing: .22em; }
+    .topbar-center { font-size: 12px; letter-spacing: .28em; }
+    .topbar-item:first-child { display: none; }
 
-    .hero-bottom {
-      left: 20px;
-      right: 20px;
-      bottom: 20px;
-      flex-direction: column;
-      align-items: stretch;
-      gap: 14px;
-    }
-    .copyright { order: 2; text-align: center; }
-    .hero-actions {
-      order: 1;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-    .pill {
+    .caudoi { font-size: 8.5px; letter-spacing: .5em; }
+    .caudoi-left  { left: 12px; }
+    .caudoi-right { right: 12px; }
+    .caudoi::before, .caudoi::after { height: 24px; }
+
+    .seal-corner { width: 36px; height: 36px; font-size: 15px; }
+    .seal-corner.tl { top: 68px; right: 14px; }
+    .seal-corner.br { bottom: 68px; left: 14px; }
+
+    .hero { padding: 90px 20px 130px; }
+    .eyebrow { font-size: 9px; letter-spacing: .4em; margin-bottom: 24px; }
+    .hero-title { margin-bottom: 26px; }
+    .tagline { font-size: 14.5px; margin-bottom: 34px; }
+    .tagline::before, .tagline::after { font-size: 1.2em; }
+
+    .seals { flex-direction: column; align-items: stretch; gap: 12px; max-width: 300px; margin: 0 auto; }
+    .seal-btn {
+      width: 100%;
       min-width: 0;
-      padding: 15px 18px;
-      font-size: 13px;
+      padding: 16px 24px;
+      font-size: 10.5px;
+      letter-spacing: .26em;
+      padding-left: calc(24px + .26em);
     }
 
-    .section { padding: 72px 20px; }
-    .features { grid-template-columns: 1fr; gap: 12px; }
-    .feature { padding: 22px 20px; }
     .footer {
-      padding: 24px 20px;
+      padding: 16px 18px;
       flex-direction: column;
+      gap: 8px;
+      font-size: 8.5px;
+      letter-spacing: .24em;
       text-align: center;
-      letter-spacing: .15em;
     }
+    .footer > div:first-child { display: none; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -541,167 +501,110 @@
       animation-iteration-count: 1 !important;
       transition-duration: .01ms !important;
     }
+    .drum-wrap { animation: none !important; }
   }
 </style>
 </head>
 <body>
 
-  <!-- Aurora BG -->
-  <div class="aurora" aria-hidden="true">
-    <div class="blob blob-blue"></div>
-    <div class="blob blob-purple"></div>
-    <div class="blob blob-pink"></div>
-    <div class="blob blob-red"></div>
-    <div class="blob blob-white"></div>
+  <!-- Nền -->
+  <div class="bg-lacquer" aria-hidden="true"></div>
+  <div class="bg-grain" aria-hidden="true"></div>
+  <div class="bg-vignette" aria-hidden="true"></div>
+
+  <!-- Trống đồng xoay -->
+  <div class="drum-wrap" aria-hidden="true">
+    <svg viewBox="0 0 800 800" fill="none" stroke="currentColor">
+      <g stroke-width="1">
+        <!-- Vòng ngoài cùng -->
+        <circle cx="400" cy="400" r="395" stroke-width="0.8"/>
+        <circle cx="400" cy="400" r="382" stroke-width="0.4"/>
+        <circle cx="400" cy="400" r="368" stroke-width="1.2"/>
+
+        <!-- Vòng chấm -->
+        <circle cx="400" cy="400" r="350" stroke-width="48" stroke-dasharray="1.5 26" opacity="0.55"/>
+
+        <!-- Vòng trung gian -->
+        <circle cx="400" cy="400" r="322" stroke-width="0.6"/>
+        <circle cx="400" cy="400" r="308" stroke-width="0.4"/>
+
+        <!-- Vòng tam giác -->
+        <circle cx="400" cy="400" r="285" stroke-width="34" stroke-dasharray="5 32" opacity="0.7"/>
+
+        <!-- Vòng giữa -->
+        <circle cx="400" cy="400" r="252" stroke-width="0.8"/>
+        <circle cx="400" cy="400" r="236" stroke-width="0.4"/>
+
+        <!-- Vòng chấm 2 -->
+        <circle cx="400" cy="400" r="215" stroke-width="24" stroke-dasharray="0.8 22" opacity="0.5"/>
+
+        <!-- Vòng trong -->
+        <circle cx="400" cy="400" r="188" stroke-width="0.8"/>
+        <circle cx="400" cy="400" r="170" stroke-width="0.4"/>
+
+        <!-- Vòng tia ngắn -->
+        <circle cx="400" cy="400" r="145" stroke-width="26" stroke-dasharray="2.5 26" opacity="0.7"/>
+
+        <!-- Vòng trong cùng -->
+        <circle cx="400" cy="400" r="118" stroke-width="0.8"/>
+        <circle cx="400" cy="400" r="100" stroke-width="0.5"/>
+
+        <!-- Tia mặt trời -->
+        <circle cx="400" cy="400" r="72" stroke-width="52" stroke-dasharray="3 33" opacity="0.85"/>
+
+        <!-- Tâm mặt trời -->
+        <circle cx="400" cy="400" r="40" stroke-width="1.2"/>
+        <circle cx="400" cy="400" r="28" stroke-width="0.6"/>
+        <circle cx="400" cy="400" r="14" fill="currentColor" fill-opacity="0.3" stroke="none"/>
+      </g>
+    </svg>
   </div>
-  <div class="vignette" aria-hidden="true"></div>
-  <div class="noise" aria-hidden="true"></div>
+
+  <!-- Câu đối dọc -->
+  <div class="caudoi caudoi-left" aria-hidden="true">Vận hành · Âm thầm</div>
+  <div class="caudoi caudoi-right" aria-hidden="true">Bền bỉ · 24/7</div>
+
+  <!-- Con dấu góc -->
+  <div class="seal-corner tl" aria-hidden="true">VP</div>
+  <div class="seal-corner br" aria-hidden="true">印</div>
 
   <!-- Top bar -->
   <header class="topbar">
-    <div class="topbar-left">
-      <div class="status">
-        <span class="status-dot"></span>
-        System status · Optimal
-      </div>
-      <a href="#" class="logo">VORAPRIME</a>
-    </div>
-    <div class="topbar-right">
-      <div class="rev">Rev. 2026</div>
-    </div>
+    <div class="topbar-item dot">Hệ thống · Ổn định</div>
+    <div class="topbar-center">VORAPRIME</div>
+    <div class="topbar-item">Bản quyền · 2026</div>
   </header>
 
   <!-- Hero -->
   <main class="hero">
-    <div class="glass-card">
-      <h1 class="title">
-        Tự động hoá<br>
-        <strong>mọi thứ.</strong>
-      </h1>
-      <div class="tagline">
-        <div class="tagline-bar"></div>
-        <p>
-          Account chạy 24/7 trên cloud.<br>
-          Không cần cắm máy tính — bật &amp; quên đi.
-        </p>
-      </div>
-    </div>
+    <div class="hero-inner">
 
-    <div class="hero-bottom">
-      <p class="copyright">
-        All rights reserved © 2026<br>
-        Designed by Voraprime
+      <div class="eyebrow">Độc bản Việt Nam</div>
+
+      <h1 class="hero-title">
+        <span class="line-1">Tự động</span>
+        <span class="line-2">âm thầm</span>
+        <span class="line-3">24/7</span>
+      </h1>
+
+      <p class="tagline">
+        Nước chảy đá mòn —<br>
+        account chạy <em>mãi không ngừng</em>.
       </p>
-      <nav class="hero-actions">
-        <a href="login.html?tab=login" class="pill">Đăng nhập</a>
-        <a href="login.html?tab=register" class="pill pill-primary">Đăng ký</a>
+
+      <nav class="seals">
+        <a href="login.html?tab=login" class="seal-btn ghost">Đăng nhập</a>
+        <a href="login.html?tab=register" class="seal-btn">Đăng ký</a>
       </nav>
+
     </div>
   </main>
 
-  <!-- Features -->
-  <section class="section" id="features">
-    <div class="section-head">
-      <div class="section-label">Tính năng</div>
-      <h2 class="section-title">Mọi thứ bạn cần, <em>không thứ nào bạn không.</em></h2>
-    </div>
-
-    <div class="features">
-      <div class="feature">
-        <div class="feature-icon"><i class="fa-solid fa-microphone-lines"></i></div>
-        <h3>Treo Voice 24/7</h3>
-        <p>Ngồi mãi trong voice channel, tự động kết nối lại nếu bị ngắt.</p>
-      </div>
-      <div class="feature">
-        <div class="feature-icon"><i class="fa-solid fa-comment-dots"></i></div>
-        <h3>Custom Status</h3>
-        <p>Đặt trạng thái tuỳ ý kèm emoji, hiển thị đúng như bạn muốn — 24/7.</p>
-      </div>
-      <div class="feature">
-        <div class="feature-icon"><i class="fa-solid fa-gamepad"></i></div>
-        <h3>Activity / Rich Presence</h3>
-        <p>Hiển thị "đang chơi" bất kỳ game hay app nào, không cần mở chúng.</p>
-      </div>
-      <div class="feature">
-        <div class="feature-icon"><i class="fa-solid fa-cloud"></i></div>
-        <h3>Không cần cắm máy</h3>
-        <p>Chạy hoàn toàn trên cloud. Tắt máy, tắt điện thoại — vẫn online.</p>
-      </div>
-      <div class="feature">
-        <div class="feature-icon"><i class="fa-solid fa-layer-group"></i></div>
-        <h3>Đa tài khoản</h3>
-        <p>Quản lý nhiều account cùng lúc trong một bảng điều khiển duy nhất.</p>
-      </div>
-      <div class="feature">
-        <div class="feature-icon"><i class="fa-solid fa-shield-halved"></i></div>
-        <h3>Bảo mật token</h3>
-        <p>Token được mã hoá, không chia sẻ cho bên thứ ba. Bạn toàn quyền.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ -->
-  <section class="section" id="faq">
-    <div class="section-head">
-      <div class="section-label">Câu hỏi thường gặp</div>
-      <h2 class="section-title">Còn <em>thắc mắc?</em></h2>
-    </div>
-
-    <div class="faq-list">
-      <details class="faq-item">
-        <summary>
-          <span>Voraprime có miễn phí không?</span>
-          <i class="faq-icon fa-solid fa-plus"></i>
-        </summary>
-        <p class="faq-body">Có. Voraprime là dự án mã nguồn mở và hoàn toàn miễn phí. Bạn không phải trả bất kỳ khoản nào để sử dụng các tính năng cơ bản.</p>
-      </details>
-      <details class="faq-item">
-        <summary>
-          <span>Tôi có cần bật máy tính 24/7 không?</span>
-          <i class="faq-icon fa-solid fa-plus"></i>
-        </summary>
-        <p class="faq-body">Không. Bot chạy trên hạ tầng cloud, nên bạn có thể tắt máy hoàn toàn mà account vẫn duy trì trạng thái.</p>
-      </details>
-      <details class="faq-item">
-        <summary>
-          <span>Token của tôi có an toàn không?</span>
-          <i class="faq-icon fa-solid fa-plus"></i>
-        </summary>
-        <p class="faq-body">Token được mã hoá khi lưu trữ và không bao giờ chia sẻ cho bên thứ ba. Bạn có thể thu hồi quyền truy cập bất cứ lúc nào.</p>
-      </details>
-      <details class="faq-item">
-        <summary>
-          <span>Dùng được cho bao nhiêu tài khoản?</span>
-          <i class="faq-icon fa-solid fa-plus"></i>
-        </summary>
-        <p class="faq-body">Không giới hạn. Bạn có thể thêm và quản lý nhiều tài khoản cùng lúc trong một bảng điều khiển.</p>
-      </details>
-    </div>
-  </section>
-
   <!-- Footer -->
   <footer class="footer">
-    <span>© 2026 Voraprime</span>
-    <div style="display:flex; gap:20px;">
-      <a href="login.html?tab=login">Đăng nhập</a>
-      <a href="login.html?tab=register">Đăng ký</a>
-      <a href="#faq">FAQ</a>
-    </div>
+    <div>Sài Gòn · Hà Nội · Đà Nẵng</div>
+    <div class="made-in">Làm tại Việt Nam</div>
   </footer>
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
-
-  <script>
-    // Chỉ mở 1 FAQ tại một thời điểm
-    document.querySelectorAll('.faq-item').forEach(item => {
-      item.addEventListener('toggle', () => {
-        if (item.open) {
-          document.querySelectorAll('.faq-item').forEach(o => {
-            if (o !== item) o.open = false;
-          });
-        }
-      });
-    });
-  </script>
 </body>
 </html> 
