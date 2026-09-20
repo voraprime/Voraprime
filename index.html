@@ -1,149 +1,707 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#08050f">
-  <title>LUNARKRYSTAL — Lương Trường Khôi</title>
-  <style>
-    *{box-sizing:border-box;margin:0;padding:0}
-    html,body{width:100%;height:100%;overflow:hidden}
-    body{
-      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-      color:#fff;background:#07050d;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#05060a">
+<meta name="description" content="Voraprime — Tự động hoá Voice, Activity, Custom Status. Account chạy 24/7 trên cloud.">
+<title>Voraprime — Tự động hoá</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #05060a;
+    --text: #ffffff;
+    --muted: rgba(255,255,255,.5);
+    --muted-2: rgba(255,255,255,.32);
+    --border: rgba(255,255,255,.09);
+    --glass: rgba(10,10,16,.55);
+    --accent: #f97316;
+    --mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+
+  /* ===== FIX ZOOM MOBILE ===== */
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+    max-width: 100%;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+  }
+  html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+    overscroll-behavior-x: none;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  input, select, textarea, button {
+    font-size: 16px;
+    touch-action: manipulation;
+    font-family: inherit;
+  }
+  a, button, [role="button"], summary, label {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+  /* ===== END FIX ZOOM ===== */
+
+  body {
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    position: relative;
+  }
+
+  /* ============ AURORA BACKGROUND ============ */
+  .aurora {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse 90% 60% at 50% 45%, #0a0b14 0%, #05060a 70%);
+    pointer-events: none;
+  }
+  .blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    will-change: transform;
+    pointer-events: none;
+  }
+  .blob-blue {
+    width: 70vw; height: 70vw;
+    left: -15%; bottom: -25%;
+    background: radial-gradient(circle, #3b82f6 0%, #6366f1 45%, transparent 72%);
+    opacity: .55;
+    animation: driftA 22s ease-in-out infinite;
+  }
+  .blob-purple {
+    width: 60vw; height: 60vw;
+    left: 25%; top: 30%;
+    background: radial-gradient(circle, #a855f7 0%, #8b5cf6 45%, transparent 72%);
+    opacity: .38;
+    animation: driftB 26s ease-in-out infinite;
+  }
+  .blob-pink {
+    width: 55vw; height: 55vw;
+    right: -8%; top: -12%;
+    background: radial-gradient(circle, #ec4899 0%, #f43f5e 45%, transparent 72%);
+    opacity: .5;
+    animation: driftC 20s ease-in-out infinite;
+  }
+  .blob-red {
+    width: 50vw; height: 50vw;
+    right: 5%; top: 5%;
+    background: radial-gradient(circle, #ef4444 0%, #f97316 50%, transparent 72%);
+    opacity: .48;
+    animation: driftD 24s ease-in-out infinite;
+  }
+  .blob-white {
+    width: 38vw; height: 38vw;
+    left: 38%; top: 42%;
+    background: radial-gradient(circle, #ffffff 0%, #c7d2fe 40%, transparent 70%);
+    opacity: .22;
+    filter: blur(120px);
+    animation: driftE 28s ease-in-out infinite;
+  }
+
+  @keyframes driftA {
+    0%,100% { transform: translate(0,0) scale(1); }
+    50%     { transform: translate(40px,-30px) scale(1.08); }
+  }
+  @keyframes driftB {
+    0%,100% { transform: translate(0,0) scale(1); }
+    50%     { transform: translate(-50px,30px) scale(1.12); }
+  }
+  @keyframes driftC {
+    0%,100% { transform: translate(0,0) scale(1); }
+    50%     { transform: translate(-30px,40px) scale(1.06); }
+  }
+  @keyframes driftD {
+    0%,100% { transform: translate(0,0) scale(1); }
+    50%     { transform: translate(30px,50px) scale(1.1); }
+  }
+  @keyframes driftE {
+    0%,100% { transform: translate(0,0) scale(1); opacity: .22; }
+    50%     { transform: translate(-40px,-20px) scale(1.15); opacity: .32; }
+  }
+
+  /* Vignette + grain */
+  .vignette {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: radial-gradient(ellipse at center, transparent 35%, rgba(5,6,10,.75) 100%);
+  }
+  .noise {
+    position: fixed;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    opacity: .035;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ============ TOP BAR ============ */
+  .topbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 30;
+    padding: 20px 28px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    pointer-events: none;
+  }
+  .topbar-left, .topbar-right { pointer-events: auto; }
+
+  .status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.45);
+    margin-bottom: 10px;
+  }
+  .status-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: #22c55e;
+    box-shadow: 0 0 10px #22c55e;
+    animation: pulseDot 2s ease-in-out infinite;
+  }
+  @keyframes pulseDot {
+    0%,100% { opacity: 1; }
+    50%     { opacity: .35; }
+  }
+
+  .logo {
+    display: inline-block;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    font-size: 17px;
+    letter-spacing: .18em;
+    color: #fff;
+    text-decoration: none;
+    transition: opacity .2s;
+  }
+  .logo:hover { opacity: .8; }
+
+  .rev {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.4);
+    padding-top: 2px;
+  }
+
+  /* ============ HERO ============ */
+  .hero {
+    position: relative;
+    z-index: 10;
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 28px;
+  }
+
+  .glass-card {
+    max-width: 620px;
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: 28px;
+    padding: 48px 44px;
+    backdrop-filter: blur(32px) saturate(140%);
+    -webkit-backdrop-filter: blur(32px) saturate(140%);
+    box-shadow:
+      0 30px 80px -20px rgba(0,0,0,.6),
+      inset 0 1px 0 rgba(255,255,255,.06);
+  }
+
+  .title {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 200;
+    font-size: clamp(44px, 8vw, 88px);
+    line-height: .98;
+    letter-spacing: -.03em;
+    color: #fff;
+    margin-bottom: 36px;
+  }
+  .title strong {
+    font-weight: 400;
+    background: linear-gradient(120deg, #ffffff 20%, #c7d2fe 50%, #f97316 90%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .tagline {
+    display: flex;
+    gap: 14px;
+    align-items: stretch;
+  }
+  .tagline-bar {
+    width: 2px;
+    background: linear-gradient(to bottom, var(--accent), rgba(249,115,22,.15));
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .tagline p {
+    font-size: 15px;
+    line-height: 1.7;
+    font-weight: 300;
+    color: rgba(255,255,255,.72);
+    letter-spacing: .005em;
+  }
+
+  /* ============ HERO BOTTOM ============ */
+  .hero-bottom {
+    position: absolute;
+    left: 28px;
+    right: 28px;
+    bottom: 28px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .copyright {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.3);
+    line-height: 1.8;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 12px;
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px 36px;
+    min-width: 180px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.03);
+    border: 1px solid rgba(255,255,255,.12);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    color: rgba(255,255,255,.9);
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: .02em;
+    text-decoration: none;
+    transition: all .3s cubic-bezier(.22,1,.36,1);
+    white-space: nowrap;
+  }
+  .pill:hover {
+    background: rgba(255,255,255,.07);
+    border-color: rgba(255,255,255,.25);
+    transform: translateY(-2px);
+  }
+  .pill:active { transform: translateY(0) scale(.98); }
+
+  .pill-primary {
+    background: rgba(249,115,22,.08);
+    border-color: rgba(249,115,22,.4);
+    color: #fed7aa;
+    box-shadow: 0 0 40px -10px rgba(249,115,22,.5);
+  }
+  .pill-primary:hover {
+    background: rgba(249,115,22,.15);
+    border-color: rgba(249,115,22,.7);
+    color: #fff;
+    box-shadow: 0 0 60px -5px rgba(249,115,22,.7);
+  }
+
+  /* ============ SCROLL SECTIONS ============ */
+  .section {
+    position: relative;
+    z-index: 10;
+    padding: 100px 28px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .section-head {
+    text-align: center;
+    margin-bottom: 56px;
+  }
+  .section-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 200;
+    font-size: clamp(32px, 5vw, 52px);
+    line-height: 1.1;
+    letter-spacing: -.02em;
+    color: #fff;
+  }
+  .section-title em {
+    font-style: normal;
+    color: rgba(255,255,255,.4);
+  }
+
+  .features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  .feature {
+    background: rgba(255,255,255,.02);
+    border: 1px solid rgba(255,255,255,.06);
+    border-radius: 20px;
+    padding: 28px 24px;
+    transition: all .35s cubic-bezier(.22,1,.36,1);
+  }
+  .feature:hover {
+    background: rgba(255,255,255,.04);
+    border-color: rgba(249,115,22,.3);
+    transform: translateY(-4px);
+  }
+  .feature-icon {
+    width: 40px; height: 40px;
+    border-radius: 12px;
+    background: rgba(249,115,22,.1);
+    border: 1px solid rgba(249,115,22,.2);
+    display: grid;
+    place-items: center;
+    color: var(--accent);
+    margin-bottom: 18px;
+    font-size: 15px;
+  }
+  .feature h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 8px;
+    letter-spacing: -.01em;
+  }
+  .feature p {
+    font-size: 13.5px;
+    line-height: 1.65;
+    color: rgba(255,255,255,.5);
+    font-weight: 300;
+  }
+
+  /* FAQ */
+  .faq-list {
+    max-width: 720px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .faq-item {
+    background: rgba(255,255,255,.02);
+    border: 1px solid rgba(255,255,255,.06);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: border-color .25s;
+  }
+  .faq-item[open] { border-color: rgba(249,115,22,.25); }
+  .faq-item summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    font-size: 15px;
+    font-weight: 500;
+    color: #fff;
+    transition: color .2s;
+  }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary:hover { color: var(--accent); }
+  .faq-icon {
+    color: var(--accent);
+    font-size: 14px;
+    transition: transform .3s cubic-bezier(.22,1,.36,1);
+    flex-shrink: 0;
+  }
+  .faq-item[open] .faq-icon { transform: rotate(45deg); }
+  .faq-body {
+    padding: 0 24px 22px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: rgba(255,255,255,.5);
+    font-weight: 300;
+    animation: faqIn .35s cubic-bezier(.22,1,.36,1);
+  }
+  @keyframes faqIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  /* Footer */
+  .footer {
+    position: relative;
+    z-index: 10;
+    border-top: 1px solid rgba(255,255,255,.06);
+    padding: 32px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.3);
+  }
+  .footer a {
+    color: rgba(255,255,255,.45);
+    text-decoration: none;
+    transition: color .2s;
+  }
+  .footer a:hover { color: var(--accent); }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 900px) {
+    .features { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 640px) {
+    .topbar { padding: 16px 20px; }
+    .hero { padding: 0 20px; }
+    .glass-card {
+      padding: 32px 26px;
+      border-radius: 22px;
     }
-    .scene{
-      position:relative;width:100vw;height:100vh;min-height:620px;overflow:hidden;
-      background:
-        radial-gradient(circle at 57% 48%,rgba(130,78,255,.16),transparent 19%),
-        radial-gradient(circle at 74% 28%,rgba(255,35,60,.12),transparent 25%),
-        radial-gradient(circle at 35% 76%,rgba(0,100,255,.16),transparent 26%),
-        #07050d;
+    .title { margin-bottom: 26px; }
+    .tagline p { font-size: 14px; }
+
+    .hero-bottom {
+      left: 20px;
+      right: 20px;
+      bottom: 20px;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 14px;
     }
-    /* Abstract luminous ribbon */
-    .orb{
-      position:absolute;left:57%;top:50%;width:420px;height:420px;
-      transform:translate(-50%,-50%) rotate(-24deg);
-      border:46px solid rgba(255,255,255,.9);
-      border-left-color:#ff3d9e;
-      border-right-color:#62a8ff;
-      border-radius:50%;
-      filter:blur(2px) drop-shadow(0 0 22px rgba(255,255,255,.9))
-             drop-shadow(0 0 65px rgba(255,40,160,.55))
-             drop-shadow(0 0 95px rgba(70,100,255,.45));
-      box-shadow:inset 0 0 35px #fff;
+    .copyright { order: 2; text-align: center; }
+    .hero-actions {
+      order: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
     }
-    .orb:before,.orb:after{
-      content:"";position:absolute;inset:-75px;border-radius:50%;
-      border:24px solid transparent;transform:rotate(24deg);
-      border-top-color:rgba(255,40,40,.65);
-      border-right-color:rgba(255,155,35,.5);
-      filter:blur(16px);
+    .pill {
+      min-width: 0;
+      padding: 15px 18px;
+      font-size: 13px;
     }
-    .orb:after{
-      inset:-105px;transform:rotate(-38deg);
-      border-bottom-color:rgba(0,120,255,.6);
-      border-left-color:rgba(130,50,255,.55);
+
+    .section { padding: 72px 20px; }
+    .features { grid-template-columns: 1fr; gap: 12px; }
+    .feature { padding: 22px 20px; }
+    .footer {
+      padding: 24px 20px;
+      flex-direction: column;
+      text-align: center;
+      letter-spacing: .15em;
     }
-    .streak{
-      position:absolute;width:900px;height:150px;left:25%;top:17%;
-      transform:rotate(-27deg);
-      background:linear-gradient(90deg,transparent,rgba(255,30,65,.35),rgba(255,150,30,.3),transparent);
-      filter:blur(28px);
-      opacity:.9;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: .01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: .01ms !important;
     }
-    .streak.blue{
-      top:67%;left:-8%;transform:rotate(-25deg);
-      background:linear-gradient(90deg,transparent,rgba(20,100,255,.5),rgba(70,220,255,.25),transparent);
-    }
-    .grain{
-      position:absolute;inset:0;pointer-events:none;opacity:.08;
-      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E");
-      mix-blend-mode:screen;
-    }
-    .top{
-      position:absolute;z-index:3;left:52px;right:52px;top:26px;
-      display:flex;justify-content:space-between;align-items:flex-start;
-      text-transform:uppercase;letter-spacing:.24em;
-    }
-    .status{font-size:10px;color:#a7a2b1;margin-bottom:10px}
-    .brand{font-size:19px;font-weight:650;letter-spacing:.08em}
-    .rev{font-size:10px;color:#a7a2b1}
-    .hero{
-      position:absolute;z-index:2;left:52px;top:50%;transform:translateY(-50%);
-      width:min(680px,58vw);padding:42px 55px 44px;
-      border:1px solid rgba(255,255,255,.12);border-radius:34px;
-      background:linear-gradient(120deg,rgba(10,8,18,.74),rgba(20,17,29,.42));
-      box-shadow:0 24px 80px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.05);
-      backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
-    }
-    .hero h1{
-      font-size:clamp(58px,6.3vw,96px);font-weight:300;line-height:.94;
-      letter-spacing:-.045em;margin-bottom:30px;
-    }
-    .quote{
-      display:flex;gap:18px;align-items:center;color:#aaa5b1;font-size:17px;line-height:1.55;
-    }
-    .quote:before{content:"";width:3px;height:58px;border-radius:3px;background:#a77cff;box-shadow:0 0 18px #9a68ff}
-    .actions{
-      position:absolute;z-index:4;right:52px;bottom:50px;display:flex;gap:14px;
-    }
-    .btn{
-      min-width:275px;padding:22px 34px;border:1px solid rgba(255,255,255,.2);
-      border-radius:50px;background:rgba(18,15,25,.62);color:#fff;
-      text-decoration:none;text-align:center;font-size:16px;font-weight:650;
-      letter-spacing:.16em;transition:.25s ease;backdrop-filter:blur(15px);
-      box-shadow:0 0 25px rgba(130,80,255,.08);
-    }
-    .btn:hover{transform:translateY(-4px);background:rgba(38,30,52,.8);box-shadow:0 12px 40px rgba(120,80,255,.22)}
-    .footer{
-      position:absolute;z-index:3;left:52px;bottom:47px;color:#77727f;
-      font-size:9px;letter-spacing:.23em;line-height:1.65;text-transform:uppercase
-    }
-    @media(max-width:850px){
-      html,body{overflow:auto}
-      .scene{min-height:760px;height:100vh}
-      .top{left:24px;right:24px;top:20px}
-      .hero{left:24px;right:24px;top:47%;width:auto;transform:translateY(-50%);padding:34px 30px}
-      .hero h1{font-size:clamp(48px,13vw,78px)}
-      .quote{font-size:15px}
-      .orb{left:62%;top:48%;width:320px;height:320px;border-width:34px}
-      .actions{left:24px;right:24px;bottom:70px;display:grid;grid-template-columns:1fr}
-      .btn{min-width:0;width:100%;padding:18px}
-      .footer{left:24px;bottom:20px}
-    }
-  </style>
+  }
+</style>
 </head>
 <body>
-  <main class="scene">
-    <div class="streak"></div>
-    <div class="streak blue"></div>
-    <div class="orb"></div>
-    <div class="grain"></div>
 
-    <header class="top">
-      <div>
-        <div class="status">SYSTEM STATUS: OPTIMAL</div>
-        <div class="brand">LUNARKRYSTAL</div>
+  <!-- Aurora BG -->
+  <div class="aurora" aria-hidden="true">
+    <div class="blob blob-blue"></div>
+    <div class="blob blob-purple"></div>
+    <div class="blob blob-pink"></div>
+    <div class="blob blob-red"></div>
+    <div class="blob blob-white"></div>
+  </div>
+  <div class="vignette" aria-hidden="true"></div>
+  <div class="noise" aria-hidden="true"></div>
+
+  <!-- Top bar -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="status">
+        <span class="status-dot"></span>
+        System status · Optimal
       </div>
-      <div class="rev">REV. 2026</div>
-    </header>
+      <a href="#" class="logo">VORAPRIME</a>
+    </div>
+    <div class="topbar-right">
+      <div class="rev">Rev. 2026</div>
+    </div>
+  </header>
 
-    <section class="hero">
-      <h1>Lương<br>Trường Khôi</h1>
-      <div class="quote">Đừng sống để hoàn thành<br>Hãy sống để trải nghiệm.</div>
-    </section>
-
-    <div class="actions">
-      <a class="btn" href="#api">API<br>Documentation</a>
-      <a class="btn" href="#shop">Lavender<br>Shop</a>
+  <!-- Hero -->
+  <main class="hero">
+    <div class="glass-card">
+      <h1 class="title">
+        Tự động hoá<br>
+        <strong>mọi thứ.</strong>
+      </h1>
+      <div class="tagline">
+        <div class="tagline-bar"></div>
+        <p>
+          Account chạy 24/7 trên cloud.<br>
+          Không cần cắm máy tính — bật &amp; quên đi.
+        </p>
+      </div>
     </div>
 
-    <footer class="footer">
-      ALL RIGHTS RESERVED © 2026<br>
-      DESIGNED BY LUNARKRYSTAL
-    </footer>
+    <div class="hero-bottom">
+      <p class="copyright">
+        All rights reserved © 2026<br>
+        Designed by Voraprime
+      </p>
+      <nav class="hero-actions">
+        <a href="login.html?tab=login" class="pill">Đăng nhập</a>
+        <a href="login.html?tab=register" class="pill pill-primary">Đăng ký</a>
+      </nav>
+    </div>
   </main>
+
+  <!-- Features -->
+  <section class="section" id="features">
+    <div class="section-head">
+      <div class="section-label">Tính năng</div>
+      <h2 class="section-title">Mọi thứ bạn cần, <em>không thứ nào bạn không.</em></h2>
+    </div>
+
+    <div class="features">
+      <div class="feature">
+        <div class="feature-icon"><i class="fa-solid fa-microphone-lines"></i></div>
+        <h3>Treo Voice 24/7</h3>
+        <p>Ngồi mãi trong voice channel, tự động kết nối lại nếu bị ngắt.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon"><i class="fa-solid fa-comment-dots"></i></div>
+        <h3>Custom Status</h3>
+        <p>Đặt trạng thái tuỳ ý kèm emoji, hiển thị đúng như bạn muốn — 24/7.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon"><i class="fa-solid fa-gamepad"></i></div>
+        <h3>Activity / Rich Presence</h3>
+        <p>Hiển thị "đang chơi" bất kỳ game hay app nào, không cần mở chúng.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon"><i class="fa-solid fa-cloud"></i></div>
+        <h3>Không cần cắm máy</h3>
+        <p>Chạy hoàn toàn trên cloud. Tắt máy, tắt điện thoại — vẫn online.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon"><i class="fa-solid fa-layer-group"></i></div>
+        <h3>Đa tài khoản</h3>
+        <p>Quản lý nhiều account cùng lúc trong một bảng điều khiển duy nhất.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon"><i class="fa-solid fa-shield-halved"></i></div>
+        <h3>Bảo mật token</h3>
+        <p>Token được mã hoá, không chia sẻ cho bên thứ ba. Bạn toàn quyền.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" id="faq">
+    <div class="section-head">
+      <div class="section-label">Câu hỏi thường gặp</div>
+      <h2 class="section-title">Còn <em>thắc mắc?</em></h2>
+    </div>
+
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>
+          <span>Voraprime có miễn phí không?</span>
+          <i class="faq-icon fa-solid fa-plus"></i>
+        </summary>
+        <p class="faq-body">Có. Voraprime là dự án mã nguồn mở và hoàn toàn miễn phí. Bạn không phải trả bất kỳ khoản nào để sử dụng các tính năng cơ bản.</p>
+      </details>
+      <details class="faq-item">
+        <summary>
+          <span>Tôi có cần bật máy tính 24/7 không?</span>
+          <i class="faq-icon fa-solid fa-plus"></i>
+        </summary>
+        <p class="faq-body">Không. Bot chạy trên hạ tầng cloud, nên bạn có thể tắt máy hoàn toàn mà account vẫn duy trì trạng thái.</p>
+      </details>
+      <details class="faq-item">
+        <summary>
+          <span>Token của tôi có an toàn không?</span>
+          <i class="faq-icon fa-solid fa-plus"></i>
+        </summary>
+        <p class="faq-body">Token được mã hoá khi lưu trữ và không bao giờ chia sẻ cho bên thứ ba. Bạn có thể thu hồi quyền truy cập bất cứ lúc nào.</p>
+      </details>
+      <details class="faq-item">
+        <summary>
+          <span>Dùng được cho bao nhiêu tài khoản?</span>
+          <i class="faq-icon fa-solid fa-plus"></i>
+        </summary>
+        <p class="faq-body">Không giới hạn. Bạn có thể thêm và quản lý nhiều tài khoản cùng lúc trong một bảng điều khiển.</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <span>© 2026 Voraprime</span>
+    <div style="display:flex; gap:20px;">
+      <a href="login.html?tab=login">Đăng nhập</a>
+      <a href="login.html?tab=register">Đăng ký</a>
+      <a href="#faq">FAQ</a>
+    </div>
+  </footer>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+  <script>
+    // Chỉ mở 1 FAQ tại một thời điểm
+    document.querySelectorAll('.faq-item').forEach(item => {
+      item.addEventListener('toggle', () => {
+        if (item.open) {
+          document.querySelectorAll('.faq-item').forEach(o => {
+            if (o !== item) o.open = false;
+          });
+        }
+      });
+    });
+  </script>
 </body>
-</html>
- 
+</html> 
